@@ -1,0 +1,43 @@
+{%extends 'base_site.html'%}
+{% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+                  <li>Rubros</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{%block content%}
+
+<nav>
+	<ul>
+		<li><a href="{%url 'add-rubro'%}">Añadir Rubro</a></li><br> <a href="/agregado/nuevo" >ir a menu</a>
+	</ul>
+</nav>
+<section>
+	<table class="table table-striped col-md-6">
+		<thead>
+			<tr>
+				<td>Nombre</td>
+				<td>Nombre Cientifico</td>
+				<td>imagen</td>
+			</tr>
+
+		</thead>
+		<tbody>
+		{%for lista in forms%}
+			<tr>
+				
+					<td><a href="{{lista.get_absolute_url}}">{{lista.nombre|title}}</a></td>
+					<td>{{lista.nombre_cientifico|title}}</td>
+					{%load staticfiles%}
+					<td><img src="/media/{{lista.foto}}" alt="" width="40px" height="40px"></td>
+				
+			</tr>
+		{%endfor%}
+		</tbody>
+	</table>
+	
+
+</section>
+{%endblock%}

@@ -1,0 +1,13 @@
+{%extends 'index.html'%}
+{%block section%}
+<br>
+{{info}}
+<form method="POST">
+	{%csrf_token%}
+{{cambio.as_p}}
+<br>
+ <input type="submit" value="Cambiar">		
+
+
+</form>
+{%endblock%}

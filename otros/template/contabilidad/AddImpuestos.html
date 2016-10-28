@@ -1,0 +1,49 @@
+{%extends 'base_site.html'%}
+% load i18n admin_static %}
+{% block extrastyle %}
+  {{ block.super }}
+{% endblock %}
+{% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'contabilidad' %}">Contabilidad</a> > 
+                  <li><a href="{%url 'ver-impuestos'%}">Ver impuesto</a></li> > 
+                  <li>Agregar Impuestos</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{%block content%}
+<h2 style="color:red;">{{info}}</h2>
+<h2>Agregar Impuesto</h2> <hr>
+<form action="." method="POST" enctype="multipart/form-data">
+
+{%csrf_token%}
+
+
+	<div id="formulario" >
+		<div class="campos" >
+		<label for="id_rubro">{{form.nombre.errors}}</label>
+		<label for="id_rubro">{{form.nombre.label}}</label>{{form.nombre}}
+		</div>
+		<div class="campos" >
+			<label for="id_rubro">{{form.calculo.errors}}</label>
+		<label for="">{{form.calculo.label}}</label>{{form.calculo}}
+		</div>
+		</div>
+	
+<input type="submit" value='Guardar'>
+</form>
+
+
+{%endblock%}
+{%block sidebar%}
+
+	<div class="botones" id="content-related">
+	  <div class="module" id="recent-actions-module">
+		<input type="submit" class="submit-row" name="guardar" form="variedad" value="Guardar">
+		<button class="guardar" name="guardar-edit">Guardar y continuar editando</button>
+		<button class="guardar" name="guardar-add">Guardar y añadir otro</button>
+
+		</div>
+	</div>
+{%endblock%}

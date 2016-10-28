@@ -1,0 +1,69 @@
+{% extends 'base_site.html' %}
+{% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">INICIO</a> |  
+                  <li><a href="#">RECEPCION</a></li> | 
+                  <li><a href="{%url 'despachos_anuales' month.year%}"> |{{month.year}}</a> </li> |
+                  <li>{{month|date:"F"|upper}}</li>
+                </ul>
+   {% endblock %}
+
+{%block content%}
+  	  <h2>  DESPACHOS DEl MES DE {{month|date:"F"|upper}} DEl {{month.year}}
+
+  <h2>
+  <nav>
+
+  <ul class="breadcrumb">
+  <li><a href="{%url 'ver-despacho'%}">Ver Todas</a></li> | <li><a href="{%url 'despachos_anuales' month.year%}">{{month.year}}</a> </li><br>
+    {%for i in date_list%}
+  <li><a href="{%url 'despachos_diarios' i.year i|date:'m' i.day%}">{{i.day}}</a></li> |
+  {%endfor%}
+  </ul>
+</nav><table class="table table-striped col-md-6">
+  
+<hr>
+<table class="table table-striped col-md-6">
+
+    <thead>
+      <tr><td> <input type="checkbox" id="action-toggle" form="select-recepcion"></td>
+        <td>NO CONTROL</td>
+        <td>Producto</td>
+        <td>Ciclo</td>
+        <td>Proovedor</td>
+        <td>CANTIDAD</td>
+        <td>FECHA DE LLEGADA</td>
+
+
+
+      </tr>
+  
+    </thead>
+    <tbody>
+    {%for lista in form%}
+      <tr>
+      <td><input type="checkbox" class="action-select" name="seleccion" form="select-recepcion" value="{{lista.pk}}">
+          <td><a href="{{lista.get_absolute_url}}">{{lista.codigo_en_sistema}}</a></td>
+          <td>{{lista.producto|upper}}({{lista.variedad.nombre|upper}}-{{lista.tipo.nombre|upper}})  </td>
+          
+          <td>{{lista.ciclo_asociado|upper}}</td>
+          
+          <td>{{lista.proovedor.nombre_o_razon_social|upper}}</td>
+
+          <td>{{lista.cantidad_en_Kg}} kg. </td>
+          <td>{{lista.fecha_llegada|date:"d/m/y - h:m"}}</td>
+      </tr>
+    {%endfor%}
+    </tbody>
+  </table>
+{%endblock%}
+{%block delete%}
+<form action="." method="POST" id="select-recepcion">  {%csrf_token%}
+  <select name="lista-pdf" id="lista-pdf" form="select-recepcion">
+  <option value="selected"> ----------</option>
+    <option value="lista-selected">Guardar Lista</option>
+  </select>
+  <input type="submit" value="Guardar" form="select-recepcion">
+</form>
+{%endblock%}
+

@@ -1,0 +1,69 @@
+{% extends 'base_site.html' %}
+
+{% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">inicio</a> |  
+                  <li><a href="{%url 'ver-despacho'%}">Despacho</a></li> |
+				<li>{{year.year}}</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+
+{% block content %}
+
+	    <h3> DESPACHO DEL {{year.year}}:
+<nav>
+<ul class="breadcrumb">
+<li><a href="{%url 'ver-despacho'%}">Ver Todas</a></li> <br>
+	{%for i in date_list%}
+	<li><a href="{%url 'despachos_mensuales' i.year i|date:'m'%}">{{i|date:"F"}}</a></li> |
+	{%endfor%}</ul>
+</nav><table class="table table-striped col-md-6">
+
+		<thead>
+			<tr><td> <input type="checkbox" id="action-toggle" form="select-despacho"></td>
+				<td>NO CONTROL</td>
+				<td>Producto</td>
+				<td>Ciclo</td>
+				<td>CLIENTE</td>
+				<td>CANTIDAD</td>
+				<td>FECHA DE SALIDA</td>
+
+
+
+			</tr>
+	
+		</thead>
+		<tbody>
+		{%for lista in form%}
+
+			<tr>
+			<td><input type="checkbox" class="action-select" name="seleccion" form="select-despacho" value="{{lista.pk}}">
+					<td><a href="{{lista.get_absolute_url}}">{{lista.codigo_en_sistema}}</a></td>
+					<td>{{lista.producto|upper}}({{lista.variedad.nombre|upper}}-{{lista.tipo.nombre|upper}})  </td>
+					
+					<td>{{lista.ciclo_asociado|upper}}</td>
+					
+					<td>{{lista.cliente.nombre_o_razon_social|upper}}</td>
+
+					<td>{{lista.cantidad_en_Kg}} kg. </td>
+					<td>{{lista.fecha_salida|date:"d/m/y - h:m"}}</td>
+			</tr>
+		{%endfor%}
+		</tbody>
+	</table>
+	
+<div> 
+ 
+</div> 
+{%endblock%}
+{%block delete%}
+<form action="." method="POST" id="select-despacho">  {%csrf_token%}
+	<select name="lista-pdf" id="lista-pdf" form="select-despacho">
+	<option value="selected"> ----------</option>
+		<option value="lista-selected">Guardar Lista</option>
+	</select>
+	<input type="submit" value="Guardar" form="select-despacho">
+</form>
+{%endblock%}

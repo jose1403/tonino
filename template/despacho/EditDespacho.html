@@ -1,0 +1,210 @@
+{%extends 'base_site.html'%}  
+{% load i18n admin_static %}
+{% load staticfiles widget_tweaks %}
+{% block extrastyle %}
+  {{ block.super }}
+{% endblock %}
+{% block breadcrumbs %}
+				<ul class="breadcrumb">
+				  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+				  <li><a href="{%url 'ver-despacho'%}">Ver Despacho</a></li> > 
+				  <li>Editar Despacho Despacho</li>
+				   
+					</li>
+				</ul>
+   {% endblock %}
+{%block content%}
+<h2 style="color:red;">{{info}}</h2>
+
+<h2>Editar Despacho</h2> <hr>
+<h1>NO CONTROL: {{model.codigo_en_sistema}}</h1>
+<h3>Ingresados: {{model.cantidad_en_Kg}} Kg.</h3>
+{% load humanize %}
+<h3>Precio del {{model.producto.nombre|upper}}({{model.variedad.nombre|upper}}-{{model.tipo.nombre|upper}}) por Kilogramo : {{model_pago.precio}} Bs.</h3>
+<h3>Total Neto :{{model_total.total_neto|intcomma}} Bs.</h3>
+
+<h3>Impuestos </h3>
+{%for i, k in model_total.impuestos.items%}
+	<h3>{{i}}: {{k|intcomma}} Bs.</h3>
+{%endfor%}
+<h3>Total En Bs.: {{model_total.total_Bs|intcomma}} Bs.</h3>
+
+ <div >
+	<form action="." method="POST" id="edit-despacho">
+	{%csrf_token%}
+	<table class="table table-bordered table-hover table-striped">
+	<tfoot> Descripcion Del Producto </tfoot>
+	<thead >
+
+		<tr>
+
+				<td>{{form.producto.label}} <label for="">{{form.producto.errors}}</label></td>
+				<td>{{form.variedad.label}}<label for="">{{form.variedad.errors}}</label></td>
+				<td>{{form.tipo.label}}<label for="">{{form.tipo.errors}}</label></td>
+				<td>{{form.ciclo_asociado.label}}<label for="">{{form.ciclo_asociado.errors}}</label></td>
+			</tr>
+	</thead>
+		<tbody>
+			<tr>
+				<td>{{ form.producto}}</td>
+				<td>{{ form.variedad}}</td>
+				<td>{{ form.tipo}}</td>
+				<td>{{ form.ciclo_asociado}}</td>
+			</tr>
+		</tbody>
+
+	</table>
+	<table class="table table-bordered table-hover table-striped">
+	<tfoot> Datos del Cliente</tfoot>
+	<thead>
+
+		<tr>
+
+				<td>{{form.cliente.label}}<label for="">{{form.cliente.errors}}</label></td>
+				<td>{{form.dirigido_a.label}}<label for="">{{form.dirigido_a.errors}}</label></td>
+				
+			</tr>
+	</thead>
+		<tbody>
+			<tr>
+				<td>{{ form.cliente}}</td>
+				<td>{{form.dirigido_a}}}</td>
+			
+				
+			</tr>
+		</tbody>
+
+	</table>
+
+<table class="table table-bordered table-hover table-striped">
+	<tfoot> Datos de Entrega</tfoot>
+	<thead>
+
+		<tr>
+
+				<td>{{form.fecha_salida.label}}<label for="">{{form.fecha_salida.errors}}</label></td>
+				<td>{{form.tipo_vehiculo.label}}<label for="">{{form.tipo_vehiculo.errors}}</label></td>
+				<td>{{form.placa.label}}<label for="">{{form.placa.errors}}</label></td>
+				
+			</tr>
+	</thead>
+		<tbody>
+			<tr>
+				<td>{{ form.fecha_salida}}</td>
+				<td>{{ form.tipo_vehiculo}}</td>
+				<td>{{ form.placa}}</td>
+				
+			</tr>
+		</tbody>
+
+</table>
+<table class="table table-bordered table-hover table-striped">
+	<tfoot> Datos Referencia</tfoot>
+	<thead>
+
+		<tr>
+
+				
+				<td>{{form.referencia_folder.label}}<label for="">{{form.referencia_folder.errors}}</label> </td>
+
+				
+				
+			</tr>
+	</thead>
+		<tbody>
+			<tr>
+	
+				<td>{{form.referencia_folder}}</td>
+				
+			</tr>
+		</tbody>
+
+</table>
+<table class="table table-bordered table-hover table-striped">
+	<tfoot> Datos de Entrega</tfoot>
+	<thead>
+
+		<tr>
+
+				<td>Cantidad Despachado<label for="">{{form.cantidad_en_Kg.errors}}</label></td>
+				<td>Precio del Producto<label for="">{{form.precio.errors}}</label></td>
+				<td>Pagado</td>
+								
+			</tr>
+	</thead>
+		<tbody>
+			<tr>
+				<td>{{ form.cantidad_en_Kg}}</td>
+				<td>{{form.precio}}</td>
+				{%if model_pago.pagado%}
+				<td>PAGADO</td>
+				{%else%}
+				<td>SIN CANSELAR</td>
+				{%endif%}
+
+
+				
+			</tr>
+		</tbody>
+
+</table>
+
+<style>
+	#tanalisis input{
+		width: 100px;
+	}
+</style>
+<table class="table table-bordered table-hover table-striped" style=""  id="tanalisis">
+<tfoot> Resultados Del Analisis </tfoot>
+	<thead>
+
+		<tr>
+
+				<td>{{form.humedad.label}}<label for="">{{form.humedad.errors}}</label></td>
+				<td>{{form.impureza.label}}<label for="">{{form.impureza.errors}}</label></td>
+				<td>{{form.granos_danados_totales.label}}<label for="">{{form.granos_danados_totales.errors}}</label></td>
+				<td>{{form.granos_partidos.label}}<label for="">{{form.granos_partidos.errors}}</label></td>
+				<td>{{form.temperatura_promedio.label}}<label for="">{{form.temperatura_promedio.errors}}</label></td>
+				<td>{{form.otros.label}}<label for="">{{form.otros.errors}}</label></td>
+			</tr>
+	</thead>
+		<tbody> 
+			<tr>
+				<td>{{ form.humedad}}</td>
+				<td>{{ form.impureza}}</td>
+				<td>{{ form.granos_danados_totales}}</td>
+				<td>{{ form.granos_partidos}}</td>
+				<td>{{form.temperatura_promedio}}</td>
+				<td>{{form.otros}}</td>
+			</tr>
+		</tbody>
+
+	</table>
+
+	<p><label for="">Despachado Por</label>{{form.despachado_por}}<label for="">{{form.despachado_por.errors}}</label></p>
+	<p><label for="">Observacion</label>{{form.observacion}}<label for="">{{form.observacion.errors}}</label></p>
+
+
+{%if errors in form%}
+si hay
+{%endif%}
+
+<input type="submit" class="btn btn-primary" value="guardar">
+		
+
+</form>
+	
+	</div>
+{%endblock%}
+{%block sidebar%}
+
+	<div class="botones" id="content-related">
+	  <div class="module" id="recent-actions-module">
+		<input type="submit" class="submit-row" name="guardar" form="variedad" value="Guardar">
+		<button class="guardar" name="guardar-edit">Guardar y continuar editando</button>
+		<button class="guardar" name="guardar-add">Guardar y añadir otro</button>
+
+		</div>
+	</div>
+{%endblock%}
+

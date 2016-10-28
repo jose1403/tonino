@@ -1,0 +1,86 @@
+.migas{
+
+	margin-top: 20px;
+	padding: 0px 50px;	
+}
+
+.conocenos{
+	
+	padding: 20px 50px;	
+}
+
+.conocenos>div{
+	margin-bottom:40px; 
+	box-shadow: 1px 1px 10px rgba(0,0,0,0.1);
+	padding: 10px;
+}
+
+.conocenos>div>.titulo{
+	font-size: 25px;
+	font-family: titulo;
+}
+
+
+section{
+	width: 74%;
+	float: left;
+	border-right: 1px solid rgba(0,0,0,0.1);
+}
+
+aside{
+	width: 26%;
+	float: right;
+}
+
+@media(max-width: 1200px){
+	aside{
+		width: 30%;
+	}
+
+	section{
+		width: 70%;
+	}
+}
+
+@media(max-width: 865px){
+	section{
+		width: 100%;
+		float: none;
+		border: none;
+	}
+
+	aside{
+		width: 100%;
+		float: none;
+		display: none;
+	}
+}
+
+@media (max-width: 768px){
+	.migas{
+		display: none;
+	}
+}
+
+@media (max-width: 570px){
+	.conocenos{
+		padding:20px 30px; 
+	}
+}
+
+
+@media (max-width: 425px){
+	.conocenos{
+		padding: 20px; 
+	}
+}
+
+
+@media (max-width: 320px){
+	
+	.articulos{
+		padding: 20px 10px;
+	}
+}
+
+

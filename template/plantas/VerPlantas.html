@@ -1,0 +1,71 @@
+{%extends 'base_site.html'%}
+ {% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">inicio</a> |
+                  <li>Plantas</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{%block content%}
+{%load my_tags%}
+{%display_buscador_form%}
+<nav>
+	<ul>
+		<li><a href="{%url 'add-plantas'%}">Añadir Plantas</a></li>
+
+	</ul>
+</nav>
+
+<h2>Plantas</h2> <hr>
+<table class="table table-striped col-md-6">
+		<thead>
+			<tr>
+			<td><input type="checkbox" id="action-toggle" form="nominal">	</td>
+				<td>Nombre</td>
+				<td>Cantidad de Silos</td>
+				<td>Descripcion</td>
+
+
+			</tr>
+
+		</thead>
+		<tbody>
+		{%for lista in form%}
+			<tr><td><input type="checkbox" class="action-select" name="seleccion" form="nominal" value="{{lista.pk}}"></td>
+				<td><a href="{{lista.get_absolute_url}}">{{lista.nombre|title}}</a></td>
+				<td>{{lista.cantidad_silos}}</td>
+				
+					<td>{{lista.descripcion}}</td>					
+				
+			</tr>
+		{%endfor%}
+		</tbody>
+	</table>
+	<div class="pagination">
+		   	
+			<ul class="step-links">
+				{% if form.has_previous %}
+				          <li>
+				          	  <a href="?page={{ forms.previous_page_number }}" class="anterior">Anterior</a>
+				          </li>
+				{% endif %}
+
+				{% for i in lista  %}
+					<a href="?page={{i}}" class="num btn btn-default">{{i}}</a></span>
+					
+				{% endfor %}
+				<li>
+					<span class="current">
+					           Pagina {{ form.number }} de {{ form.paginator.num_pages }}.
+					</span>
+				</li>
+				
+				{% if form.has_next %}
+				      <li>
+				      	<a href="?page={{ forms.next_page_number }}" class="siguiente">siguiente</a>
+				      </li>
+				{% endif %}
+			</ul>
+		</div>
+{%endblock%}

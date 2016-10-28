@@ -1,0 +1,100 @@
+{%extends 'base_site.html'%}
+% load i18n admin_static %}
+{% block extrastyle %}
+  {{ block.super }}
+{% endblock %}
+ {% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+                  <li><a href="{%url 'ver-productor'%}">Productores</a></li> > 
+                  <li>Editar Productor</li>
+                   
+                    </li>
+                </ul>
+                <a href="{%url 'productor-info-pdf' model.pk%}" class="btn btn-success">Generar Pdf</a>
+                <a href="{%url 'productor-info-zona-pdf' model.pk%}" class="btn btn-primary">Zonas Asociadas</a>
+   {% endblock %}
+
+{%block content%}
+<li><a href="{%url 'ver-zonas-productor' model.pk%}">Ver Zonas+</a></li>
+<h2>Codigo en Sistema: {{model.codigo_en_sistema}}</h2>
+
+
+<form action="." method="POST" name="tipo">
+	{%csrf_token%}
+	<div id="formulario">
+		<div class="campos" >
+		<label for="">{{form.nombre_o_razon_social.errors}}</label>
+		<label for="">{{form.nombre_o_razon_social.label}}</label>{{form.nombre_o_razon_social}}
+		</div>
+		<div class="campos" >
+		<label for="">{{form.apellido.errors}}</label>
+		<label for="">{{form.apellido.label}}</label>{{form.apellido}}
+		</div>
+		<div class="campos" >
+		<label for="">{{form.documentoId.errors}}</label>
+		<label for="">{{form.documentoId.label}}</label>{{form.documentoId}}
+		</div>
+		<div class="campos" >
+		<label for="">{{form.domicilio_fiscal.errors}}</label>
+		<label for="">{{form.domicilio_fiscal.label}}</label>{{form.domicilio_fiscal}}
+		</div>
+		
+		<div class="campos" >
+		<label for="">{{form.telefono.errors}}</label>
+		<label for="">{{form.telefono.label}}</label>{{form.telefono}}
+		</div>
+		<div class="campos" >
+		<label for="">{{form.celular.errors}}</label>
+		<label for="">{{form.celular.label}}</label>{{form.celular}}
+		</div>
+		<div class="campos" >
+		<label for="">{{form.celular.errors}}</label>
+		<label for="">{{form.celular.label}}</label>{{form.celular}}
+		</div>
+		<div class="campos" >
+		<label for="id_rubro">{{form.referencia_folder.errors}}</label>
+		<label for="id_rubro">{{form.referencia_folder.label}}</label>{{form.referencia_folder}}
+		</div>
+		<div class="campos" >
+		<label for="">{{form.cuenta_bancaria.errors}}</label>
+		<label for="">{{form.cuenta_bancaria.label}}</label>{{form.cuenta_bancaria}}
+		</div>
+		<div class="campos" >
+		<label for="">{{form.banco.errors}}</label>
+		<label for="">{{form.banco.label}}</label>{{form.banco}}
+		</div>
+		<div class="campos" >
+		<label for="">{{form.tipo_cuenta.errors}}</label>
+		<label for="">{{form.tipo_cuenta.label}}</label>{{form.tipo_cuenta}}
+		</div>
+		<div>
+			<label for="">Fecha De Agregado:</label> {{model.fecha_agregado}}
+		</div>
+		<div class="campos" >
+		<label for="">{{form.habilitado.errors}}</label>
+		<label for="">{{form.habilitado.label}}</label>{{form.habilitado}}
+		</div>
+		<div class="campos" >
+		<label for="">{{form.observacion.errors}}</label>
+		<label for="">{{form.observacion.label}}</label>{{form.observacion}}
+		</div>
+
+
+	</div>
+			
+ <br>
+ <input type="submit" value="Guardar">
+</form>
+{%endblock%}
+{%block sidebar%}
+
+	<div class="botones" id="content-related">
+	  <div class="module" id="recent-actions-module">
+		<button class="submit-row" name="guardar">Guardar</button>
+		<button class="guardar" name="guardar-edit">Guardar y continuar editando</button>
+		<button class="guardar" name="guardar-add">Guardar y añadir otro</button>
+
+		</div>
+	</div>
+{%endblock%}

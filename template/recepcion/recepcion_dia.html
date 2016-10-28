@@ -1,0 +1,78 @@
+{% extends 'base_site.html' %}
+{%load staticfiles%}
+
+{%block style%}
+	<link rel="stylesheet" href="{%static 'css/entradas_dia.css'%}">
+{%endblock style%}
+
+{% block cabezera %}miblog|{{ day|date }}{% endblock %}
+{% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">INICIO</a> |  
+                  <li><a href="#">RECEPCION</a></li> | 
+                  <li><a href="{%url 'recepciones_anuales' day.year%}"> |{{day.year}}</a> </li> |
+                  <li><a href="{%url 'recepciones_mensuales' day.year day|date:'m'%}">{{day|date:"F"|upper}}</a></li> |
+                  <li>{{day.day}}</li>
+                </ul>
+   {% endblock %}
+{% block content %}
+{%load my_tags%}
+{%display_buscador_form%}
+
+<h3> RECEPCIONES DEL {{day.day}} DE {{day|date:"F"|upper}} DEL {{day.year}}
+
+  </h3>
+   <nav>
+
+  <ul class="breadcrumb">
+  <li><a href="{%url 'ver-recepcion'%}">Ver Todas</a></li> | <li><a href="{%url 'recepciones_anuales' day.year%}">{{day.year}}</a> </li> | <li><a href="{%url 'recepciones_mensuales' day.year day|date:'m'%}">{{day|date:'F'|upper}}</a> </li><br>
+    {%for i in date_list%}
+  <li><a href="{%url 'recepciones_diarias' i.year i|date:'m' i.day%}">{{i.day}}</a></li> |
+  {%endfor%}
+  </ul>
+</nav>
+
+<hr>
+<table class="table table-striped col-md-6">
+
+    <thead>
+      <tr><td> <input type="checkbox" id="action-toggle" form="select-recepcion"></td>
+        <td>NO CONTROL</td>
+        <td>Producto</td>
+        <td>Ciclo</td>
+        <td>Proovedor</td>
+        <td>CANTIDAD</td>
+        <td>FECHA DE LLEGADA</td>
+
+
+
+      </tr>
+  
+    </thead>
+    <tbody>
+    {%for lista in form%}
+      <tr>
+      <td><input type="checkbox" class="action-select" name="seleccion" form="select-recepcion" value="{{lista.pk}}">
+          <td><a href="{{lista.get_absolute_url}}">{{lista.codigo_en_sistema}}</a></td>
+          <td>{{lista.producto|upper}}({{lista.variedad.nombre|upper}}-{{lista.tipo.nombre|upper}})  </td>
+          
+          <td>{{lista.ciclo_asociado|upper}}</td>
+          
+          <td>{{lista.proovedor.nombre_o_razon_social|upper}}</td>
+
+          <td>{{lista.cantidad_en_Kg}} kg. </td>
+          <td>{{lista.fecha_llegada|date:"d/m/y - h:m"}}</td>
+      </tr>
+    {%endfor%}
+    </tbody>
+  </table>
+{%endblock%}
+{%block delete%}
+<form action="." method="POST" id="select-recepcion">  {%csrf_token%}
+  <select name="lista-pdf" id="lista-pdf" form="select-recepcion">
+  <option value="selected"> ----------</option>
+    <option value="lista-selected">Guardar Lista</option>
+  </select>
+  <input type="submit" value="Guardar" form="select-recepcion">
+</form>
+{%endblock%}

@@ -1,0 +1,54 @@
+{%extends 'base_site.html'%}
+{% block extrastyle %}
+  {{ block.super }}
+{% endblock %}
+ {% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+                  <li><a href="{%url 'ver-plantas'%}">Ver Plantas</a></li> > 
+                  <li>Editar Plantas</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{%block content%}
+<span><a href="{%url 'ver-silos' model.pk%}">Ver Silos</a></span>
+<h4>{{info}}</h4>
+<h2>Editar Plantas</h2>  <hr>
+<form action="." method="POST" enctype="multipart/form-data">
+
+		{%csrf_token%}
+
+
+	<div id="formulario" >
+		<div class="campos" >
+			{{form.nombre.errors}}
+		<label>{{form.nombre.label}}</label>{{form.nombre}}
+		</div>
+
+		<div class="campos" >
+			<label >{{form.cantidad_silos.errors}}</label>
+		<label >{{form.cantidad_silos.label}}</label>{{form.cantidad_silos}}
+		</div>
+		<div class="campos" >
+			<label >{{form.descripcion.errors}}</label>
+			<label >{{form.descripcion.label}}</label>{{form.descripcion}}
+		</div>
+	</div>
+	
+	{%load staticfiles%}
+<input type="submit" value='Guardar'>
+</form>
+
+{%endblock%}
+{%block sidebar%}
+
+	<div class="botones" id="content-related">
+	  <div class="module" id="recent-actions-module">
+		<button class="submit-row" name="guardar">Guardar</button>
+		<button class="guardar" name="guardar-edit">Guardar y continuar editando</button>
+		<button class="guardar" name="guardar-add">Guardar y añadir otro</button>
+
+		</div>
+	</div>
+{%endblock%}

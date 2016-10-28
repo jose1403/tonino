@@ -1,0 +1,203 @@
+{%extends 'base_site.html'%}  
+{% load i18n admin_static %}
+{% load staticfiles widget_tweaks %}
+{% block extrastyle %}
+  {{ block.super }}
+{% endblock %}
+{% block breadcrumbs %}
+				<ul class="breadcrumb">
+				  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+				  <li><a href="{%url 'ver-recepcion'%}">Ver recepcion</a></li> > 
+				  <li>Agregar Recepcion</li>
+				   
+					</li>
+				</ul>
+   {% endblock %}
+{%block content%}
+<h2 style="color:red;">{{info}}</h2>
+
+<h2>Editar Recepcion</h2> <hr>
+<h1>NO CONTROL: {{model.codigo_en_sistema}}</h1>
+
+<h2>Pagado: {{model_pago.pago}}</h2>
+<h3>Ingresados: {{model_total.cantidad_real}} Kg.</h3>
+{% load humanize %}
+<h3>Precio del {{model.producto.nombre|upper}}({{model.variedad.nombre|upper}}-{{model.tipo.nombre|upper}}) por Kilogramo : {{model_pago.precio.precio_por_Kg}} Bs.</h3>
+<h3>Total Neto :{{model_total.total_neto|intcomma}} Bs.</h3>
+
+<h3>Impuestos </h3>
+{%for i, k in model_total.impuestos.items%}
+	<h3>{{i}}: {{k|intcomma}} Bs.</h3>
+{%endfor%}
+<h3>Total En Bs.: {{model_total.total_Bs|intcomma}} Bs.</h3>
+
+ <div >
+	<form action="." method="POST" id="edit-recepcion">
+	{%csrf_token%}
+	<table class="table table-bordered table-hover table-striped">
+	<tfoot> Descripcion Del Producto </tfoot>
+	<thead >
+
+		<tr>
+
+				<td>{{form.producto.label}}<label for="">{{form.producto.errors}}</label> </td>
+				<td>{{form.variedad.label}}<label for="">{{form.variedad.errors}}</label></td>
+				<td>{{form.tipo.label}}</td><label for="">{{form.tipo.errors}}</label>
+				<td>{{form.ciclo_asociado.label}}<label for="">{{form.ciclo_asociado.errors}}</label></td>
+			</tr>
+	</thead>
+		<tbody>
+			<tr>
+				<td>{{ form.producto}}</td>
+				<td>{{ form.variedad}}</td>
+				<td>{{ form.tipo}}</td>
+				<td>{{ form.ciclo_asociado}}</td>
+			</tr>
+		</tbody>
+
+	</table>
+	<table class="table table-bordered table-hover table-striped">
+	<tfoot> Datos del Proovedor</tfoot>
+	<thead>
+
+		<tr>
+
+				<td>{{form.proovedor.label}}<label for="">{{form.proovedor.errors}}</label></td>
+				<td>{{form.zona_de_cosecha.label}}<label for="">{{form.zona_cosecha.errors}}</label></td>
+				
+			</tr>
+	</thead>
+		<tbody>
+			<tr>
+				<td>{{ form.proovedor}}</td>
+				<td>{{ form.zona_de_cosecha}}</td>
+			
+				
+			</tr>
+		</tbody>
+
+	</table>
+
+<table class="table table-bordered table-hover table-striped">
+	<tfoot> Datos de Entrega</tfoot>
+	<thead>
+
+		<tr>
+
+				<td>{{form.fecha_llegada.label}}<label for="">{{form.fecha_llegada.errors}}</label></td>
+				<td>{{form.tipo_vehiculo.label}}<label for="">{{form.tipo_vehiculo.errors}}</label></td>
+				<td>{{form.placa.label}}<label for="">{{form.placa.errors}}</label></td>
+				
+			</tr>
+	</thead>
+		<tbody>
+			<tr>
+				<td>{{ form.fecha_llegada}}</td>
+				<td>{{ form.tipo_vehiculo}}</td>
+				<td>{{ form.placa}}</td>
+				
+			</tr>
+		</tbody>
+
+</table>
+<table class="table table-bordered table-hover table-striped">
+	<tfoot> Datos Referencia</tfoot>
+	<thead>
+
+		<tr>
+
+				
+
+				<td>Planta</td>
+				<td>Silo<label for="">{{form.silo.errors}}</label> </td>
+				<td>{{form.numero_romana.label}}<label for="">{{form.numero_romana.errors}}</label></td>
+				<td>{{form.referencia_folder.label}}<label for="">{{form.referencia_folder.errors}}</label> </td>
+				
+				
+			</tr>
+	</thead>
+		<tbody>
+			<tr>
+				<td><select name="planta" id="planta" ><option value="0" selected="selected">{{ model.planta}}</option></select></td>
+				<td><select name="silo" id="silo" ><option value="0" selected="selected">{{ model.silo}}</option></select></td>	
+				<td>{{ form.numero_romana}}</td>
+				<td>{{ form.referencia_folder}}</td>
+				
+			</tr>
+		</tbody>
+
+</table>
+<table class="table table-bordered table-hover table-striped">
+	<tfoot> Datos de Entrega</tfoot>
+	<thead>
+
+		<tr>
+
+				<td>Cantidad Ingresado</td>
+								
+			</tr>
+	</thead>
+		<tbody>
+			<tr>
+				<td>{{ form.cantidad_en_Kg}}<label for="">{{form.cantidad_en_Kg.errors}}</td>
+				
+			</tr>
+		</tbody>
+
+</table>
+
+<style>
+	#tanalisis input{
+		width: 100px;
+	}
+</style>
+<table class="table table-bordered table-hover table-striped" style=""  id="tanalisis">
+<tfoot> Resultados Del Analisis </tfoot>
+	<thead>
+
+		<tr>
+
+				<td>{{form.humedad.label}}<label for="">{{form.humedad.errors}}</label></td>
+				<td>{{form.impureza.label}}<label for="">{{form.impureza.errors}}</label></td>
+				<td>{{form.granos_danados_totales.label}}<label for="">{{form.granos_danados.errors}}</label></td>
+				<td>{{form.granos_partidos.label}}<label for="">{{form.granos_partidos.errors}}</label></td>
+				<td>{{form.temperatura_promedio.label}}<label for="">{{form.temperatura.errors}}</label></td>
+				<td>{{form.otros.label}}<label for="">{{form.otros.errors}}</label></td>
+			</tr>
+	</thead>
+		<tbody> 
+			<tr>
+				<td>{{ form.humedad}}</td>
+				<td>{{ form.impureza}}</td>
+				<td>{{ form.granos_danados_totales}}</td>
+				<td>{{ form.granos_partidos}}</td>
+				<td>{{form.temperatura_promedio}}</td>
+				<td>{{form.otros}}</td>
+			</tr>
+		</tbody>
+
+	</table>
+
+	<p><label for="">Recibido Por</label>{{form.recibido_por}}<label for="">{{form.recibido_por.errors}}</label></p>
+	<p><label for="">Observacion</label>{{form.observacion}}<label for="">{{form.observacion.errors}}</label></p>
+	<input type="submit" class="btn btn-primary" value="guardar">
+		
+observacion
+</form>
+	
+	</div>
+	
+
+{%endblock%}
+{%block sidebar%}
+
+	<div class="botones" id="content-related">
+	  <div class="module" id="recent-actions-module">
+		<input type="submit" class="submit-row" name="guardar" form="variedad" value="Guardar">
+		<button class="guardar" name="guardar-edit">Guardar y continuar editando</button>
+		<button class="guardar" name="guardar-add">Guardar y añadir otro</button>
+
+		</div>
+	</div>
+{%endblock%}
+

@@ -1,0 +1,46 @@
+{%extends 'base_site.html'%}
+ {% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+                  <li><a href="{%url 'rubros'%}">Rubros</a></li> > 
+                  <li>Tipo</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{%block content%}
+<nav>
+	<ul>
+		<li><a href="{%url 'add-productor'%}">Añadir Productor</a></li>
+		<li><a href="{%url 'ver-zonas-productor'%}">ver zonas</a></li>
+	</ul>
+</nav>
+
+<h2>Productores</h2> <hr>
+<table class="table table-striped col-md-6">
+		<thead>
+			<tr>
+				<td>Nombre</td>
+				<td>Apellido</td>
+				<td>CI/Rif</td>
+				<td>Celular</td>
+
+			</tr>
+
+		</thead>
+		<tbody>
+		{%for lista in form%}
+			<tr>
+				<td><a href="/agregado/rubro-productor/edit/{{lista.pk}}">{{lista.nombre|title}}</a></td>
+				
+					<td><a href="/agregado/rubro-productor/edit/{{lista.pk}}">{{lista.apellido|title}}</a></td>
+					<td>{{lista.documentoId|title}}</td>
+					<td>{{lista.celular|title}}</td>
+
+					
+				
+			</tr>
+		{%endfor%}
+		</tbody>
+	</table>
+{%endblock%}

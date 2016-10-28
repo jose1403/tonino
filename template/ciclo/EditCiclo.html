@@ -1,0 +1,63 @@
+{%extends 'base_site.html'%}
+{% block extrastyle %}
+  {{ block.super }}
+{% endblock %}
+ {% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+                  <li><a href="{%url 'ver-ciclos'%}">Ver Ciclos</a></li> > 
+                  <li>Editar Ciclos</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{%block content%}
+<form action="{%url 'ver-ciclos'%}">
+	<input type="text" name='q' placeholder="buscar">
+	<input type="submit" value="Buscar">
+
+</form>
+<li><a href="{%url 'ver-presiox-ciclo' model.pk%}">Ver Precios</a></li>
+<h4>{{info}}</h4>
+<h2>Editar Ciclos</h2> <hr>
+<form action="." method="POST" enctype="multipart/form-data">
+
+		{%csrf_token%}
+
+
+	<div id="formulario" >
+		<div class="campos" >
+			{{form.nombre.errors}}
+		<label>{{form.nombre.label}}</label>{{form.nombre}}
+		</div>
+
+		<div class="campos" >
+			<label >{{form.fecha_de_inicio.errors}}</label>
+		<label >{{form.fecha_de_inicio.label}}</label>{{form.fecha_de_inicio}}
+		</div>
+		<div class="campos" >
+			<label >{{form.fecha_de_cierre.errors}}</label>
+			<label >{{form.fecha_de_cierre.label}}</label>{{form.fecha_de_cierre}}
+		</div>
+		<div class="" >
+			<label for="">{{form.habilitado.errors}}</label>
+		<label for="">{{form.habilitado.label}}</label>{{form.habilitado}}
+		</div>
+	</div>
+	
+	{%load staticfiles%}
+<input type="submit" value='Guardar'>
+</form>
+
+{%endblock%}
+{%block sidebar%}
+
+	<div class="botones" id="content-related">
+	  <div class="module" id="recent-actions-module">
+		<button class="submit-row" name="guardar">Guardar</button>
+		<button class="guardar" name="guardar-edit">Guardar y continuar editando</button>
+		<button class="guardar" name="guardar-add">Guardar y añadir otro</button>
+
+		</div>
+	</div>
+{%endblock%}

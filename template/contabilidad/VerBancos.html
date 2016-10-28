@@ -1,0 +1,41 @@
+{%extends 'base_site.html'%}
+ {% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'contabilidad' %}">Contabilidad</a> >  
+                  <li>Bancos</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{%block content%}
+<nav>
+	<ul>
+		<li><a href="{%url 'add-bancos'%}">Añadir Nuevo Banco</a></li>
+	</ul>
+</nav>
+
+<h2>Bancos</h2> <hr>
+<table class="table table-striped col-md-6">
+		<thead>
+			<tr><td><input type="checkbox" id="action-toggle" form="nominal">	</td>
+				<td>Nombre</td>
+				<td>Descripcion</td>
+
+			</tr>
+
+		</thead>
+		<tbody>
+		{%for lista in form%}
+			<tr>
+			<td><input type="checkbox" class="action-select" name="seleccion" form="nominal" value="{{lista.pk}}"></td>
+				<td><a href="{%url 'edit-bancos' lista.pk%}">{{lista.nombre|title}}</a></td>
+				
+					<td>{{lista.descripcion|title}}</td>
+
+					
+				
+			</tr>
+		{%endfor%}
+		</tbody>
+	</table>
+{%endblock%}

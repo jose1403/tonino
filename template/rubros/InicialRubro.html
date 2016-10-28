@@ -1,0 +1,18 @@
+{%extends 'base_site.html'%}
+{% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+                  <li>Rubros</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{%block content%}
+<ul>
+	<ol><a href="{%url 'ver-rubro'%}"> Rubros </a></ol>
+	
+</ul>
+
+{%endblock%}
+{%block delete%}
+{%endblock%}

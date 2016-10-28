@@ -1,0 +1,85 @@
+{%extends 'base_site.html'%}
+% load i18n admin_static %}
+{% block extrastyle %}
+  {{ block.super }}
+{% endblock %}
+ {% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}" class="btn btn-default">Inicio</a> > 
+                  <li><a href="{%url 'ver-cliente'%}" class="btn btn-default">Clientes</a></li> > 
+                  <li>Añadir Clientesr</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+
+{%block content%}
+<label for="">{{info}}</label>
+<form action="." method="POST">
+	{%csrf_token%}
+
+	<div id="formulario">
+		<div class="campos" >
+		<label for="id_rubro">{{form.nombre_o_razon_social.errors}}</label>
+		<label for="id_rubro">{{form.nombre_o_razon_social.label|upper}}</label>{{form.nombre_o_razon_social}}
+		</div>
+		<div class="campos" >
+		<label for="id_rubro">{{form.documentoId.errors}}</label>
+		<label for="id_rubro">CI/RIF</label>{{form.documentoId}}
+		</div>
+		<div class="campos" >
+		<label for="id_rubro">{{form.domicilio_fiscal.errors}}</label>
+		<label for="id_rubro">{{form.domicilio_fiscal.label|upper}}</label>{{form.domicilio_fiscal}}
+		</div>
+		<div class="campos" >
+		<label for="id_rubro">{{form.telefono.errors}}</label>
+		<label for="id_rubro">{{form.telefono.label|upper}}</label>{{form.telefono}}
+		</div>
+		<div class="campos" >
+		<label for="id_rubro">{{form.celular.errors}}</label>
+		<label for="id_rubro">{{form.celular.label|upper}}</label>{{form.celular}}
+		</div>
+		<div class="campos" >
+		<label for="id_rubro">{{form.referencia_folder.errors}}</label>
+		<label for="id_rubro">{{form.referencia_folder.label|upper}}</label>{{form.referencia_folder}}
+		</div>
+		<div class="campos" >
+		<label for="id_rubro">{{form.cuenta_bancaria.errors}}</label>
+		<label for="id_rubro">{{form.cuenta_bancaria.label|upper}}</label>{{form.cuenta_bancaria}}
+		</div>
+		<div class="campos" >
+		<label for="id_rubro">{{form.banco.errors}}</label>
+		<label for="id_rubro">{{form.banco.label|upper}}</label>{{form.banco}}
+		</div>
+		<div class="campos" >
+		<label for="id_rubro">{{form.tipo_cuenta.errors}}</label>
+		<label for="id_rubro">{{form.tipo_cuenta.label|upper}}</label>{{form.tipo_cuenta}}
+		</div>
+		<div class="campos" >
+		<label for="id_rubro">{{form.habilitado.errors}}</label>
+		<label for="id_rubro">{{form.habilitado.label|upper}}</label>{{form.habilitado}}
+		</div>
+		<div class="campos" >
+		<label for="id_rubro">{{form.observacion.errors}}</label>
+		<label for="id_rubro">{{form.observacion.label|upper}}</label>{{form.observacion}}
+		</div>
+
+
+	</div>
+			
+ <br>
+ <input type="submit" value="Guardar">
+</form>
+
+{%endblock%}
+{%block sidebar%}
+
+	<div class="botones" id="content-related">
+	  <div class="module" id="recent-actions-module">
+		<button class="submit-row" name="guardar">Guardar</button>
+		<button class="guardar" name="guardar-edit">Guardar y continuar editando</button>
+		<button class="guardar" name="guardar-add">Guardar y añadir otro</button>
+
+		</div>
+	</div>
+{%endblock%}

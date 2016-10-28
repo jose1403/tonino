@@ -1,0 +1,83 @@
+{%extends 'base_site.html'%}
+% load i18n admin_static %}
+{% block extrastyle %}
+  {{ block.super }}
+{% endblock %}
+ {% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+                  <li><a href="{%url 'ver-productor'%}">Productores</a></li> > 
+                  <li>Editar Productor</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+
+{%block content%}
+	estado =forms
+municipio= for
+zona= forms.Ch
+productor =for
+hectareas= for
+	<script>
+	$(document).ready(iniciar);
+	function iniciar() {
+		var inicio;
+		$('option[selected=selected]').html('{{model.estado}}')
+		$('#id_municipio').attr('value','{{model.municipio}}')
+		$('#id_zona').attr('value','{{model.documentoId}}')
+		$('option[selected]').html('{{model.estado}}')
+		$('#id_fecha_de_nacimiento').attr('value','
+		
+      
+
+		// body...
+	}
+
+</script>
+
+<form action="." method="POST" name="tipo">
+	{%csrf_token%}
+	<div id="formulario">
+		<div class="campos" >
+		<label for="id_rubro">{{form.nombre.errors}}</label>
+		<label for="id_rubro">{{form.nombre.label}}</label>{{form.nombre}}
+		</div>
+		<div class="campos" >
+		<label for="id_rubro">{{form.apellido.errors}}</label>
+		<label for="id_rubro">{{form.apellido.label}}</label>{{form.apellido}}
+		</div>
+		<div class="campos" >
+		<label for="id_rubro">{{form.documentoId.errors}}</label>
+		<label for="id_rubro">{{form.documentoId.label}}</label>{{form.documentoId}}
+		</div>
+		<div class="campos" >
+		<label for="id_rubro">{{form.domicilio.errors}}</label>
+		<label for="id_rubro">{{form.domicilio.label}}</label>{{form.domicilio}}
+		</div>
+		<div class="campos" >
+		<label for="id_rubro">{{form.fecha_de_nacimiento.errors}}</label>
+		<label for="id_rubro">{{form.fecha_de_nacimiento.label}}</label>{{form.fecha_de_nacimiento}}
+		</div>
+		
+
+
+	</div>
+			
+ <br>
+ <input type="submit" value="Guardar">
+</form>
+
+<input type="date">
+{%endblock%}
+{%block sidebar%}
+
+	<div class="botones" id="content-related">
+	  <div class="module" id="recent-actions-module">
+		<button class="submit-row" name="guardar">Guardar</button>
+		<button class="guardar" name="guardar-edit">Guardar y continuar editando</button>
+		<button class="guardar" name="guardar-add">Guardar y añadir otro</button>
+
+		</div>
+	</div>
+{%endblock%}

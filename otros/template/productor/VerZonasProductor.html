@@ -1,0 +1,45 @@
+{%extends 'base_site.html'%}
+{% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+                  <li>Zonas</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{%block content%}
+
+<nav>
+	<ul>
+		<li><a href="{%url 'add-zonas-productor'%}">Añadir Zonas productivas</a></li><br> <a href="/agregado/nuevo" >ir a menu</a>
+	</ul>
+</nav>
+<section>
+	<table class="table table-striped col-md-6">
+		<thead>
+			<tr>
+				<td>Estado</td>
+				<td>Municipio</td>
+				<td>Zona</td>
+				<td>Productor</td>
+				<td>Hectareas</td>
+			</tr>
+
+		</thead>
+		<tbody>
+		{%for lista in form%}
+			<tr>
+				
+					<td><a href="">{{lista.estado|title}}</a></td>
+					<td>{{lista.municipio|title}}</td>
+					<td>{{lista.zona|title}}</td>
+					<td>{{lista.productor|title}}</td>
+					<td>{{lista.hectareas|title}}</td>
+			</tr>
+		{%endfor%}
+		</tbody>
+	</table>
+	
+
+</section>
+{%endblock%}

@@ -1,0 +1,96 @@
+{%extends 'base_site.html'%}
+ {% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">inicio</a> >  
+                  <li><a href="{% url 'ver-ciclos' %}">ciclo</a></li>
+                  <li><a href="{% url 'edit-ciclos' ciclo.pk %}">{{ciclo.nombre|title}}</a></li>
+                  <li>Lista de Presios</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{%block content%}
+{%load my_tags%}
+{%display_buscador_form%}
+
+<nav>
+	<ul>
+		<li><a href="{%url 'add-presiox-ciclo' ciclo.pk%}">Añadir Precio a Rubro</a></li>
+		
+
+	</ul>
+</nav>
+<nav>
+<h4> Mostrar Listado de precios del Ciclo <i>{{ciclo.nombre|upper}} </i> </h4> <br>
+
+	<hr>
+</nav>
+{%if nombre%}
+	<h2>Precios Del Ciclo {{info}}</h2> <hr>
+{%else%}
+	<h2>{{info}}</h2>
+{%endif%}
+<section>
+<table class="table table-striped col-md-6">
+		<thead>
+			<tr>
+				<td><input type="checkbox" id="action-toggle" form="nominal">	</td>
+				<td>Producto</td>
+				<td>Variedad</td>
+				<td>Tipo</td>
+				<td>Ciclo</td>
+				<td>Precio_por_Kg</td>
+			</tr>
+	
+		</thead>
+		<tbody>
+		{%for lista in form%}
+		<tr>
+		
+		</tr>
+			<tr>
+			<tr><td><input type="checkbox" class="action-select" name="seleccion" form="nominal" value="{{lista.pk}}"></td>
+
+					<td><a href="{{lista.get_absolute_url}}">{{lista.producto|title}} </a> </td>
+					<td>{{lista.variedad.nombre|title}}</td>
+					<td>{{lista.tipo.nombre|title}}</td>
+
+					<td>{{lista.ciclo.nombre|title}}-{{lista.ciclo.fecha_de_inicio|date:'Y'}}</td>
+					<td>{{lista.precio_por_Kg|title}} Bs. </td>
+					
+
+
+					
+				
+			</tr>
+		{%endfor%}
+		</tbody>
+	</table>
+</section>
+	<div class="pagination">
+		   	
+			<ul class="step-links">
+				{% if forms.has_previous %}
+				          <li>
+				          	  <a href="?page={{ forms.previous_page_number }}" class="anterior">Anterior</a>
+				          </li>
+				{% endif %}
+
+				{% for i in lista  %}
+					<a href="?page={{i}}" class="num btn btn-default">{{i}}</a></span>
+					
+				{% endfor %}
+				<li>
+					<span class="current">
+					           Pagina {{ forms.number }} de {{ forms.paginator.num_pages }}.
+					</span>
+				</li>
+				
+				{% if forms.has_next %}
+				      <li>
+				      	<a href="?page={{ forms.next_page_number }}" class="siguiente">siguiente</a>
+				      </li>
+				{% endif %}
+			</ul>
+		</div>
+{%endblock%}

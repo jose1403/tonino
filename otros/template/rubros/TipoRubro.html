@@ -1,0 +1,52 @@
+{%extends 'base_site.html'%}
+% load i18n admin_static %}
+{% block extrastyle %}
+  {{ block.super }}
+{% endblock %}
+{% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+                  <li><a href="{%url 'ver-rubro-tipo'%}">Tipo</a></li> > 
+                  <li>Agregar Tipo de Rubro</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{%block content%}
+<h2 style="color:red;">{{info}}</h2>
+<h2>Agregar Tipo de Rubro</h2> <hr>
+<form action="." method="POST" enctype="multipart/form-data">
+
+{%csrf_token%}
+
+
+	<div id="formulario" >
+		<div class="campos" >
+		<label for="id_rubro">{{form.rubro.errors}}</label>
+		<label for="id_rubro">{{form.rubro.label}}</label>{{form.rubro}}
+		</div>
+		<div class="campos" >
+			<label for="id_rubro">{{form.nombre.errors}}</label>
+		<label for="">{{form.nombre.label}}</label>{{form.nombre}}
+		</div>
+		<div class="campos" >
+			<label for="id_rubro">{{form.descripcion.errors}}</label>
+		<label for="">{{form.descripcion.label}}</label>{{form.descripcion}}
+		</div>
+	
+<input type="submit" value='Guardar'>
+</form>
+
+
+{%endblock%}
+{%block sidebar%}
+
+	<div class="botones" id="content-related">
+	  <div class="module" id="recent-actions-module">
+		<input type="submit" class="submit-row" name="guardar" form="variedad" value="Guardar">
+		<button class="guardar" name="guardar-edit">Guardar y continuar editando</button>
+		<button class="guardar" name="guardar-add">Guardar y añadir otro</button>
+
+		</div>
+	</div>
+{%endblock%}

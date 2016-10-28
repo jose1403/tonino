@@ -1,0 +1,40 @@
+{%extends 'base_site.html'%}
+ {% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'contabilidad' %}">Contabilidad</a> >  
+                  <li>Impuestos</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{%block content%}
+<nav>
+	<ul>
+		<li><a href="{%url 'add-impuestos'%}">Añadir inpuesto</a></li>
+	</ul>
+</nav>
+
+<h2>Impuestos</h2> <hr>
+<table class="table table-striped col-md-6">
+		<thead>
+			<tr>
+				<td>Nombre</td>
+				<td>Calculo</td>
+
+			</tr>
+
+		</thead>
+		<tbody>
+		{%for lista in form%}
+			<tr>
+				<td><a href="/agregado/rubro-productor/edit/{{lista.pk}}">{{lista.nombre|title}}</a></td>
+				
+					<td><a href="/agregado/rubro-productor/edit/{{lista.pk}}">{{lista.calculo|title}}</a></td>
+
+					
+				
+			</tr>
+		{%endfor%}
+		</tbody>
+	</table>
+{%endblock%}

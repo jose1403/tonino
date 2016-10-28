@@ -1,0 +1,71 @@
+{%extends 'base_site.html'%}5
+
+
+
+
+
+{% block extrastyle %}
+  {{ block.super }}
+{% endblock %}
+{%block content%}
+<h4>{{info}}</h4>
+<form action="." method="POST" enctype="multipart/form-data">
+
+	
+	<!--{{formrubro.nombre}}
+	{{formrubro.nombre_cientifico}}
+	{{formrubro.foto}}
+	{%csrf_token%}
+	
+	<label for="">Nombre</label><input type="text" value="{{i.nombre}}" id="Enombre">
+	<label for="">Nombre Cientifico</label><input type="text" value="{{i.nombre_cientifico}}" id="Enombrecientifico">
+	<br>
+	<h3>Imagen</h3>
+	<img src="/media/{{i.foto}}" alt="">
+	<button>Cambiar</button>-->
+
+	{%csrf_token%}
+	<script>
+	$(document).ready(iniciar);
+	function iniciar() {
+		var inicio;
+		$('#id_nombre').attr('value','{{model.nombre}}')  
+		$('#id_nombre_cientifico').attr('value','{{model.nombre_cientifico}}')
+		$('#id_foto').attr('value','subir')
+      
+
+		// body...
+	}
+
+</script>
+	
+	{{formrubro.nombre}} <br>
+	{{formrubro.nombre.errors}}
+	{{formrubro.nombre_cientifico}} <br>
+	{{formrubro.nombre_cientifico.errors}}
+	{%load staticfiles%}
+	<img src="/media/{{model.foto}}" alt="" width="40px">
+	{{formrubro.foto}}
+
+<input type="submit" value='Guardar'>
+
+</form>
+<div>
+	<h3>Añadir tipo + </h3> <hr><br>
+	<h3>Añadir Variedad + </h3> <hr><br>
+	<h3>Añadir Clasificacion + </h3> <hr><br>
+	<h3>Añadir Relacion + </h3> <hr><br>
+
+</div>
+{%endblock%}
+{%block sidebar%}
+
+	<div class="botones" id="content-related">
+	  <div class="module" id="recent-actions-module">
+		<button class="submit-row" name="guardar">Guardar</button>
+		<button class="guardar" name="guardar-edit">Guardar y continuar editando</button>
+		<button class="guardar" name="guardar-add">Guardar y añadir otro</button>
+
+		</div>
+	</div>
+{%endblock%}

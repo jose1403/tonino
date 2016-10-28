@@ -1,0 +1,23 @@
+estructura del projecto
+
+Proyecto empresarial.
+
+estruptura de control
+
+aplicaciones/apps =
+
+nucleo  = inicio coordinacion entre las apps
+gestion = ingreso y despacho de articulos AGRICOLAS
+control = control de ingreso y egreso de valores.
+usuarios= alta y baja de usuarios 
+permisos= permisos de los usuarios
+administracion= administracion de componesntes
+
+
+jerarquia de permisos de grupos 
+
+administrador= poder absoluto de añadir editar y eliminar modelos
+
+gerente = peder de gerenciar empleados pasar mensajes, ajustar presios, incluir agenda, desabilitar y habilitar empleados, añadir productos, 
+
+empleado= poder para  agregar la llegada y despacho de productos ver ventas facturas, no tendra el poder de eliminar.

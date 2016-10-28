@@ -1,0 +1,71 @@
+{{%extends 'base_site.html'%}  
+{% load i18n admin_static %}
+{% load staticfiles widget_tweaks %}
+{% block extrastyle %}
+  {{ block.super }}
+{% endblock %}
+{% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}" class="btn btn-default">Inicio</ > 
+                  <li><a href="{%url 'ver-ciclos'%}" class="btn btn-default">Ver Ciclos</a></li> 
+                  <li>Agregar Ciclos</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{%block content%}
+<h2 style="color:red;">{{info}}</h2>
+<h2>Agregar Ciclos</h2> <hr>
+
+<script>
+	var x= $(document);
+	x.ready(inicio);
+	
+	function inicio(){
+	    alert('funciono');
+	    a= $('#id_fecha_de_inicio').attrs('type','date');
+	    a.click(function(){alert('como estas')})*/
+	  };
+</script>		
+<form action="." method="POST">
+
+{%csrf_token%}
+
+
+	<div id="" >
+		<div class="" >
+		<label for="">{{form.nombre.errors}}</label>
+		<label for="">{{form.nombre.label}}</label>{{form.nombre}}
+		</div>
+		<div class="" >
+			<label for="">{{form.fecha_de_inicio.errors}}</label>
+		<label for="">{{form.fecha_de_inicio.label}}</label>{{form.fecha_de_inicio}}
+		</div>
+		<div class="" >
+			<label for="">{{form.fecha_de_cierre.errors}}</label>
+		<label for="">{{form.fecha_de_cierre.label}}</label>{{form.fecha_de_cierre}}
+		</div>
+		<div class="" >
+			<label for="">{{form.habilitado.errors}}</label>
+		<label for="">{{form.habilitado.label}}</label>{{form.habilitado}}
+		</div>
+		</div>
+	
+<input type="submit" value='Guardar'>
+</form>
+
+
+{%endblock%}
+{%block delete%}
+{%endblock%}
+{%block sidebar%}
+
+	<div class="botones" id="content-related">
+	  <div class="module" id="recent-actions-module">
+		<input type="submit" class="submit-row" name="guardar" form="variedad" value="Guardar">
+		<button class="guardar" name="guardar-edit">Guardar y continuar editando</button>
+		<button class="guardar" name="guardar-add">Guardar y añadir otro</button>
+
+		</div>
+	</div>
+{%endblock%}

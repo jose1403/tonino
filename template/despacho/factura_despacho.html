@@ -1,0 +1,176 @@
+
+{%extends 'base_site.html'%}
+{% load staticfiles widget_tweaks %}
+
+ {% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">inicio</a> >  
+                  <li><a href="{%url 'ver-despacho' %}">despacho</a></li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{%block content%}
+<p><a href="{%url 'edit-despacho' despacho.pk%} ">Editar despacho</a></p>
+<nav>
+	<a href="{%url 'factura-despacho-pdf' despacho.pk%}" class="btn">Generar PDF</a>
+</nav>
+
+<!-- Encabesado -->
+<h1>Factura N°: {{despacho.codigo_en_sistema}}</h1>
+<img src="/media/{{get_DatosDeLaEmpresa.LOGO}}"" width="500" height="300" alt="">
+
+<h1 style="margin:0px;">		<center>SENIAT</center>	</h1>	<br>
+<h1 style="margin:0px;"">		<center>{{get_DatosDeLaEmpresa.NOMBRE|upper}}</center>	</h1>	<br>
+<h4><center>RIF:{{get_DatosDeLaEmpresa.RIF|upper}}</center> </h4>
+<h4><center>{{get_DatosDeLaEmpresa.DIRECCION|upper}}</center></h4>
+<h4><center>TELEFONOS:{{get_DatosDeLaEmpresa.TELEFONO|upper}} / {{get_DatosDeLaEmpresa.CELULAR|upper}}</center></h4>
+<h4><center> ZONA POSTAL: {{get_DatosDeLaEmpresa.CODIGO_POSTAL|upper}}</center> </h4>
+<br>
+FECHA DE EMICION: {{despacho.fecha_agregado|date:'m/d/y - h:m'}}
+<hr>
+<p>DATOS DEL PROOVEDOR: </p>
+
+NOMBRE O RAZON SOCIAL: {{despacho.cliente.nombre_o_razon_social|upper}} 
+RIf : {{despacho.cliente.documentoId|upper}}
+<br>
+DOMICILIO : {{despacho.cliente.domicilio_fiscal|upper}}
+TELEFONOS : {{despacho.cliente.telefono}}/{{despacho.cliente.celular}}
+<br>
+CODIGO: {{despacho.cliente.codigo_en_sistema}}
+DIRIGIDO A: {{despacho.dirigido_a|upper}}
+
+<hr>
+<br>
+DESPACHO:
+<table class="table table-striped col-md-6">
+<thead>
+			<tr>
+				<td>RUBRO</td>
+				<td>CICLO</td>
+				<td>CANTIDAD</td>
+				<td>PRECIO</td>
+				<td>PRECIO NETO</td>
+
+
+
+
+			</tr>
+	
+		</thead>
+		<tbody>
+
+					<tr>
+						<td><a href="{{lista.get_absolute_url}}">{{despacho.producto.nombre|upper}}({{despacho.variedad.nombre|upper}}-{{despacho.tipo.nombre|upper}}) </a> </td>
+						<td>{{despacho.ciclo_asociado.nombre|title}}</td>
+						<td>{{despacho.cantidad_en_Kg}} kg. </td>
+						<td>{{pago.precio}}Bs.</td>
+						<td>{{total_pago.total_neto}} Bs. </td>
+					<td>
+				</tr>
+				<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					<td>
+				</tr>
+				{%for i, k in total_pago.impuestos.items%}
+				<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td>{{i}}</td>
+						<td>{{k}} Bs. </td>
+					<td>
+				</tr>
+				{%endfor%}
+			
+			<tr>
+				
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>TOTAL </td>
+				<td>{{total_pago.total_Bs}}Bs.</td>
+
+				
+			</tr>
+		</tbody>
+	</table>
+
+<p style="font-size:16><span for="fllegada">FECHA DE DESPACHO: </span><i>{{despacho.fecha_salida|date:'d/y/m - h:m'}}</p></p></i> <br>
+
+<h2>DETALLES DE ANALISIS</h2>
+------------------------------------------------------------
+<p class="texto text-success" style="font-size:100; ">{{despacho.producto.nombre|title}} {{despacho.variedad.nombre|title}} </p>
+<p class="texto">Humedad: {{despacho.humedad}}</p>
+<p class="texto" >Impuresa: {{despacho.impureza}}</p>
+<p class="texto">Granos Danados: {{despacho.granos_danados_totales}}</p>
+<p class="texto">TEMPERATURA PROMEDIO:
+{{despacho.temperatura_promedio}}
+</p>
+<p class="texto">Otros: {{despacho.otros}}</p>
+
+<hr>
+<a href="/generar_pdf/{{recepcion.pk}}">Ver en pdf</a>
+<style>
+	.texto{
+		font-size: 20px;
+		margin: 2px;
+		font-family: verdana;
+	}
+</style>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br> 
+
+
+<div class="col-md-6">
+				<form method="POST">{% csrf_token %}
+					<div class="row">
+						{% for field in form %}
+						<div class="col-md-12">
+							<div class="control-group">
+								<label>{{ field.label }}</label>
+								{% render_field field  %}
+								<a class="related-widget-wrapper-link change-related" id="change_id_producto"
+    data-href-template="/agregado/rubro/edit/__fk__/?_to_field=id&amp;_popup=1"
+            title="Cambiar rubro seleccionado"><img src="/static/admin/img/icon_changelink.gif" width="10" height="10"
+                alt="Modificar"/></a>
+								<a class="related-widget-wrapper-link add-related" id="add_id_producto" href="/agregado/rubro/agregar/?_to_field=id&amp;_popup=1" title="Añadir otro rubro"><img src="/static/admin/img/icon_addlink.gif" width="10" height="10" alt="Añadir"/></a>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+					<input type="submit" value="Guardar!" class="btn btn-success">
+			
+			</div>
+
+
+		{%for lista in form%}
+			<tr>
+					<td><a href="{{lista.get_absolute_url}}">{{lista.producto|title}} </a> </td>
+					<td>{{lista.variedad|title}}</td>
+					<td>{{lista.ciclo|title}}</td>
+					<td>{{lista.productor|title}}</td>
+
+					<td>{{lista.cantidad_en_Kg}} kg. </td>
+			</tr>
+		{%endfor%}
+		</tbody>
+	</table>
+{%endblock%}
+{%block delete%}
+{%endblock%}

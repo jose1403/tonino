@@ -1,0 +1,32 @@
+Al Edit falta colocar la conparacion de si existe o no
+
+Como administrar errores de no existencia de los objetos
+
+Problema para guardar el textarea de domicilio en edit-productor
+
+problemas en el form de add ciclos no se muestran bien
+
+
+en impuestos guarda con . y no con comas haci que no los muestra el edit
+
+
+pensar en que las utilidades de los usuarios y dividir el codigo, para que un usuario libere alguna entrega o despacho
+
+contabilidad 
+
+formulas de la merma 
+
+cuentas por pagar == 
+total recepcion =
+Class CP:
+	deuda = T.R.
+	abono = bs.
+	debe = deuda - abono bs.
+
+Class CC:
+	deuda = C.C 
+	abono = bs.
+	debe = deuda - abono bs.
+
+==========
+SE agrega a recepcion y al momento si el pago esta en false se crea una cuenta por pagar la cual ifluira en lo que se puede ver en caja la unica forma de habilitar el pago es abonando una ves que se aya abonado el sistema permitira el efecto total del pago y al concluir la cuenta desaparecera de el muestreo

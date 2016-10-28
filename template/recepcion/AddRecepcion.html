@@ -1,0 +1,59 @@
+{%extends 'base_site.html'%}  
+{% load i18n admin_static %}
+{% load staticfiles widget_tweaks %}
+{% block extrastyle %}
+  {{ block.super }}
+{% endblock %}
+{% block breadcrumbs %}
+				<ul class="breadcrumb">
+				  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+				  <li><a href="{%url 'ver-recepcion'%}">Ver recepcion</a></li> > 
+				  <li>Agregar Recepcion</li>
+				   
+					</li>
+				</ul>
+   {% endblock %}
+{%block content%}
+<h2 style="color:red;">{{info}}</h2>
+
+<h2>Agregar Recepcion</h2> 
+			<div class="col-md-6">
+				<form method="POST">{% csrf_token %}
+					<div class="row">
+						{% for field in form %}
+						<div class="col-md-12">
+							<div class="control-group">
+								<label for="">{{field.errors}}</label>
+								<label>{{ field.label }}</label>
+								{% render_field field  %}
+								<a class="related-widget-wrapper-link change-related" id="change_id_producto"
+    data-href-template="/agregado/rubro/edit/__fk__/?_to_field=id&amp;_popup=1"
+            title="Cambiar rubro seleccionado"><img src="/static/admin/img/icon_changelink.gif" width="10" height="10"
+                alt="Modificar"/></a>
+								<a class="related-widget-wrapper-link add-related" id="add_id_producto" href="/agregado/rubro/agregar/?_to_field=id&amp;_popup=1" title="Añadir otro rubro"><img src="/static/admin/img/icon_addlink.gif" width="10" height="10" alt="Añadir"/></a>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+					<p><label for="">Pagado</label><input type="checkbox" name="pagado"></p>
+					
+					<input type="submit" value="Guardar!" class="btn btn-success">
+			</form>
+			</div>
+	
+	
+	{%endblock%}
+{%block delete%}
+{%endblock%}
+{%block sidebar%}
+
+	<div class="botones" id="content-related">
+	  <div class="module" id="recent-actions-module">
+		<input type="submit" class="submit-row" name="guardar" form="variedad" value="Guardar">
+		<button class="guardar" name="guardar-edit">Guardar y continuar editando</button>
+		<button class="guardar" name="guardar-add">Guardar y añadir otro</button>
+
+		</div>
+	</div>
+{%endblock%}
+

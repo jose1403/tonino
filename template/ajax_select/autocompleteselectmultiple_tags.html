@@ -1,0 +1,23 @@
+<!--ajax_select/autocompleteselectmultiple_tags.html, ajax_select/autocompleteselectmultiple.html
+ajax_select/autocompleteselectmultiple_{channel}.html
+// yourapp/templates/ajax_select/autocompleteselectmultiple_{channel}.html-->
+{% block extra_script %}
+<script type="text/javascript">
+$("#{{html_id}}_on_deck").bind('added', function() {
+var id = $("#{{html_id}}").val();
+console.log('added id:' + id );
+});
+$("#{{html_id}}_on_deck").bind('killed', function() {
+var current = $("#{{html_id}}").val()
+console.log('removed, current is:' + current);
+});
+</script>
+??????????
+{% endblock %}
+{% block help %}
+<p>
+<form action="">
+	<input type="text" value="nnn">
+</form>
+</p>
+{% endblock %}

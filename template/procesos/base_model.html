@@ -1,0 +1,33 @@
+{%extends 'base_site.html'%}
+{% block sidebar_content %}
+                {% block sidebar %}
+
+<div class="actions">
+    
+        
+            <label><span class="action-label">Acción:</span>
+        
+        <select name="action">
+<option value="" selected="selected">---------</option>
+<option value="delete_selected">Eliminar datos_d e_l a_empresas seleccionado/s</option>
+</select>
+        
+            </label>
+        
+    
+        
+        <input class="select-across" name="select_across" type="hidden" value="0" />
+        
+    
+&nbsp;
+    <input type="submit" class="btn" title="Ejecutar la acción seleccionada" name="index" value="ir" form="nominal">
+    &nbsp;
+    
+        <script type="text/javascript">var _actions_icnt = "1";</script>
+        <span class="action-counter">seleccionados 0 de 1</span>
+        
+    
+</div>
+
+                 {% endblock %}
+ {% endblock %}

@@ -1,0 +1,13 @@
+{%extends 'base.html'%}
+{%block content%}
+<nav>
+	<ul>
+		<li><a href="{%url 'add-despacho'%}">Añadir Despacho +</a></li>
+		<li><a href="{%url 'add-ingreso-despacho'%}">Ingreso Despacho</a></li>
+		<li><a href="{%url 'add-total-despacho'%}">Total Despacho</a></li>
+
+
+	</ul>
+</nav>
+{{form}}
+{%endblock%}

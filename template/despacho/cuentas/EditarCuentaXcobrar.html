@@ -1,0 +1,52 @@
+{%extends 'base_site.html'%}
+% load i18n admin_static %}
+{% block extrastyle %}
+  {{ block.super }}
+{% endblock %}
+ {% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}" class="btn btn-default">Inicio</a> 
+                  <li><a href="{%url 'ver-cuentasx-cobrar'%}" class="btn btn-default">Cuentas por cobrar</a></li> 
+                  <li>Cuentas</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+
+{%block content%}
+<h1>Cuenta Por Cobrar</h1>
+<label for="">{{info}}</label>
+<h2>DE DESPACHO N°: {{model.despacho|upper}}</h2>
+<h2>FECHA DE AGREGADO:{{model.fecha_agregado}} </h2>
+
+<form action="." method="POST" name="tipo">
+	{%csrf_token%}
+
+<div id="formulario">
+		
+	
+					<p><label for="">{{form.deuda.errors}}</label><label for="id_deuda">{{form.deuda.label}}</label>	{{form.deuda}}	</p>
+					<p><label for="">{{form.abono.errors}}</label><label for="id_abono">{{form.abono.label}}</label>	{{form.abono}}	</p>
+					<p><label for="">{{form.saldo_deudor.errors}}</label><label for="id_saldo_deudor">{{form.saldo_deudor.label}}</label>	{{form.saldo_deudor}}	</p>
+					<p><label for="">{{form.fecha_vencimiento.errors}}</label>{{form.fecha_vencimiento.label}}<label for=""></label>	{{form.fecha_vencimiento}}	</p>
+								
+					</div>
+					
+
+	</div>-->
+			
+ <br>
+ <input type="submit" value="Guardar">
+</form>
+{%endblock%}
+{%block sidebar%}
+
+	<div class="botones" id="content-related">
+	  <div class="module" id="recent-actions-module">
+		<button class="submit-row" name="guardar">Guardar</button>
+		<button class="guardar" name="guardar-edit">Guardar y continuar editando</button>
+		<button class="guardar" name="guardar-add">Guardar y añadir otro</button>
+
+		</div>
+	</div>
+{%endblock%}

@@ -1,0 +1,63 @@
+{%extends 'base_site.html'%}
+% load i18n admin_static %}
+{% block extrastyle %}
+  {{ block.super }}
+{% endblock %}
+ {% block breadcrumbs %}
+                <ul class="breadcrumb">
+                   <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+                  <li><a href="{% url 'ver-productor' %}">Proovedores</a> > 
+                  <li><a href="{% url 'edit-productor' productor.pk %}">{{productor.nombre_o_razon_social|title}}</a> > 
+
+                  <li><a href="{%url 'ver-zonas-productor' productor.pk%}">Zonas</a> </li> > 
+                  <li>Editar Zona Productor</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+
+{%block content%}
+ 
+<form action="." method="POST" name="tipo" enctype="multipart/form-data">
+	{%csrf_token%}
+
+ <br>
+
+<div class="campos" >
+		<label for="id_rubro">{{form.estado.errors}}</label>
+		<label for="id_rubro">{{form.estado.label}}</label>{{form.estado}}
+</div>
+<div class="campos" >
+		<label for="id_rubro">{{form.municipio.errors}}</label>
+		<label for="id_rubro">{{form.municipio.label}}</label>{{form.municipio}}
+</div>
+<div class="campos" >
+		<label for="id_rubro">{{form.zona.errors}}</label>
+		<label for="id_rubro">{{form.zona.label}}</label>{{form.zona}}--
+</div>
+<div class="campos" >
+		<label for="id_productor">Proovedor</label>
+		<select name="proovedor" id="proovedor"> 
+		<option value="0" selected="selected">{{productor.nombre_o_razon_social}}</option>
+		</select>
+</div>
+<div class="campos" >
+		<label for="id_rubro">{{form.hectareas.errors}}</label>
+		<label for="id_rubro">{{form.hectareas.label}}</label>{{form.hectareas}}--
+</div>
+<input type="submit" value="GUARDAR">
+
+</form>
+			
+{%endblock%}
+{%block sidebar%}
+
+	<div class="botones" id="content-related">
+	  <div class="module" id="recent-actions-module">
+		<button class="submit-row" name="guardar">Guardar</button>
+		<button class="guardar" name="guardar-edit">Guardar y continuar editando</button>
+		<button class="guardar" name="guardar-add">Guardar y añadir otro</button>
+
+		</div>
+	</div>
+{%endblock%}

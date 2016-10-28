@@ -1,0 +1,60 @@
+{%extends 'base_site.html'%}5
+{% block extrastyle %}
+  {{ block.super }}
+{% endblock %}
+ {% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  < <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+                  <li><a href="{%url 'ver-rubro'%}">Rubros</a></li> >
+                  <li><a href="{%url 'edit-rubro' rubro.pk %}">{{rubro.nombre|title}}</a></li> > 
+                  <li><a href="{%url 'ver-rubro-tipo' rubro.pk %}">Ver Rubros</a></li> >
+
+                  <li>Editar Tipo</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{%block content%}
+<span><a href="{%url 'add-rubro-tipo' rubro.pk%}" class="btn btn-xs btn-primary"> Añadir Tipos</a></span> <br>
+<h4>{{info}}</h4>
+<form action="." method="POST" enctype="multipart/form-data">
+
+		{%csrf_token%}
+<h2>Editar tipo de Rubro</h2> <hr>
+
+	<div id="formulario" >
+		<div class="campos" >
+		<label for="id_rubro">Rubro</label>
+		<select name="rubro" id="rubro"> 
+		<option value="0" selected="selected">{{rubro.nombre}}</option>
+		</select>
+		</div>
+		<div class="campos" >
+			<label for="id_rubro">{{form.nombre.errors}}</label>
+		<label for="">{{form.nombre.label}}</label>{{form.nombre}}
+		</div>
+		<div class="campos" >
+			<label for="id_rubro">{{form.descripcion.errors}}</label>
+		<label for="">{{form.descripcion.label}}</label>{{form.descripcion}}
+		</div>
+	
+
+
+	{%load staticfiles%}
+<input type="submit" value='Guardar'>
+</div>
+</form>
+
+
+{%endblock%}
+{%block sidebar%}
+
+	<div class="botones" id="content-related">
+	  <div class="module" id="recent-actions-module">
+		<button class="submit-row" name="guardar">Guardar</button>
+		<button class="guardar" name="guardar-edit">Guardar y continuar editando</button>
+		<button class="guardar" name="guardar-add">Guardar y añadir otro</button>
+
+		</div>
+	</div>
+{%endblock%}

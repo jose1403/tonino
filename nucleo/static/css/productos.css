@@ -1,0 +1,172 @@
+.migas{
+	margin-top: 20px;
+	padding:0px 50px;
+}
+
+
+.productos{
+	padding:0px 50px;
+}
+
+.productos  article{
+	width: 100%;
+	border-bottom:1px solid rgba(0,0,0,0.1);
+	overflow: hidden;
+	margin-top: 20px;
+	padding-bottom: 20px;	
+}
+
+.productos article >.img_wrapper{
+	width: 300px;
+	height: 200px;
+	padding-right: 10px;
+	float: left;
+}
+
+.productos > article >.img_wrapper img{
+	width:100%;
+	height: 100%;
+	border:1px solid rgba(0,0,0,0.1);
+}
+
+article .nombre{
+	font-size: 20px;
+	display: inline-block;
+	margin-top: 5px;
+}
+
+article .descripcion{
+	font-size: 15px;
+}
+
+section{
+	width: 74%;
+	float: left;
+	border-right:1px solid rgba(0,0,0,0.1);
+}
+
+aside{
+	width: 26%;
+	float: right;
+	min-height: 500px;
+}
+
+aside>.conoce_productos{
+	display: none;
+}
+
+
+@media(max-width: 1200px){
+	aside{
+		width: 30%;
+	}
+
+	section{
+		width: 70%;
+	}
+}
+
+@media(max-width: 981px){
+	.productos >article> .img_wrapper{
+		width: 250px;
+		height: 200px;
+	}
+	.migas{
+		padding:0px 40px;
+	}
+	.productos{
+		padding:0px 40px;
+	}
+}
+
+@media(max-width: 865px){
+	section{
+		width: 100%;
+		float: none;
+		border: none;
+	}
+
+	aside{
+		width: 100%;
+		float: none;
+	}
+
+	.migas{
+		padding: 0px 40px;
+	}
+	.productos{
+		padding: 0px 40px;
+	}
+
+	.productos >article> .img_wrapper{
+		width: 250px;
+		height: 170px;
+	}
+}
+
+
+@media(max-width: 768px){
+	
+
+	.migas{
+		display: none;
+	}
+}
+
+
+@media (max-width: 620px){
+	.productos{
+		padding: 0px 20px;
+	}
+}
+
+
+
+@media (max-width: 570px){
+	.productos{
+		padding:0px 50px; 
+	}
+	.productos>article>.img_wrapper{
+		width: 220px;
+		height: 140px;
+	}
+	
+	.productos >article> .img_wrapper{
+		width: 100%;
+		height: 180px;
+		float: none;
+		padding-right: 0px;
+	}
+}
+
+
+
+/*@media(max-width: 768px){}*/
+
+
+
+@media (max-width: 435px){
+	
+	.productos{
+		padding: 20px 40px;
+	}
+
+	.productos >article> .img_wrapper{
+		width: 100%;
+		height: 150px;
+	}
+}
+
+@media (max-width: 375px){
+	
+	.productos{
+		padding: 20px;
+	}
+}
+
+@media (max-width: 320px){
+	
+	.productos{
+		padding: 20px 10px;
+	}
+}

@@ -1,0 +1,42 @@
+{%extends 'base_site.html'%}
+ {% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+                  <li><a href="{%url 'ver-rubro' %}">Rubros</a></li> >
+                  
+                  <li>Variedades</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{%block content%}
+<nav>
+	<ul>
+		<li><a href="{%url 'add-rubro-variedades' rubro.pk %}">Añadir Variedades {{rubro.nombre }}</a></li>
+	</ul>
+</nav>
+<table class="table table-striped col-md-6">
+		<thead>
+			<tr>
+			<td><input type="checkbox" id="action-toggle" form="nominal">	</td>
+				<td>Rubro</td>
+				<td>Variedad</td>
+				<td>Descripcion</td>
+			</tr>
+
+		</thead>
+		<tbody>
+		{%for lista in forms%}
+			<tr>
+			<td><input type="checkbox" class="action-select" name="seleccion" form="nominal" value="{{lista.pk}}"></td>
+				<td><a href="{{lista.get_absolute_url}}">{{lista.rubro|title}}--</a></td>
+				
+					<td><a href="">{{lista.nombre|title}}</a></td>
+					<td>{{lista.descripcion|title}}</td>
+					
+				
+			</tr>
+		{%endfor%}
+		</tbody>
+	</table>
+{%endblock%}

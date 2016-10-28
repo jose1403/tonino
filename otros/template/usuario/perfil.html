@@ -1,0 +1,210 @@
+{% extends "index.html" %} 
+ 
+{% block section %} 
+<div class="row">
+{% if user.is_authenticated %}
+
+
+<div class="col-md-4 perfil">
+<!--<form action="" method="POST">
+{% csrf_token %}
+
+
+		<div class="panel panel-primary">
+		<div class="panel-heading">
+	 	<h2 class="panel-title " >{{ perfil.usuario }}</h2>
+	 	</div>
+	 	</div>
+	  <div class="panel panel-primary">
+		<div class="panel-heading">
+	   <h3 class="panel-title"> Nombre </h3><input type="button" value="Editar" class="btn editar_nombre" >
+	   </div>
+	   <div class="panel-body">{{ perfil.nombre }} </div><div><input type="text" placeholder='nuevo nombre' name="nombre" class="nombre"></div>
+		</div>
+ <div class="panel panel-primary">
+		<div class="panel-heading">
+	    <h3 class="panel-title">Apellido: </h3>
+	    </div>
+	    <div class="panel-body">{{ perfil.apellido }}
+		</div>
+	 	</div>
+ <div class="panel panel-primary">
+		<div class="panel-heading">
+	    <h3 class="panel-title">Email: </h3><input type="button" value="editar" id="editar-email" class="btn editar_email" onclick="editar_email()"><input type="button" value="cambiar" id="cambiar_email" class="btn cambiar_email" >
+	    </div>
+	    <div class="panel-body">{{ perfil.Email }}</div><div><input type="text" placeholder='nuevo nombre' name="email" class="email"></div>
+	 	</div>
+	    <div class="panel panel-primary">
+		<div class="panel-heading"> 
+		<h3 class="panel-title">Contrasena: </h3>
+		</div>
+		<div class="panel-body">{{ perfil.Contrasena }}
+			</div>
+	 	</div>
+		
+		<div class="panel panel-primary">
+		<div class="panel-heading"> 
+		<h3 class="panel-title">Imagen </h3>
+		</div>
+		<div class="panel-body"><img src="{{get_image_profile}}" alt="Hi!" width="50px"/>
+			</div>
+	 	</div>
+		<div class="panel panel-primary">
+		<div class="panel-heading"> 
+		<h3 class="panel-title">Fecha de Nacimiento </h3>
+		</div>
+		<div class="panel-body">{{ perfil.fechadenacimiento }}
+			</div>
+	 	</div>
+		<input type="submit" class="btn btn-success" value="guardar">
+
+ </form>-->
+  <form action="" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+	<h2>Perfil de usuario</h2><div class="imagen">
+		<img src="{{get_image_profile}}" alt="perfil" width="150">
+	</div>
+	{{perfil.as_p}}
+
+	<!--<div class="input"><label for="nombre">Nombre</label> 
+	<input type="text" value="{{ perfil.nombre }}" class="form-control  input_perfil" name="nombre">
+	</div>
+
+	<div class="input">
+	<label for="apellido">Apellido</label> 
+	<input type="text" value="{{ perfil.apellido }}" class="form-control input_perfil" name="apellido">
+	</div>
+
+
+	<div class="input"><label for="email">Email</label> <input type="text" value="{{ perfil.Email }}" class="form-control input_perfil" name="email"></div>
+	<div class="input"><label for="contrasena">Contraseña</label> <input type="text" value="{{ perfil.Contrasena }}" class="form-control input_perfil" name="contrasena"></div>
+	<div class="input"><label for="imagen">Imagen</label> <img src="{{get_image_profile}}" alt="Hi!" width="50px"/><input id="id_imagen" type="file" name="imagen"></input></div>
+	<div class="input"><label for="fecha">Fecha de Nacimiento</label><input type="date" value="{{ perfil.fechadenacimiento }}" class="vDateField form-control input_perfil">
+	<input type="submit" class="btn btn-success guardar" value="guardar" name="fecha"></div>-->
+	<p>Contrasena: <a href="{%url 'cambiar_pass'%}" class="btn btn-default btn-xs">Cambiar</a></p>
+	<button type="submit" class="btn btn-success guardar" >guardar</button>
+</form>
+
+{{informacion}}
+
+<script>
+	var x;
+	x = $(document);
+	x.ready(inicio)
+	function inicio(){
+		var x= $('input');
+		x.addClass('form-control input_perfil')
+	}
+
+
+</script>
+<style>
+	.perfil {
+		display: block;
+		width: 500px;
+		margin: 20px;
+		padding: 15px;
+
+		background:rgba(5,34,3,0.5);
+		text-shadow: rgba(0,0,0,0.5) 3px 3px 5px;
+		
+		-moz-box-shadow: rgb(150,150,150) 5px 5px;
+		-webkit-box-shadow: rgb(150,150,150) 5px 5px;
+		box-shadow: rgb(150,150,150) 5px 5px;
+		*
+		font: bold  MiNuevaFuente, verdana, sans-serif;
+		text-shadow: rgb(0,0,150) 3px 3px 5px;
+		}
+		@font-face {
+		font-family: 'MiNuevaFuente';
+		src: url('font.ttf');
+		}
+
+	.input_perfil{
+		border:0;
+		line-height: 0;
+		box-shadow: 0px 0px 0px rgba(0, 0, 0, 0) inset;
+		background: none;
+		width: 60%;
+		display: inline-block;
+		font-family: bold verdana;
+
+	}
+
+	.input{
+		display: block;
+	}
+	.nombre{
+		display: block;
+		
+	}
+	#id_imagen{
+		display: inline-block;
+		margin-left:5px;
+	}
+	.guardar{
+		display: block;
+		margin: 10px;
+		text-align: center;
+	}
+	h1{
+		display: inline-block;
+	}
+	.imagen{
+		display:inline-block;
+	}
+</style>
+<br>
+
+
+<style>
+
+
+	/*.perfil {
+	display: block;
+	width: 500px;
+	margin: 50px auto;
+	padding: 15px;
+	text-align: center;
+
+	background:rgba(0,0,0,0.8);
+	text-shadow: rgba(0,0,0,0.5) 3px 3px 5px;
+	/*
+	-moz-box-shadow: rgb(150,150,150) 5px 5px;
+	-webkit-box-shadow: rgb(150,150,150) 5px 5px;
+	box-shadow: rgb(150,150,150) 5px 5px;
+	*
+	font: bold  MiNuevaFuente, verdana, sans-serif;
+	text-shadow: rgb(0,0,150) 3px 3px 5px;
+	}
+	@font-face {
+	font-family: 'MiNuevaFuente';
+	src: url('font.ttf');
+	}
+
+	.nombre{
+		display: none;
+	}
+	.email{
+		display: none;
+	}
+	.cambiar_email{
+		display: none;
+	}
+	.nombre_aparece{
+
+	}
+	*/
+</style>
+ 
+
+
+ 	{% else %}
+ 	<b>{{info}}</b>
+{% endif %}
+</div>
+ </div>
+
+
+
+{% endblock %} 
