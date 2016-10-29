@@ -3,12 +3,14 @@
  {% block breadcrumbs %}
                 <ul class="breadcrumb">
                   <li><a href="{% url 'agregado-nuevo' %}">inicio</a> >  
-                  <li><a href="#">Despacho</a></li>
+                  <li><a href="{% url 'ver-despacho' %}">Despacho</a></li>
                    
                     </li>
                 </ul>
    {% endblock %}
 {%block content%}
+{%load my_tags%}
+{%display_buscador_form%}
 <h3>	<a href="{%url 'add-despacho'%}">Añadir Despachos +</a></h3>
 <h3>	<a href="{%url 'ver-cuentasx-cobrar'%}">Ver Cuentas Por Pagar</a></h3>
 

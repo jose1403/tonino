@@ -1,0 +1,79 @@
+{% extends 'base_site.html' %}
+{%load staticfiles%}
+
+{%block style%}
+	<link rel="stylesheet" href="{%static 'css/entradas_dia.css'%}">
+{%endblock style%}
+
+{% block cabezera %}miblog|{{ day|date }}{% endblock %}
+{% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">INICIO</a> |  
+                  <li><a href="#">RECEPCION</a></li> | 
+                  <li><a href="{%url 'cuentas_anuales' day.year%}"> |{{day.year}}</a> </li> |
+                  <li><a href="{%url 'cuentas_mensuales' day.year day|date:'m'%}">{{day|date:"F"|upper}}</a></li> |
+                  <li>{{day.day}}</li>
+                </ul>
+   {% endblock %}
+{% block content %}
+{%load my_tags%}
+{%display_buscador_form%}
+
+<h3> CUENTAS DEL {{day.day}} DE {{day|date:"F"|upper}} DEL {{day.year}}
+
+  </h3>
+   <nav>
+
+  <ul class="breadcrumb">
+  <li><a href="{%url 'ver-cuentasx-pagar'%}">Ver Todas</a></li> | <li><a href="{%url 'cuentas_anuales' day.year%}">{{day.year}}</a> </li> | <li><a href="{%url 'cuentas_mensuales' day.year day|date:'m'%}">{{day|date:'F'|upper}}</a> </li><br>
+    {%for i in date_list%}
+  <li><a href="{%url 'cuentas_diarias' i.year i|date:'m' i.day%}">{{i.day}}</a></li> |
+  {%endfor%}
+  </ul>
+</nav>
+
+<hr>
+<table class="table table-striped col-md-6">
+
+    <thead>
+      <tr><td> <input type="checkbox" id="action-toggle" form="select-recepcion"></td>
+        <td>RECEPCION</td>
+        <td>DEUDA</td>
+        <td>ABONO</td>
+        <td>SALDO DEUDOR</td>
+        <td>FECHA GENERADO</td>
+        <td>FECHA DE VENCIMIENTO</td>
+
+      </tr>
+  
+    </thead>
+    <tbody>
+    {%for lista in form%}
+      {%if lista.pagado%}
+      {%else%}
+      <tr>
+      <td><input type="checkbox" class="action-select" name="seleccion" form="select-recepcion" value="{{lista.pk}}">
+          <td><a href="{{lista.get_absolute_url}}">{{lista.recepcion}}</a></td>
+          <td>{{lista.deuda}} Bs. </td>
+          
+          <td>{{lista.abono}} Bs</td>
+          
+          <td>{{lista.saldo_deudor}} Bs.</td>
+
+          <td>{{lista.fecha_agregado}} </td>
+          <td>{{lista.fecha_vencimiento}}</td>
+      </tr>
+    {%endif%}
+    {%endfor%}
+    </tbody>
+  </table>
+{%endblock%}
+{%block delete%}
+<form action="." method="POST" id="select-recepcion">  {%csrf_token%}
+  <select name="lista-pdf" id="lista-pdf" form="select-recepcion">
+  <option value="selected"> ----------</option>
+    <option value="lista-selected">Guardar Lista</option>
+  </select>
+  <input type="submit" value="Guardar" form="select-recepcion">
+</form>
+{%endblock%}

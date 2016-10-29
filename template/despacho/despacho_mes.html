@@ -9,6 +9,8 @@
    {% endblock %}
 
 {%block content%}
+{%load my_tags%}
+{%display_buscador_form%}
   	  <h2> DESPACHOS DEl MES DE {{month|date:"F"|upper}} DEl {{month.year}}
 
   <h2>

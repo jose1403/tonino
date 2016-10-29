@@ -11,7 +11,8 @@
    {% endblock %}
 
 {% block content %}
-
+{%load my_tags%}
+{%display_buscador_form%}
 	    <h3> DESPACHO DEL {{year.year}}:
 <nav>
 <ul class="breadcrumb">

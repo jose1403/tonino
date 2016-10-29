@@ -17,6 +17,13 @@
 
 	</ul>
 	<ul>
+	{% if valor %}
+		<a href="{%url 'ver-productor-des'%}" class="btn btn-default">Ver Desabilitados</a>
+		{% else %}
+		<a href="{%url 'ver-productor'%}" class="btn btn-default">Ver Habilitados</a>
+
+	{% endif %}
+
 		<a href="{%url 'productores-lista-cvs'%}" class="btn btn-default">Guardar CVS</a>
 		<a href="{%url 'productores-lista-pdf'%}" class="btn btn-danger">Guardar PDF</a>
 		
@@ -24,7 +31,7 @@
 	</ul>
 </nav>
 
-<h2>Productores</h2> <hr>
+<h2>{{name|upper}}</h2> <hr>
 <table class="table table-striped col-md-6">
 		<thead>
 			<tr>

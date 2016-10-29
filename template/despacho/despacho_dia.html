@@ -16,8 +16,8 @@
                 </ul>
    {% endblock %}
 {% block content %}
-
-
+{%load my_tags%}
+{%display_buscador_form%}
 <h3> DESPACHOS DEL {{day.day}} DE {{day|date:"F"|upper}} DEL {{day.year}}
 
   </h3>
