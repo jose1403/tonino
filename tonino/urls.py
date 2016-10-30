@@ -2,8 +2,6 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from nucleo import views as nucleo_app
 from gestion import views as gestion_app
-
-from usuarios import views as usuario_app
 from rubro import views as rubro, rubro_pdf
 from proovedores import views as proovedores, proovedor_pdf
 from contabilidad import views as contabilidad
@@ -40,13 +38,10 @@ urlpatterns = [
     url(r'^accounts/logout/$',nucleo_app.logout, name='logout'),
     url(r'^buscador/$',gestion_app.buscador, name='buscador'),
 
-    url(r'^agregado/crear/usuario/$',usuario_app.registrar, name='registro'),
-
 
     url(r'^delete/model/$', rubro.delete_model, name='delete'),
 
     url(r'^agregado/$', nucleo_app.agregado, name='agregado' ),
-    url(r'^iniciarsecion/$', usuario_app.iniciar_secion),
     url(r'^agregado/nuevo/$', nucleo_app.proceso,  name='agregado-nuevo'),
     url(r'^agregado/rubro/ver/$',rubro.Mostrar_Rubros, name='ver-rubro'),
     url(r'^agregado/rubro/agregar/$',rubro.Agregar_Rubros, name='add-rubro'),
@@ -79,11 +74,12 @@ urlpatterns = [
     url(r'^agregado/plantas/(?P<pkplanta>.*)/silos/edit/(?P<pksilo>.*)/$', plantas_app.Edit_Silos, name='edit-silos'),
 
 
-    url(r'^agregado/proovedor/ver/$', proovedores.Ver_Productor, name='ver-productor'),
+    url(r'^agregado/proovedor/ver/$', proovedores.Ver_Productor,{'valor':True}, name='ver-productor'),
     url(r'^prueva/$', proovedor_pdf.convertir_pdf, name='prueva'),
 
-    url(r'^agregado/proovedor/ver/desabilitados/$', proovedores.Ver_Productor, name='ver-desabilitados'),
+    url(r'^agregado/proovedor/ver/desabilitados/$', proovedores.Ver_Productor,{'valor':False}, name='ver-productor-des'),
     url(r'^agregado/proovedor/ver/cvs/$', proovedores.lista_productores_csv, name='productores-lista-cvs'),
+
     url(r'^agregado/proovedor/ver/pdf/$', proovedor_pdf.lista_productores_pdf, name='productores-lista-pdf'),
 
     url(r'^agregado/proovedor/add/$', proovedores.Add_Productor, name='add-productor'),
@@ -119,8 +115,14 @@ urlpatterns = [
     url(r'^agregado/ciclo/precios/ver/(?P<nciclo>.*)/$', contabilidad.Ver_Presio_Ciclo, name='ver-presio-ciclo'),
 
     url(r'^agregado/ciclo/(?P<pk>.*)/precios/add/$', contabilidad.Add_PresioXCiclo, name='add-presiox-ciclo'),
-    url(r'^agregado/ciclo/(?P<pkciclo>.*)/precios/edit/(?P<pkprecio>.*)/$', contabilidad.Edit_PresioXCiclo, name='edit-presiox-ciclo'),
+    #url(r'^agregado/ciclo/(?P<pkciclo>.*)/precios/edit/(?P<pkprecio>.*)/$', contabilidad.Edit_PresioXCiclo, name='edit-presiox-ciclo'),
+    url(r'^agregado/contabilidad/ganancias-del-ciclo/(?P<pk>.*)/$', nucleo_app.GananciasDelCiclo, name='ganacias-del-ciclo'),
+    url(r'^agregado/contabilidad/ganancias-del-ciclo/(?P<pkciclo>.*)/rubro/(?P<pkrubro>.*)/$', nucleo_app.GananciasDelCicloXRubro, name='ganacias-del-cicloX-rubro'),
 
+
+    
+
+    #=======================================================================
 
     url(r'^agregado/recepcion/ver/$', recepcion.Mostrar_Recepcion.as_view(), name='ver-recepcion'),
     url(r'^agregado/recepcion/add/$', recepcion.Add_Recepcion, name='add-recepcion'),
@@ -138,7 +140,12 @@ urlpatterns = [
     url(r'^agregado/recepcion/(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{2})/$',filtroR.RecepcionesDiarias.as_view(), name='recepciones_diarias'),
     #url(r'^agregado/recepcion/(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{2})/(?P<pk>.*)$',filtroR.Recepciones, name='lista_recepciones'),
     url(r'^prueva-ajax/$', recepcion.prueva_ajax, name='ver-ajax'),
-    url(r'^agregado/cuentas/(?P<year>\d{4})/(?P<month>\d{2})/$', filtroR.CuentasMensuales.as_view(), name='cuentas-mensuales'),
+
+    url(r'^agregado/cuentas/(?P<year>\d{4})/$', filtroR.CuentasAnuales.as_view(), name='cuentas_anuales'),
+    url(r'^agregado/cuentas/(?P<year>\d{4})/(?P<month>\d{2})/$', filtroR.CuentasMensuales.as_view(), name='cuentas_mensuales'),
+    url(r'^agregado/cuentas/(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{2})/$', filtroR.CuentasDiarias.as_view(), name='cuentas_diarias'),
+   
+
     url(r'^agregado/cuentas/ver/$', recepcion.Mostrar_CuetasXpagar.as_view(), name='ver-cuentasx-pagar'),
     url(r'^agregado/cuentas/edit/(?P<pk>.*)/$', recepcion.Editar_CuentasXpagar, name='edit-cuentasx-pagar'),
 

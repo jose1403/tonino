@@ -2,7 +2,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from rubro.models import Rubro, VariedadRubro,TipoRubro
 from smart_selects.db_fields import ChainedForeignKey
-
+from plantas.models import Silos, Plantas
 from contabilidad.models import Ciclo, PrecioDeRubroPorCiclo, IMPUESTOS
 from clientes.models import Cliente
 
@@ -25,7 +25,8 @@ class Despacho(models.Model):
 											  auto_choose=True)
 
 	ciclo_asociado=models.ForeignKey(Ciclo)
-
+	planta= models.ForeignKey(Plantas, null=True)
+	silo = ChainedForeignKey(Silos,null=True, chained_field='planta',chained_model_field='plantas',show_all= False, auto_choose=True)
 	precio = models.FloatField()
 
 	#datos de entrega

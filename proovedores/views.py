@@ -27,8 +27,14 @@ def Agregar_Productor(request):
 #==============================================================================
 
 @permission_required('auth.acceso_empleado',login_url="/accounts/login/")
-def Ver_Productor(request):
-	form= Productor.objects.filter(habilitado=True, null=False)
+def Ver_Productor(request, valor):
+	name =''
+	if valor:
+		form= Productor.objects.filter(habilitado=True, null=False)
+		name='Proovedores'
+	else:
+		form= Productor.objects.filter(habilitado=False, null=False)
+		name= 'Proovedores Desabilitados'
 	if request.method=='POST':
 		if request.POST['eliminar'] == 'delete-selected':
 			a=request.POST.getlist('seleccion')
@@ -52,7 +58,9 @@ def Ver_Productor(request):
 		lista = paginator['paginas']
 		cantidad= paginator['cantidad']
 	return render(request, 'productor/VerProductores.html',{'form':contacts,
-		                                                    'info':info,		                                                    
+		                                                    'info':info,
+		                                                    'name':name,
+		                                                    'valor':valor,		                                                    
 															'lista':lista,
 															'cantidad':cantidad,'q':q})
 

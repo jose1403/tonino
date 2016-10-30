@@ -10,6 +10,7 @@ class FormRubro(forms.ModelForm):
 	class Meta:
 		model= Rubro
 		fields= '__all__'
+		exclude= ['null']
 
 class FormEditarRubro(forms.ModelForm):
 	class meta:

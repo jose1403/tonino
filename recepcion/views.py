@@ -21,7 +21,7 @@ from contabilidad.models import PrecioDeRubroPorCiclo, IMPUESTOS
 from .recepcion_pdf import lista_recepcion_pdf
 import datetime
 from django.db.models import Q
-from gestion.views import delete_model, paginacion,get_query,desabilite_model
+from gestion.views import delete_model, paginacion, get_query, desabilite_model
 tiempo= datetime.datetime.now()
 fecha=datetime.date(tiempo.year,tiempo.month,tiempo.day)
 
@@ -161,13 +161,12 @@ class Mostrar_Recepcion(ArchiveIndexView):
 	def get(self, request, *args, **kwargs):
 		queryset= Recepcion.objects.filter(null=False)
 		q= ''
-		model=self.model
 		if 'q' in request.GET and request.GET['q'].strip():
 			q= request.GET['q']
 			query = get_query(q,['pk', 'producto__nombre', 'variedad__nombre',
 								'tipo__nombre', 'ciclo_asociado__nombre', 'silo__nombre',
 								'proovedor__nombre_o_razon_social',
-								'zona_de_cosecha__zona'])
+								'zona_de_cosecha__zona', 'cantidad_en_Kg'])
 			#return HttpResponse(query)
 			queryset = queryset.filter(query)
 		
@@ -177,8 +176,10 @@ class Mostrar_Recepcion(ArchiveIndexView):
 		context = super(Mostrar_Recepcion, self).get_context_data(**kwargs)
 		context['form'] = self.object
 		context['q']= self.q
+		context['date_field']='fecha_llegada'
 		return context 
 	def get_queryset(self):
+		print self.object
 		return self.object
 	
 	def post(self, request, *args, **kwargs):
@@ -192,14 +193,36 @@ class Mostrar_Recepcion(ArchiveIndexView):
  
 
 class Mostrar_CuetasXpagar(ArchiveIndexView):
-	model=CuentasXpagarRecepcion
-	context_object_name='form'
+	#model=CuentasXpagarRecepcion
+	#context_object_name='form'
 	date_field="fecha_agregado"
 	template_name='recepcion/cuentas/VerCuentasPorPagar.html'
 	paginate_by=25
 	make_object_list = True
 	allow_empty=True
 	allow_future=True
+	q=""
+	def get(self, request, *args, **kwargs):
+		queryset= CuentasXpagarRecepcion.objects.filter(null=False)
+		q= ''
+		if 'q' in request.GET and request.GET['q'].strip():
+			q= request.GET['q']
+			query = get_query(q,['pk', 'fecha_agregado', 'fecha_vencimiento','recepcion__ingreso__recepcion__producto__nombre', 'recepcion__ingreso__recepcion__ciclo_asociado__nombre',
+								'recepcion__ingreso__recepcion__proovedor__nombre_o_razon_social','recepcion__ingreso__recepcion__proovedor__documentoId',
+
+								'recepcion__ingreso__recepcion__zona_de_cosecha__zona', 'recepcion__total_neto'])
+			#return HttpResponse(query)
+			queryset = queryset.filter(query)
+		self.object = queryset
+		return super(Mostrar_CuetasXpagar, self).get(request, *args, **kwargs)
+
+	def get_context_data(self, **kwargs):
+		context = super(Mostrar_CuetasXpagar, self).get_context_data(**kwargs)
+		context['form'] = self.object
+		context['q']= self.q
+		return context 
+	def get_queryset(self):
+		return self.object
 	def post(self, request, *args, **kwargs):
 		if request.POST['lista-pdf'] == 'lista-selected':
 
@@ -272,7 +295,7 @@ def Editar_CuentasXpagar(request, pk):
 
 @permission_required('auth.acceso_analista',login_url="/accounts/login/")
 def Ver_Recepcion(request):
-	form= Recepcion.objects.all()
+	form= Recepcion.objects.filter(null=False).order_by('fecha_llegada')
 	if request.method=='POST':
 		if request.POST['lista-pdf'] == 'lista-selected' and request.user.has_perm('auth.acceso_empleado'):
 			a=request.POST.getlist('seleccion')
@@ -292,7 +315,6 @@ def Add_Recepcion(request):
 		form = FormRecepcion(Q(habilitado=True),request.POST)
 		
 		if form.is_valid():
-
 			producto =  form.cleaned_data['producto']
 			variedad =  form.cleaned_data['variedad']
 			tipo = form.cleaned_data['tipo']
@@ -351,7 +373,8 @@ def Add_Recepcion(request):
 			Hf = model.producto.tolerancia_humedad - model.producto.diferencia_humedad
 			If = model.producto.tolerancia_impureza
 			merma_total = mermas(cantidad_en_Kg, humedad,Hf, impureza, If)
-			if silos.resto < merma_total['CMP']:return render(request, 'recepcion/AddRecepcion.html', {'form':form,'info':'la cantidad ingresada supera la capacidad del silo'.upper()})
+			
+			if silos.resto > merma_total['CMP']:return render(request, 'recepcion/AddRecepcion.html', {'form':form,'info':'la cantidad ingresada supera la capacidad del silo'.upper()})
 			model.save()
 
 			model_pago= PagoRecepcion()
@@ -415,7 +438,7 @@ def Edit_Recepcion(request, pk):
 	except ValueError:
 		raise Http404()
 	info =""
-	model = Recepcion.objects.get(pk=pk)
+	model = Recepcion.objects.get(pk=pk, null=False)
 	model_pago= PagoRecepcion.objects.get(recepcion=model)
 	model_total = TotalRecepcion.objects.get(ingreso=model_pago)
 
@@ -424,7 +447,8 @@ def Edit_Recepcion(request, pk):
 
 		if 'eliminar' in request.POST.keys() and  request.POST['eliminar']== 'delete-selected' and request.user.has_perm('auth.acceso_empleado'):
 			
-			model.delete()
+			model.null= True
+			model.save()
 			return HttpResponseRedirect(raiz)
 		from django.db.models import Q
 

@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import auth
@@ -5,15 +6,14 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from contabilidad.models import PrecioDeRubroPorCiclo, IMPUESTOS
 
 from .models import Despacho, IngresoDespacho, TotalDespacho,CuentasXcobrarDespacho
-from .forms import  FormDespacho,  FormTotalDespacho, FormCuentasXcobrarDespacho
+from .forms import  FormDespacho, FormTotalDespacho, FormCuentasXcobrarDespacho
 from .despacho_pdf import lista_despacho_pdf
 import datetime
-
+from gestion.views import get_query, desabilite_model
 tiempo= datetime.datetime.now()
 fecha=datetime.date(tiempo.year,tiempo.month,tiempo.day)
 # Create your views here.
 def ValorTotal( cantidad, precio, impuestos):
-
 	total_neto = cantidad * precio
 	calculo= []
 	total = total_neto
@@ -36,14 +36,37 @@ from django.views.generic.dates import ArchiveIndexView
 
 
 class Mostrar_Despacho(ArchiveIndexView):
-	model=Despacho
-	context_object_name='form'
+	#model=Despacho
+	#context_object_name='form'
 	date_field="fecha_salida"
 	template_name='despacho/VerDespachos.html'
 	paginate_by=25
 	make_object_list = True
 	allow_empty=True
 	allow_future=True
+	q=''
+	def get(self, request, *args, **kwargs):
+		queryset= Despacho.objects.filter(null=False)
+		q= ''
+		if 'q' in request.GET and request.GET['q'].strip():
+			q= request.GET['q']
+			query = get_query(q,['pk', 'producto__nombre', 'variedad__nombre',
+								'tipo__nombre', 'ciclo_asociado__nombre', 'silo__nombre',
+								'cliente__nombre_o_razon_social',
+								'dirigido_a', 'cantidad_en_Kg'])
+			#return HttpResponse(query)
+			queryset = queryset.filter(query)
+		
+		self.object = queryset
+		return super(Mostrar_Despacho, self).get(request, *args, **kwargs)
+	def get_context_data(self, **kwargs):
+		context = super(Mostrar_Despacho, self).get_context_data(**kwargs)
+		context['form'] = self.object
+		context['q']= self.q
+		return context 
+	def get_queryset(self):
+		return self.object
+	
 	def post(self, request, *args, **kwargs):
 		if request.POST['lista-pdf'] == 'lista-selected' and request.user.has_perm('auth.empleado'):
 
@@ -147,6 +170,8 @@ def Add_Despacho(request):
 			tipo = form.cleaned_data['tipo']
 			precio = form.cleaned_data['precio']
 			ciclo_asociado=  form.cleaned_data['ciclo_asociado']
+			silo=  form.cleaned_data['silo']
+			planta=form.cleaned_data['planta']
 			fecha_salida=form.cleaned_data['fecha_salida']
 			tipo_vehiculo= form.cleaned_data['tipo_vehiculo']
 			placa = form.cleaned_data['placa']
@@ -172,6 +197,9 @@ def Add_Despacho(request):
 			model.variedad= variedad
 			model.tipo=tipo
 			model.ciclo_asociado= ciclo_asociado
+			model.planta= planta
+
+			model.silo = silo 
 			model.precio= precio
 			model.fecha_salida= fecha_salida
 			model.tipo_vehiculo= tipo_vehiculo
@@ -189,6 +217,10 @@ def Add_Despacho(request):
 			model.otros = otros
 			model.despachado_por= despachado_por
 			model.observacion= observacion
+
+			
+
+			if cantidad_en_Kg > silo.en_inventario:return render(request,'despacho/AddDespachos.html', {'form':form,'info':'la cantidad ingresada supera la cantidad disponible en el silo'.upper()})
 			model.save()
 
 			model_pago= IngresoDespacho()
@@ -196,12 +228,14 @@ def Add_Despacho(request):
 			model_pago.precio= precio
 			model_pago.pagado= pagado
 			model_pago.save()
-			valorespago = ValorTotal(model.cantidad_en_Kg, model_pago.precio, IMPUESTOS)
+			
 			# ajustar de acuerdo al pago generado
+			valorespago = ValorTotal(model.cantidad_en_Kg, model_pago.precio, IMPUESTOS)
 			model_total = TotalDespacho()
 			model_total.ingreso= model_pago
 			model_total.total_neto= model.cantidad_en_Kg * float(precio)
 			model_total.total_Bs= valorespago['total_pago']
+
 			model_total.save()
 			if pagado == False:
 				CXP = CuentasXcobrarDespacho()
@@ -214,7 +248,11 @@ def Add_Despacho(request):
 			else:
 				pass
 			
-
+			silo.en_inventario -= cantidad_en_Kg
+			silo.resto += cantidad_en_Kg
+			silo.save() 
+			
+			
 			return HttpResponseRedirect('/agregado/despacho/ver/')
 
 	else: 

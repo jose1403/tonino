@@ -8,11 +8,13 @@ from django.contrib import auth
 #*****]===================================================================*********
 from gestion.forms import Secion
 # Create your views here.
-from reportlab.platypus import SimpleDocTemplate, Paragraph, TableStyle
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import Table
+from rubro.models import Rubro
+from contabilidad.models import Ciclo, PrecioDeRubroPorCiclo
+from recepcion.models import Recepcion, TotalRecepcion, PagoRecepcion, CuentasXpagarRecepcion
+from despacho.models import Despacho, TotalDespacho, IngresoDespacho, CuentasXcobrarDespacho
+from clientes.models import Cliente
+from proovedores.models import Productor, ZonaProductor
+
 from io import BytesIO
 #class IndexView(ListView):
 #    template_name = "index.html"
@@ -77,3 +79,112 @@ def proceso(request):
 	return render(request, 'procesos/index.html')
 
 
+def GananciasDelCicloTotal(request):
+	ciclo = Ciclo.objects.filter(null=False)
+	recepcion = ciclo.recepcion_set.filter(null=False)
+	ingreso_total=0
+	for i in recepcion:
+		pago =PagoRecepcion.objects.get(recepcion=i)
+		total=TotalRecepcion.objects.get(ingreso=pago)
+		ingreso_total+= total.total_Bs
+
+def GananciasDelCiclo(request, pk):
+	try:
+		int(pk)
+
+	except ValueError:
+		raise Http404()
+	ciclo = Ciclo.objects.get(pk=pk, null=False)
+	print ciclo
+	recepcion = ciclo.recepcion_set.filter(null=False)
+	despacho= ciclo.despacho_set.filter(null=False)
+	ingreso_total=0
+	invercion_total=0
+	deuda=0
+	cobro=0
+	lista_rubror=[]
+	rubro = Rubro.objects.filter(null=False)
+
+	for i in rubro:
+		producto= i.recepcion_set.filter(null=False, ciclo_asociado__pk=pk)
+		if producto.count() > 0:
+			lista_rubror.append(i)
+
+
+	for i in recepcion:
+		pago =PagoRecepcion.objects.get(recepcion=i)
+		total=TotalRecepcion.objects.get(ingreso=pago)
+		invercion_total+= total.total_Bs
+		if pago.p==False:
+			cuentas= CuentasXpagarRecepcion.objects.get(recepcion=total, pagado=False)
+			deuda += cuentas.saldo_deudor
+
+
+	for e in despacho:
+		pago= IngresoDespacho.objects.get(despacho=e)
+		total= TotalDespacho.objects.get(ingreso=pago)
+		ingreso_total += total.total_Bs
+		if pago.pagado==False:
+			cuentas= CuentasXcobrarDespacho.objects.get(despacho=total, pagado=False)
+			cobro += cuentas.saldo_deudor
+
+
+	ganancia_neta= ingreso_total - invercion_total
+
+	deudas= CuentasXpagarRecepcion.objects.filter(pagado=False)
+	cobros= CuentasXcobrarDespacho.objects.filter(pagado=False)
+
+
+
+	return render(request, 'procesos/cuentas/GananciasDelCiclo.html', {'form':ciclo, 
+															'invercion_total':invercion_total,
+															'ingreso_total':ingreso_total,
+															'ganancia_neta':ganancia_neta,
+															'deuda':deuda, 'cobro':cobro,
+															'lista_rubror':lista_rubror})
+def GananciasDelCicloXRubro(request, pkciclo, pkrubro):
+	try:
+		int(pkciclo)
+		int(pkrubro)
+
+	except ValueError:
+		raise Http404()
+	ciclo = Ciclo.objects.get(pk=pkciclo, null=False)
+	print ciclo
+	recepcion = ciclo.recepcion_set.filter(null=False, producto__pk=pkrubro)
+	despacho= ciclo.despacho_set.filter(null=False, producto__pk=pkrubro)
+	ingreso_total=0
+	invercion_total=0
+	deuda=0
+	cobro=0
+	lista_rubror=[]
+	rubro = Rubro.objects.get(pk=pk,null=False)
+
+
+	for i in recepcion:
+		pago =PagoRecepcion.objects.get(recepcion=i)
+		total=TotalRecepcion.objects.get(ingreso=pago)
+		invercion_total+= total.total_Bs
+		if pago.p==False:
+			cuentas= CuentasXpagarRecepcion.objects.get(recepcion=total, pagado=False)
+			deuda += cuentas.saldo_deudor
+
+
+	for e in despacho:
+		pago= IngresoDespacho.objects.get(despacho=e)
+		total= TotalDespacho.objects.get(ingreso=pago)
+		ingreso_total += total.total_Bs
+		if pago.pagado==False:
+			cuentas= CuentasXcobrarDespacho.objects.get(despacho=total, pagado=False)
+			cobro += cuentas.saldo_deudor
+
+
+	ganancia_neta= ingreso_total - invercion_total
+
+	return render(request, 'procesos/cuentas/GananciasDelCiclo.html', {'form':ciclo,
+
+															'invercion_total':invercion_total,
+															'ingreso_total':ingreso_total,
+															'ganancia_neta':ganancia_neta,
+															'deuda':deuda, 'cobro':cobro,
+															'rubro':rubro})
