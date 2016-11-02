@@ -20,6 +20,7 @@ styles = getSampleStyleSheet()
 from nucleo.models import DATOS_DE_LA_EMPRESA
 from .models import Despacho, IngresoDespacho, TotalDespacho
 from contabilidad.models import IMPUESTOS
+from gestion.views import intcomma
 raiz ='/agregado/productor/ver'
 
 tiempo = datetime.datetime.now()
@@ -44,7 +45,7 @@ def logo_pdf():
 
 def lista_despacho_pdf(request, lista_pk, queryset):
     response = HttpResponse(content_type='application/pdf')
-    pdf_name = "Factura-Recepcion.pdf"  # llamado clientes
+    pdf_name = "<b>Factura-Recepcion.pdf</b>"  # llamado clientes
     # la linea 26 es por si deseas descargar el pdf a tu computadora
     #response['Content-Disposition'] = 'attachment; filename=%s-%s/%s/%s.pdf'%(pdf_name, tiempo.day,tiempo.month, tiempo.year)
     buff = BytesIO()
@@ -60,7 +61,7 @@ def lista_despacho_pdf(request, lista_pk, queryset):
     if type(lista_pk)== int:
         lista_pk= [lista_pk] 
         cambio=True
-    model = queryset.filter(id__in=lista_pk)
+    model = queryset.filter(id__in=lista_pk, null=False)
 
     lista= []
     styles = getSampleStyleSheet()
@@ -69,20 +70,20 @@ def lista_despacho_pdf(request, lista_pk, queryset):
     lista.append(Spacer(0,40))
     lista.append(fecha)
 
-    lista.append(Spacer(0,20))
+    lista.append(Spacer(0,10))
     style= ParagraphStyle('Heading1')
     style.textColor= 'black'
     style.alignment= TA_CENTER
     style.fontSize= 18
     style.spaceAfter=15
-    style.spaceBefore= 50
+    style.spaceBefore= 30
     style.spaceAfter=5
     style.leading = 20
     style.bulletIndent = 0
     style.allowOrphans = 0
     style.bulletFontSize = 10
     style.fontName='Helvetica'
-    header = Paragraph("Listado de Recepciones".upper(), style)
+    header = Paragraph("Listado de Despachos".upper(), style)
     lista.append(header)
     lista.append(Spacer(0,10))
 
@@ -109,7 +110,7 @@ def lista_despacho_pdf(request, lista_pk, queryset):
         total = TotalDespacho.objects.get(ingreso=pago)
         cont+=1
         array.append([Paragraph(p.codigo_en_sistema(), style_table),
-        Paragraph('<font size=8>%s</font>'%(p.producto_total()),style_table),
+        Paragraph('%s (<font size=8>%s-%s</font>)'%(p.producto.nombre.upper(),p.variedad.nombre.upper(),p.tipo.nombre.upper()),style_table),
         Paragraph(p.ciclo_asociado.codigo_en_sistema(), style_table),
         Paragraph('%s'%p.cliente.nombre_o_razon_social.upper(), style_table),
         Paragraph('%s Kg.'%p.cantidad_en_Kg, style_table),
@@ -148,10 +149,10 @@ def factura_despacho_pdf(request, pk):
     # la linea 26 es por si deseas descargar el pdf a tu computadora
     #response['Content-Disposition'] = 'attachment; filename=%s-%s/%s/%s.pdf'%(pdf_name, tiempo.day,tiempo.month, tiempo.year)
     buff = BytesIO()
-    datos= DATOS_DE_LA_EMPRESA.objects.get(pk=1)
+    datos= DATOS_DE_LA_EMPRESA.objects.get(pk=1, null=False)
     despacho= Despacho.objects.get(pk=pk)
-    pago = IngresoDespacho.objects.get(despacho=despacho)
-    total = TotalDespacho.objects.get(ingreso=pago)
+    pago = IngresoDespacho.objects.get(despacho=despacho, null=False)
+    total = TotalDespacho.objects.get(ingreso=pago, null=False)
 
     doc = SimpleDocTemplate(buff,
                             pagesize=letter,
@@ -168,7 +169,7 @@ def factura_despacho_pdf(request, pk):
     stylefac.fontSize= 20
     stylefac.spaceBefore= 5
     stylefac.spaceAfter=5
-    stylefac.leading = 10
+    stylefac.leading = -20
     stylefac.bulletIndent = 0
     stylefac.allowOrphans = 0
     stylefac.bulletFontSize = 10
@@ -177,14 +178,17 @@ def factura_despacho_pdf(request, pk):
     #stylemenbrete.bulletAnchor = start
     stylefac.borderPadding = 0
     stylefac.endDots = None
-    lista.append(Paragraph('<font size=10 color=black><b>NO. Control<b></font>', stylefac))
-    lista.append(Paragraph(despacho.codigo_en_sistema(), stylefac))
-    lista.append(logo_pdf())
 
+    lista.append(Paragraph('%s'%despacho.codigo_en_sistema(), stylefac))
+    lista.append(Paragraph('<font size=10 color=black><b>NO. Control<b></font>', stylefac))
+    lista.append(logo_pdf())
+    lista.append(Spacer(0,10))
     stylemenbrete= ParagraphStyle('Heading1')
     stylemenbrete.textColor=('black')
     stylemenbrete.alignment= TA_CENTER
     stylemenbrete.fontSize= 8
+
+
     stylemenbrete.spaceBefore= 5
     stylemenbrete.spaceAfter=5
     stylemenbrete.leading = 10
@@ -198,12 +202,12 @@ def factura_despacho_pdf(request, pk):
     stylemenbrete.endDots = None
     #stylemenbrete.textColor = Color(0,0,0,1)
     """MEMBRETE"""
-    nombre= Paragraph(datos.NOMBRE.upper(), stylemenbrete)
+    nombre= Paragraph('<b>%s</b>'% datos.NOMBRE.upper(), stylemenbrete)
     #fin **********************************
-    rif = Paragraph('RIF: %s'% (datos.RIF.upper()), stylemenbrete)
-    direccion=Paragraph('%s'% (datos.DIRECCION.upper()), stylemenbrete)
-    telefonos =Paragraph('%s / %s'% (datos.TELEFONO, datos.CELULAR), stylemenbrete)
-    codigo_postal=Paragraph('CODIGO POSTAL: %s'% (datos.CODIGO_POSTAL), stylemenbrete)
+    rif = Paragraph('<b> RIF: %s</b>'% (datos.RIF.upper()), stylemenbrete)
+    direccion=Paragraph('<b> %s</b>'% (datos.DIRECCION.upper()), stylemenbrete)
+    telefonos =Paragraph('<b> %s / %s</b>'% (datos.TELEFONO, datos.CELULAR), stylemenbrete)
+    codigo_postal=Paragraph('<b> CODIGO POSTAL: %s</b>'% (datos.CODIGO_POSTAL), stylemenbrete)
     lista.append(nombre)#+rif+direccion+telefonos+codigo_postal)
     lista.append(rif)#+rif+direccion+telefonos+codigo_postal)
     lista.append(direccion)
@@ -211,8 +215,10 @@ def factura_despacho_pdf(request, pk):
     lista.append(codigo_postal)
     lista.append(Spacer(0,30))
     #############################
-    fecha= Paragraph('<b><i>Fecha de Emision: %s</i><b>'%(despacho.fecha_emision()), styles['Normal'])
+    fecha= Paragraph('<b>Fecha de Emision: %s<b>'%(despacho.fecha_emision()), styles['Normal'])
     lista.append(fecha)
+    lista.append(Spacer(0,10))
+    lista.append(Paragraph('<para alignment=left><font><b>CICLO: %s</b></font>'%str(despacho.ciclo_asociado).upper(), styles['Normal']))
     lista.append(Paragraph('<font size=10 color=black ><b>-<b></font>'*156, styles['Normal']))
     lista.append(Paragraph('<font color=red><b>DATOS DEL CLIENTE<b><font> ', styles['Normal']))
 
@@ -239,7 +245,7 @@ def factura_despacho_pdf(request, pk):
     Paragraph('<para alignment=left><font><b>TELE: %s/%s</b></font>'%(despacho.cliente.telefono, despacho.cliente.celular), style_table)])
     array3 =[]
     array3.append([Paragraph('<font><b>CODIGO: %s</b></font>'%despacho.cliente.codigo_en_sistema(), style_table),
-    Paragraph('<font ><b>ZONA: %s</b></font>'%despacho.dirigido_a, style_table)])
+    Paragraph('<font ><b>DIRIGIDO A: %s</b></font>'%despacho.dirigido_a, style_table)])
     t=Table(array1 +array2 + array3)
 
     lista.append(t)
@@ -249,7 +255,7 @@ def factura_despacho_pdf(request, pk):
     
     headingsDes=[]
     headingsDes.append([Paragraph('<font color=black><b>RUBRO <b>  </font>', style_table),
-        Paragraph('<para alignment=left><font><b>CICLO </b></font>', style_table),
+        
 
         Paragraph('<para alignment=left><font><b>PRESIO </b></font>', style_table),
 
@@ -258,12 +264,12 @@ def factura_despacho_pdf(request, pk):
         ])
 
     descripcion.append([Paragraph('<font color=black><b>%s<b>  </font>'%(despacho.producto_total()), style_table),
-        Paragraph('<para alignment=left><font><b>%s</b></font>'%despacho.ciclo_asociado, style_table),
+        
 
-        Paragraph('<para alignment=left><font><b> %s Bs.</b></font>'%pago.precio, style_table),
+        Paragraph('<para alignment=left><font><b> %s Bs.</b></font>'%intcomma(pago.precio), style_table),
 
-        Paragraph('<para alignment=left><font><b> %s Kg.</b></font>'%despacho.cantidad_en_Kg, style_table),
-        Paragraph('<para alignment=left><font><b> %s Bs.</b></font>'%total.total_neto, style_table),
+        Paragraph('<para alignment=left><font><b> %s Kg.</b></font>'%intcomma(despacho.cantidad_en_Kg), style_table),
+        Paragraph('<para alignment=left><font><b> %s Bs.</b></font>'%intcomma(total.total_neto), style_table),
         ])
     separator=('', '','', '')
     #headingsDes=('Rubro', 'precio','Cantidad Recibida', 'Total Neto')
@@ -273,23 +279,24 @@ def factura_despacho_pdf(request, pk):
     for i, k in total.impuestos().items():
         impuesto1.append([Paragraph('<font color=black><b> <b>  </font>', style_table),
         Paragraph('<para alignment=left><font><b> </b></font>', style_table),
-        Paragraph('<para alignment=left><font><b> </b></font>', style_table),
         
 
         Paragraph('<para alignment=left><font><b>%s </b></font>'%i, style_table),
-        Paragraph('<para alignment=left><font><b>%s Bs.</b></font>'%k, style_table),
+        Paragraph('<para alignment=left><font><b>%s Bs.</b></font>'%intcomma(k), style_table),
         ])
     precio_total=[]
     precio_total.append([Paragraph('<font color=black><b> <b>  </font>', style_table),
         Paragraph('<para alignment=left><font><b> </b></font>', style_table),
-        Paragraph('<para alignment=left><font><b> </b></font>', style_table),
         
         Paragraph('<para alignment=left><font><b>TOTAL </b></font>', style_table),
-        Paragraph('<para alignment=left><font><b>%s Bs. </b></font>'%total.total_Bs, style_table),
+        Paragraph('<para alignment=left><font><b>%s Bs. </b></font>'%intcomma(total.total_Bs), style_table),
         ])
     tdescripcion= Table(headingsDes+ descripcion+[separator]+impuesto1+precio_total)
     lista.append( tdescripcion)
     lista.append(Spacer(0, 40))
+    style_analisis= ParagraphStyle('Default')
+    #style_table.textColor= 'black'
+    #style_table.alignment= TA_CENTER
     style_analisis= ParagraphStyle('Default')
     #style_table.textColor= 'black'
     #style_table.alignment= TA_CENTER
@@ -302,12 +309,12 @@ def factura_despacho_pdf(request, pk):
     style_analisis.allowOrphans = 0
     style_analisis.bulletFontSize = 5
     style_analisis.fontName='Times-Roman'
-    lista.append(Paragraph('<para alignment=left><font size=20 color=grey><b> ANALISIS</b></font>', style_analisis))
-    lista.append(Paragraph('<para alignment=left><font size=15><b> HUMEDAD:</b> <i>%s%%</i> </font>'% despacho.humedad, style_analisis))
-    lista.append(Paragraph('<para alignment=left><font size=15><b>GRANOS DAÑADOS: </b><i>%s%%</i> </font>'%despacho.granos_danados_totales, style_analisis))
-    lista.append(Paragraph('<para alignment=left><font size=15><b>GRANOS PARTIDOS:</b> <i>%s%% </i> </font>'%despacho.granos_partidos, style_analisis))
-    lista.append(Paragraph('<para alignment=left><font size=15><b>TEMPERATURA PROMEDIO:</b> <i>%s°C</i></font>'%despacho.temperatura_promedio, style_analisis))
-    lista.append(Paragraph('<para alignment=left><font size=15><b>OTROS:</b> <i>%s%% </i> </font>'%despacho.otros, style_analisis))
+    lista.append(Paragraph('<para alignment=left><font size=15 color=grey><b> ANALISIS</b></font>', style_analisis))
+    lista.append(Paragraph('<para alignment=left><font size=10><b> HUMEDAD:</b> <i>%s%%</i> </font>'% despacho.humedad, style_analisis))
+    lista.append(Paragraph('<para alignment=left><font size=10><b>GRANOS DAÑADOS: </b><i>%s%%</i> </font>'%despacho.granos_danados_totales, style_analisis))
+    lista.append(Paragraph('<para alignment=left><font size=10><b>GRANOS PARTIDOS:</b> <i>%s%% </i> </font>'%despacho.granos_partidos, style_analisis))
+    lista.append(Paragraph('<para alignment=left><font size=10><b>TEMPERATURA PROMEDIO:</b> <i>%s°C</i></font>'%despacho.temperatura_promedio, style_analisis))
+    lista.append(Paragraph('<para alignment=left><font size=10><b>OTROS:</b> <i>%s%% </i> </font>'%despacho.otros, style_analisis))
 
 
     doc.build(lista)

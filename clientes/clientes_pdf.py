@@ -62,23 +62,24 @@ def lista_clientes_pdf(request):
     lista = []
     lista.append(logo_pdf())
     fecha= Paragraph('<b><i>Fecha: %s/%s/%s</i><b>'%(tiempo.day,tiempo.month, tiempo.year), styles['Normal'])
+    
     lista.append(Spacer(0,40))
     lista.append(fecha)
 
-    lista.append(Spacer(0,20))
+    lista.append(Spacer(0,10))
     style= ParagraphStyle('Heading1')
     style.textColor= 'black'
     style.alignment= TA_CENTER
     style.fontSize= 18
     style.spaceAfter=15
-    style.spaceBefore= 50
+    style.spaceBefore= 30
     style.spaceAfter=5
     style.leading = 20
     style.bulletIndent = 0
     style.allowOrphans = 0
     style.bulletFontSize = 10
     style.fontName='Helvetica'
-    header = Paragraph("Listado de Clientes".upper(), style)
+    header = Paragraph("<b>Listado de Clientes</b>".upper(), style)
     lista.append(header)
     lista.append(Spacer(0,10))
 

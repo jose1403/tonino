@@ -46,11 +46,13 @@ class FormRecepcionesEdit(forms.ModelForm):
 		super(FormRecepcionesEdit, self).__init__(*args, **kwargs)
 		#print self.fields['ciclo_asociado'].query_set
 		self.fields['ciclo_asociado'].queryset = Ciclo.objects.filter(filter, null=False)
-		self.fields['producto'].queryset = Ciclo.objects.filter(null=False)
-		self.fields['variedad'].queryset = Ciclo.objects.filter(null=False)
-		self.fields['tipo'].queryset = Ciclo.objects.filter(null=False)
-		self.fields['proovedor'].queryset = Ciclo.objects.filter(null=False)
-		self.fields['zona_de_cosecha'].queryset = Ciclo.objects.filter(null=False)
+		self.fields['producto'].queryset = Rubro.objects.filter(null=False)
+		self.fields['variedad'].queryset = VariedadRubro.objects.filter(null=False)
+		self.fields['tipo'].queryset = TipoRubro.objects.filter(null=False)
+		self.fields['proovedor'].queryset = Productor.objects.filter(null=False)
+		self.fields['zona_de_cosecha'].queryset = ZonaProductor.objects.filter(null=False)
+		
+	
 		
 	class Meta:
 		model = Recepcion

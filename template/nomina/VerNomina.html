@@ -1,0 +1,21 @@
+{% extends "base_site.html" %}
+
+{% block content %}
+	<a href="{% url 'ver-empleado'%}" class="btn btn-success">Empleados</a> <br>
+	<a href="{% url 'ver-obrero'%}" class="btn btn-success">Obreros</a> <br>
+
+	<a href="{% url 'ver-pagos-semanales-empleados'%}" class="btn btn-success">Sueldo Empleados</a> <br>
+	<a href="{% url 'ver-pagos-semanales-obreros'%}" class="btn btn-success">Pago Obreros</a> <br>
+	<a href="{% url 'ver-puestos'%}" class="btn btn-success">Puestos</a> <br>
+	<a href="{% url 'ver-fechas-asignadas'%}" class="btn btn-success">Fechas</a> <br>
+	<a href="{% url 'ver-bono-alimentacion-obrero'%}" class="btn btn-success">Bono De Alimentacion de obreros</a> <br>
+	<a href="{% url 'ver-bono-alimentacion-empleado'%}" class="btn btn-success">Bono De Alimentacion Empleados</a> <br>
+	<a href="{% url 'ver-total-nomina-empleado'%}" class="btn btn-success">Nomina pagada Total empleados</a> <br>
+	<a href="{% url 'ver-total-nomina-obrero'%}" class="btn btn-success">Nomina pagada Total obreros</a> <br>
+	
+	
+
+
+
+
+{% endblock content %}

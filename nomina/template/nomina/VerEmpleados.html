@@ -1,0 +1,61 @@
+{% extends "base_site.html" %}
+
+{% block content %}
+	<nav>
+	<ul>
+		<li><a href="{%url 'add-productor'%}">Añadir Empleado</a></li>
+		
+
+	</ul>
+	<ul>
+	{% if valor %}
+		<a href="{%url 'ver-productor-des'%}" class="btn btn-default">Ver Desabilitados</a>
+		{% else %}
+		<a href="{%url 'ver-productor'%}" class="btn btn-default">Ver Habilitados</a>
+
+	{% endif %}
+
+		<a href="{%url 'productores-lista-cvs'%}" class="btn btn-default">Guardar CVS</a>
+		<a href="{%url 'productores-lista-pdf'%}" class="btn btn-danger">Guardar PDF</a>
+		
+
+	</ul>
+</nav>
+
+
+<h2>{{name|upper}}</h2> <hr>
+<table class="table table-striped col-md-6">
+		<thead>
+			<tr>
+			<td><input type="checkbox" id="action-toggle" form="nominal">	</td>
+			<td>Codigo En sistema</td>
+				<td>Nombre y Apellido</td>
+				<td>CI/Rif</td>
+				<td>Sexo</td>
+
+				<td>Domicilio</td>
+				<td>Cargo</td>
+
+			</tr>
+
+		</thead>
+		<tbody>
+		{%for lista in form%}
+			<tr><td><input type="checkbox" class="action-select" name="seleccion" form="nominal" value="{{lista.pk}}"></td>
+				<td>{{lista.nombre|title}} {{lista.apellido|title}}</td>
+				<td><a href="{{lista.get_absolute_url}}">
+				{{lista.documentoID|title}}</a></td>
+				<td>{{lista.genero|title}}</td>
+				<td>{{lista.domicilio}}</td>
+				<td>{{lista.puesto.nombre|title}}</td>
+
+					
+				
+			</tr>
+		{%endfor%}
+
+		</tbody>
+	</table>
+
+
+{% endblock content %}

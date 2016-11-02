@@ -13,6 +13,8 @@ class Cliente(models.Model):
 	#profecion=models.CharField(max_length=100)
 	telefono= models.CharField(max_length=12, blank=True)
 	celular= models.CharField(max_length=12, blank=True)
+	e_mail= models.EmailField(default='moliven@moliven.com', blank=True)
+
 	referencia_folder= models.CharField(max_length= 50, default='0')
 	# Datos bancarios
 	cuenta_bancaria= models.CharField(max_length=100, blank=True)

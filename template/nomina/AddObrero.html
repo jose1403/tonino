@@ -1,0 +1,25 @@
+{% extends "base_site.html" %}
+{% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+                  <li><a href="{% url 'ver-nomina' %}">Nomina</a> > 
+                 <li><a href="{% url 'ver-obrero' %}">Obreros</a> > 
+               
+                 
+                  <li>Agregar Obrero</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{% block content %}
+{% if form.errors %}
+	<p><label for="">Por favor corrija lo siquiente</label></p>
+	
+{% endif %}
+<form action="" method="POST">
+	{% csrf_token %}
+	{{form.as_p}}
+
+	<input type="submit" value="Guardar">
+</form>
+{% endblock content %}

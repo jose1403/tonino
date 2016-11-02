@@ -1,0 +1,93 @@
+
+{%extends 'base_site.html'%}
+{% load staticfiles widget_tweaks %}
+{% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+                  <li><a href="{% url 'ver-nomina' %}">Nomina</a> > 
+
+                 
+                  <li>Total Nomina Obreros</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{%block content%}
+<!--
+{#{%load my_tags#%}#}
+#{#{%display_buscador_form%}#}-->
+
+<ul class="breadcrumb">
+	{%for i in date_list%}
+	<li><a href="{%url 'recepciones_anuales' i.year%}">{{i.year}}</a></li> |
+	{%endfor%}</ul>
+</nav>
+<hr>
+<table class="table table-striped col-md-6">
+
+		<thead>
+			<tr><td> <input type="checkbox" id="action-toggle" form="select-recepcion"></td>
+				<td>Fecha</td>
+				<td>Total Obreros</td>
+				<td>Total Nomina</td>
+				<td>Fecha Generado</td>
+				<td>CANTIDAD</td>
+				<td>FECHA DE LLEGADA</td>
+
+
+			</tr>
+	
+		</thead>
+		<tbody>
+		{%for lista in form%}
+			<tr>
+			<td><input type="checkbox" class="action-select" name="seleccion" form="select-recepcion" value="{{lista.pk}}">
+					<td><a href="{{lista.get_absolute_url}}">{{lista.codigo_en_sistema}}</a></td>
+					<td>{{fecha|upper}}({{lista.variedad.nombre|upper}}-{{lista.tipo.nombre|upper}})  </td>
+					
+					<td>{{lista.total_obreros|upper}}</td>
+					
+					<td>{{lista.total_nomina|upper}}</td>
+
+					<td>{{lista.fecha_generado}}</td>
+			</tr>
+		{%endfor%}
+		</tbody>
+	</table>
+{%endblock%}
+<div class="pagination">
+		   	
+			<ul class="step-links">
+				{% if form.has_previous %}
+				          <li>
+				          	  <a href="?page={{ forms.previous_page_number }}" class="anterior">Anterior</a>
+				          </li>
+				{% endif %}
+
+				{% for i in lista  %}
+					<a href="?page={{i}}" class="num btn btn-default">{{i}}</a></span>
+					
+				{% endfor %}
+				<li>
+					<span class="current">
+					           Pagina {{ form.number }} de {{ form.paginator.num_pages }}.
+					</span>
+				</li>
+				
+				{% if form.has_next %}
+				      <li>
+				      	<a href="?page={{ forms.next_page_number }}" class="siguiente">siguiente</a>
+				      </li>
+				{% endif %}
+			</ul>
+		</div>
+
+{%block delete%}
+<form action="." method="POST" id="select-recepcion">  {%csrf_token%}
+	<select name="lista-pdf" id="lista-pdf" form="select-recepcion">
+	<option value="selected"> ----------</option>
+		<option value="lista-selected">Guardar Lista</option>
+	</select>
+	<input type="submit" value="Guardar" form="select-recepcion">
+</form>
+{%endblock%}

@@ -178,6 +178,87 @@ def get_full_query(query_string, model):
             rel_fields = [ "%s__%s" % (f.name, fr.name) for fr in f.rel.to._meta.fields if not fr.rel ]
             fields.extend(rel_fields)
     return get_query(query_string, fields)
+
+
+
+from decimal import Decimal
+
+from django.conf import settings
+
+from django.utils.encoding import force_text
+from django.utils.formats import number_format
+from django.utils.safestring import mark_safe
+from django.utils.translation import pgettext, ugettext as _, ungettext
+
+def intcomma(value, use_l10n=True):
+    """
+    Converts an integer to a string containing commas every three digits.
+    For example, 3000 becomes '3,000' and 45000 becomes '45,000'.
+    """
+    if settings.USE_L10N and use_l10n:
+        try:
+            if not isinstance(value, (float, Decimal)):
+                value = int(value)
+        except (TypeError, ValueError):
+            return intcomma(value, False)
+        else:
+            return number_format(value, force_grouping=True)
+    orig = force_text(value)
+    new = re.sub("^(-?\d+)(\d{3})", '\g<1>,\g<2>', orig)
+    if orig == new:
+        return new
+    else:
+        return intcomma(new, use_l10n)
+
+# A tuple of standard large number to their converters
+intword_converters = (
+    (6, lambda number: (
+        ungettext('%(value).1f million', '%(value).1f million', number),
+        ungettext('%(value)s million', '%(value)s million', number),
+    )),
+    (9, lambda number: (
+        ungettext('%(value).1f billion', '%(value).1f billion', number),
+        ungettext('%(value)s billion', '%(value)s billion', number),
+    )),
+    (12, lambda number: (
+        ungettext('%(value).1f trillion', '%(value).1f trillion', number),
+        ungettext('%(value)s trillion', '%(value)s trillion', number),
+    )),
+    (15, lambda number: (
+        ungettext('%(value).1f quadrillion', '%(value).1f quadrillion', number),
+        ungettext('%(value)s quadrillion', '%(value)s quadrillion', number),
+    )),
+    (18, lambda number: (
+        ungettext('%(value).1f quintillion', '%(value).1f quintillion', number),
+        ungettext('%(value)s quintillion', '%(value)s quintillion', number),
+    )),
+    (21, lambda number: (
+        ungettext('%(value).1f sextillion', '%(value).1f sextillion', number),
+        ungettext('%(value)s sextillion', '%(value)s sextillion', number),
+    )),
+    (24, lambda number: (
+        ungettext('%(value).1f septillion', '%(value).1f septillion', number),
+        ungettext('%(value)s septillion', '%(value)s septillion', number),
+    )),
+    (27, lambda number: (
+        ungettext('%(value).1f octillion', '%(value).1f octillion', number),
+        ungettext('%(value)s octillion', '%(value)s octillion', number),
+    )),
+    (30, lambda number: (
+        ungettext('%(value).1f nonillion', '%(value).1f nonillion', number),
+        ungettext('%(value)s nonillion', '%(value)s nonillion', number),
+    )),
+    (33, lambda number: (
+        ungettext('%(value).1f decillion', '%(value).1f decillion', number),
+        ungettext('%(value)s decillion', '%(value)s decillion', number),
+    )),
+    (100, lambda number: (
+        ungettext('%(value).1f googol', '%(value).1f googol', number),
+        ungettext('%(value)s googol', '%(value)s googol', number),
+    )),
+)
+
+
 # queryset = MyTable._default_manager.all() # [2]
 #if q:
 #    query = get_full_query(q, MyTable)

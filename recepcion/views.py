@@ -108,7 +108,7 @@ def mermas(cantidad, HI, HF, Ii, If):
 	MPT = MHT - MP['cantidadM']
 
 	cantidad_descuento= MI['cantidadI']+MH['cantidadH']+MP['cantidadM']
-	merma_total=cantidad_descuento/float(cantidad)*100
+	merma_total=round(cantidad_descuento/float(cantidad)*100, 2)
 	"""C= Cantidad M= Merma P= manipuleo"""
 	dicc= {'CMI':MIT,'MI': MI['mermaI'], 'CI': MI['cantidadI'],
 			'CMH': MHT,'MH':MH['mermaH'], 'CH':MH['cantidadH'],
@@ -648,7 +648,7 @@ def Ver_Factura_Recepcion(request, pk):
 	total= TotalRecepcion.cuenta.contar_rubros(pk=recepcion.producto.pk)
 	#for i,k in IMPUESTOS.items():
 
-
+	dic = {'hola':2,'adios':1}
 	#IVA= total_pago.total_neto * (12.0/100)
 	#TRASPORTE = total_pago.total_neto *(1.8/100) 
 
@@ -657,7 +657,8 @@ def Ver_Factura_Recepcion(request, pk):
 																'total_pago':total_pago,
 																'impuestos':IMPUESTOS,
 																'cuenta':cuenta,
-																'total':total
+																'total':total,
+																'dic':dic,
 
 																})
 
