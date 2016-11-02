@@ -50,7 +50,7 @@ def rubro_pdf(request):
     lista = []
     styles = getSampleStyleSheet()
     lista.append(logo_pdf())
-    fecha= Paragraph('<b><i>Fecha: %s/%s/%s</i><b>'%(tiempo.day,tiempo.month, tiempo.year), styles['Normal'])
+    fecha= Paragraph('<b><i>Fecha: %s/%s/%s</i></b>'%(tiempo.day,tiempo.month, tiempo.year), styles['Normal'])
     lista.append(Spacer(0,15))
     lista.append(fecha)
     lista.append(Spacer(0,40))
@@ -73,7 +73,7 @@ def rubro_pdf(request):
     lista.append(header)
     headings = ('Codigo En Sistema', 'Nombre', 'Nombre Cientifico', 'T/Humedad', 'T/Impureza')
     array= []
-    for p in Rubro.objects.all():
+    for p in Rubro.objects.filter(null=False):
         array.append([Paragraph(p.codigo_en_sistema(), style_table),
                 Paragraph(p.nombre, style_table), 
                 Paragraph(p.nombre_cientifico, style_table),

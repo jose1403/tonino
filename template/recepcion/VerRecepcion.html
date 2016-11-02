@@ -1,98 +1,121 @@
-
 {%extends 'base_site.html'%}
 {% load staticfiles widget_tweaks %}
- {% block breadcrumbs %}
-                <ul class="breadcrumb">
-                  <li><a href="{% url 'agregado-nuevo' %}">inicio</a> >  
-                  <li><a href="{%url 'ver-recepcion'%}">recepcion</a></li>
-                   
-                    </li>
-                </ul>
-   {% endblock %}
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/recepcion/Recepciones.css'%}">
+  <link rel="stylesheet" href="{% static 'css/recepcion/VerRecepciones.css'%}">
+{% endblock %}
+
+
+{%block buscador%}{% endblock %}
+
+{% block breadcrumbs %}
+   <div class="migas">
+   	 	<ul class="breadcrumb">
+   	   	 	<li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > </li>
+   	   	 	<li>Recepciones</li>
+   		</ul>
+   </div>
+{% endblock %}
+
+
+
 {%block content%}
-{%load my_tags%}
-{%display_buscador_form%}
-<h3>	<a href="{%url 'add-recepcion'%}">Añadir Recepcion +</a></h3>
-
-</nav>
-<span><a href="{%url 'ver-cuentasx-pagar'%}">CUENTAS POR PAGAR</a></span>
-<h2>Recepcion</h2> <hr>
-<nav>
-
-<a href="{%url 'ver-rubro'%}">Ver Ingreso Por Rubros</a>
-<ul class="breadcrumb">
-	{%for i in date_list%}
-	<li><a href="{%url 'recepciones_anuales' i.year%}">{{i.year}}</a></li> |
-	{%endfor%}</ul>
-</nav>
-<hr>
-<table class="table table-striped col-md-6">
-
-		<thead>
-			<tr><td> <input type="checkbox" id="action-toggle" form="select-recepcion"></td>
-				<td>NO CONTROL</td>
-				<td>Producto</td>
-				<td>Ciclo</td>
-				<td>Proovedor</td>
-				<td>CANTIDAD</td>
-				<td>FECHA DE LLEGADA</td>
-
-
-
-			</tr>
-	
-		</thead>
-		<tbody>
-		{%for lista in form%}
-			<tr>
-			<td><input type="checkbox" class="action-select" name="seleccion" form="select-recepcion" value="{{lista.pk}}">
-					<td><a href="{{lista.get_absolute_url}}">{{lista.codigo_en_sistema}}</a></td>
-					<td>{{lista.producto|upper}}({{lista.variedad.nombre|upper}}-{{lista.tipo.nombre|upper}})  </td>
-					
-					<td>{{lista.ciclo_asociado|upper}}</td>
-					
-					<td>{{lista.proovedor.nombre_o_razon_social|upper}}</td>
-
-					<td>{{lista.cantidad_en_Kg}} kg. </td>
-					<td>{{lista.fecha_llegada|date:"d/m/y - h:m"}}</td>
-			</tr>
-		{%endfor%}
-		</tbody>
-	</table>
-{%endblock%}
-<div class="pagination">
-		   	
-			<ul class="step-links">
-				{% if form.has_previous %}
-				          <li>
-				          	  <a href="?page={{ forms.previous_page_number }}" class="anterior">Anterior</a>
-				          </li>
-				{% endif %}
-
-				{% for i in lista  %}
-					<a href="?page={{i}}" class="num btn btn-default">{{i}}</a></span>
-					
-				{% endfor %}
-				<li>
-					<span class="current">
-					           Pagina {{ form.number }} de {{ form.paginator.num_pages }}.
-					</span>
-				</li>
+	<div id="content-main">
+		<div class="listado">
+			<h2 class="titulo">Recepcion</h2>
+			<ul class="breadcrumb">
+					{%for i in date_list%}
+					<li><a href="{%url 'recepciones_anuales' i.year%}">{{i.year}}</a></li> |
+					{%endfor%}</ul>
+				</nav>
+				<hr>		
+			<nav>
+				<ul>
+					<li>
+						{%load my_tags%}
+						{%display_buscador_form%}
+					</li>
+					<li class="right"><a href="{%url 'add-recepcion'%}"><span class="icono-plus"></span>Añadir Recepción</a></li>
+					<li class="right"><a href="{%url 'ver-rubro'%}">Ver Ingreso Por Rubros</a></li>
+					<li class="right"><a href="{%url 'ver-cuentasx-pagar'%}">Cuentas Por Pagar</a></li>
+				</ul>
+			</nav>
+			
+			
+			<section>
+				<table >
 				
-				{% if form.has_next %}
-				      <li>
-				      	<a href="?page={{ forms.next_page_number }}" class="siguiente">siguiente</a>
-				      </li>
-				{% endif %}
-			</ul>
+					<thead>
+						<tr><td> <input type="checkbox" id="action-toggle" form="select-recepcion"></td>
+							<td>NO CONTROL</td>
+							<td>Producto</td>
+							<td>Ciclo</td>
+							<td>Proovedor</td>
+							<td>CANTIDAD</td>
+							<td>FECHA DE LLEGADA</td>
+						</tr>
+					</thead>
+					<tbody>
+						{% if form|length > 0 %}
+							{%for lista in form%}
+								<tr>
+									<td><input type="checkbox" class="action-select" name="seleccion" form="select-recepcion" value="{{lista.pk}}">
+									<td><a href="{{lista.get_absolute_url}}">{{lista.codigo_en_sistema}}</a></td>
+									<td>{{lista.producto|upper}}({{lista.variedad.nombre|upper}}-{{lista.tipo.nombre|upper}})  </td>
+										
+									<td>{{lista.ciclo_asociado|upper}}</td>
+										
+									<td>{{lista.proovedor.nombre_o_razon_social|upper}}</td>
+					
+									<td>{{lista.cantidad_en_Kg}} kg. </td>
+									<td>{{lista.fecha_llegada|date:"d/m/y - h:m"}}</td>
+								</tr>
+							{%endfor%}
+						{% else %}
+							<tr>
+								<td style="text-align:center; padding:20px;" colspan="7"> No hay Registros</td>
+							</tr>
+						{% endif %}
+					</tbody>
+					</table>
+				{%endblock%}
+				<div class="pagination">
+						   	
+							<ul class="step-links">
+								{% if form.has_previous %}
+								          <li>
+								          	  <a href="?page={{ forms.previous_page_number }}" class="anterior">Anterior</a>
+								          </li>
+								{% endif %}
+				
+								{% for i in lista  %}
+									<a href="?page={{i}}" class="num btn btn-default">{{i}}</a></span>
+									
+								{% endfor %}
+								<li>
+									<span class="current">
+									           Pagina {{ form.number }} de {{ form.paginator.num_pages }}.
+									</span>
+								</li>
+								
+								{% if form.has_next %}
+								      <li>
+								      	<a href="?page={{ forms.next_page_number }}" class="siguiente">siguiente</a>
+								      </li>
+								{% endif %}
+							</ul>
+						</div>
+				
+				{%block delete%}
+				<form action="." method="POST" id="select-recepcion">  {%csrf_token%}
+					<select name="lista-pdf" id="lista-pdf" form="select-recepcion">
+					<option value="selected"> ----------</option>
+						<option value="lista-selected">Guardar Lista</option>
+					</select>
+					<input type="submit" value="Guardar" form="select-recepcion">
+				</form>
+			</section>
 		</div>
-
-{%block delete%}
-<form action="." method="POST" id="select-recepcion">  {%csrf_token%}
-	<select name="lista-pdf" id="lista-pdf" form="select-recepcion">
-	<option value="selected"> ----------</option>
-		<option value="lista-selected">Guardar Lista</option>
-	</select>
-	<input type="submit" value="Guardar" form="select-recepcion">
-</form>
+	</div>
 {%endblock%}

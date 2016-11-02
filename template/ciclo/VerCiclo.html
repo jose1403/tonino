@@ -1,83 +1,110 @@
 {%extends 'base_site.html'%}
- {% block breadcrumbs %}
-                <ul class="breadcrumb">
-                  <li><a href="{% url 'agregado-nuevo' %}">inicio</a> >  
-                  <li></li>
-                   
-                    </li>
-                </ul>
-   {% endblock %}
+{% load staticfiles %}
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/ciclo/Ciclos.css'%}">
+   <link rel="stylesheet" href="{% static 'css/ciclo/VerCiclos.css'%}">
+{% endblock %}
+
+{%block buscador%}{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="migas">
+    	<ul class="breadcrumb">
+    	 	<li><a href="{% url 'agregado-nuevo' %}">Inicio</a> >  </li>
+    	    <li>Ciclos</li>
+    	</ul>
+    </div>
+{% endblock %}
+
 {%block content%}
-{%load my_tags%}
-{%display_buscador_form%}
-<nav>
-	<ul>
-		<li><a href="{%url 'add-ciclos'%}">Añadir Ciclos</a></li>
-		
 
-	</ul>
-</nav>
-{%if nombre%}
-<a href="{%url 'ver-ciclos'%}" class="btn btn-primary">Ciclos Habilitados</a>
-{%else%}
-<a href="{%url 'ver-ciclos-des'%}" class="btn btn-primary">Ciclos Deshabilitados</a>
-
-{%endif%}
-<h2>Ciclos</h2> <hr>
-<table class="table table-striped col-md-6">
-		<thead>
-			<tr>
-			<td><input type="checkbox" id="action-toggle" form="nominal">	</td>
-			<td>Codigo</td>
-				<td>Nombre</td>
-				<td>Fecha De Inicio</td>
-				<td>Fecha De Cierre</td>
-
-
-			</tr>
-
-		</thead>
-		<tbody>
-		{%for lista in form%}
-			<tr><td><input type="checkbox" class="action-select" name="seleccion" form="nominal" value="{{lista.pk}}"></td>
-				<td><a href="{{lista.get_absolute_url}}">{{lista.codigo_en_sistema}}</a></td>
-				<td>{{lista.nombre|title}}</td>
+	<div id="content-main">
+		<div class="listado">
+			<h2 class="titulo" >Ciclos</h2>
+			<nav>
+				<ul>
+					<li>
+						{%load my_tags%}
+						{%display_buscador_form%}
+					</li>
+					<li class="right"><a href="{%url 'add-ciclos'%}">Añadir Ciclos</a></li>
+					{%if nombre%}
+						<li class="right"><a href="{%url 'ver-ciclos'%}" class="btn btn-primary">Ciclos Habilitados</a></li>
+					{%else%}
+						<li class="right"><a href="{%url 'ver-ciclos-des'%}" class="btn btn-primary">Ciclos Deshabilitados</a>
+					</li>
+					{%endif%}
+				</ul>
+			</nav>
+			
+			<section>
+				<table >
+					<thead>
+						<tr>
+							<td><input type="checkbox" id="action-toggle" form="nominal">	</td>
+							<td>Codigo</td>
+							<td>Nombre</td>
+							<td>Fecha De Inicio</td>
+							<td>Fecha De Cierre</td>
+						</tr>
+					</thead>
 				
-					<td>{{lista.fecha_de_inicio|title}}</td>
-					<td>{{lista.fecha_de_cierre|title}}</td>
-
-
-
+					<tbody>
+						{% if form|length > 0 %}
+							{%for lista in form%}
+								<tr>
+								<td>
+									<input type="checkbox" class="action-select" name="seleccion" form="nominal" value="{{lista.pk}}">
+								</td>
+								<td><a href="{{lista.get_absolute_url}}">{{lista.codigo_en_sistema}}</a></td>
+								<td>{{lista.nombre|title}}</td>
+								<td>{{lista.fecha_de_inicio|title}}</td>
+								<td>{{lista.fecha_de_cierre|title}}</td>
+								</tr>
+							{%endfor%}
+						{% else %}
+							<tr>
+								<td style="text-align:center; padding:20px;" colspan="5"> No hay Registros</td>
+							</tr>
+						{% endif %}
+				
+					</tbody>
+				</table>
+				<div class="tools">
+				
+					<form class="form_accion" action="." method="POST" id='nominal'>	{%csrf_token%}
+						<select name="eliminar" id="eliminar" form="nominal">
+							<option value="selected"> ----------</option>
+							<option value="delete-selected">Eliminar</option>
+						</select>
+						<input type="submit" value="Eliminar" form="nominal">
+					</form>
 					
-				
-			</tr>
-		{%endfor%}
-		</tbody>
-	</table>
-	<div class="pagination">
-		   	
-			<ul class="step-links">
-				{% if form.has_previous %}
-				          <li>
-				          	  <a href="?page={{ forms.previous_page_number }}" class="anterior">Anterior</a>
-				          </li>
-				{% endif %}
-
-				{% for i in lista  %}
-					<a href="?page={{i}}" class="num btn btn-default">{{i}}</a></span>
+					<div class="pagination">
+						<ul class="step-links">
+							{% if forms.has_previous %}
+								<li>
+									<a href="?page={{ forms.previous_page_number }}" class="anterior">Anterior</a>
+								</li>
+							{% endif %}
 					
-				{% endfor %}
-				<li>
-					<span class="current">
-					           Pagina {{ form.number }} de {{ form.paginator.num_pages }}.
-					</span>
-				</li>
-				
-				{% if form.has_next %}
-				      <li>
-				      	<a href="?page={{ forms.next_page_number }}" class="siguiente">siguiente</a>
-				      </li>
-				{% endif %}
-			</ul>
+							{% for i in lista  %}
+								<a href="?page={{i}}" class="num btn btn-default">{{i}}</a></span>
+							{% endfor %}
+							<li>
+								<span class="current" >Pagina {{ forms.number }} de {{ forms.paginator.num_pages }}.</span>
+							</li>
+									
+							{% if forms.has_next %}
+								<li>
+									<a href="?page={{ forms.next_page_number }}" class="siguiente">siguiente</a>
+								</li>
+							{% endif %}
+						</ul>
+					</div>
+				</div>
+			</section>
 		</div>
+	</div>
 {%endblock%}

@@ -1,71 +1,85 @@
-
 {%extends 'base_site.html'%}
- {% block breadcrumbs %}
-                <ul class="breadcrumb">
-                  <li><a href="{% url 'agregado-nuevo' %}">inicio</a> >  
-                  <li><a href="{% url 'ver-despacho' %}">Despacho</a></li>
-                   
-                    </li>
-                </ul>
-   {% endblock %}
+{% load staticfiles %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  
+  <link rel="stylesheet" href="{% static 'css/despacho/Despachos.css'%}">
+  <link rel="stylesheet" href="{% static 'css/despacho/VerDespachos.css'%}">
+{% endblock %}
+
+{%block buscador%}{% endblock %}
+
+{% block breadcrumbs %}
+  <div class="migas">
+  	  <ul class="breadcrumb">
+  	    <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> >  </li>
+  	   	<li>Despachos</li>
+  	</ul>
+  </div>
+{% endblock %}
+
 {%block content%}
-{%load my_tags%}
-{%display_buscador_form%}
-<h3>	<a href="{%url 'add-despacho'%}">Añadir Despachos +</a></h3>
-<h3>	<a href="{%url 'ver-cuentasx-cobrar'%}">Ver Cuentas Por Pagar</a></h3>
 
-
-</nav>
-
-<h2>Despachos</h2> <hr>
-<nav>
-<ul class="breadcrumb">
-	{%for i in date_list%}
-	<li><a href="{%url 'despachos_anuales' i.year%}">{{i.year}}</a></li> |
-	{%endfor%}</ul>
-</nav>
-<hr>
-<table class="table table-striped col-md-6">
-
-		<thead>
-			<tr><td> <input type="checkbox" id="action-toggle" form="select-despacho"></td>
-				<td>NO CONTROL</td>
-				<td>Producto</td>
-				<td>Ciclo</td>
-				<td>Cliente</td>
-				<td>CANTIDAD</td>
-				<td>FECHA DE SALIDA</td>
-
-
-
-			</tr>
-	
-		</thead>
-		<tbody>
-		{%for lista in form%}
-			<tr>
-			<td><input type="checkbox" class="action-select" name="seleccion" form="select-despacho" value="{{lista.pk}}">
-					<td><a href="{{lista.get_absolute_url}}">{{lista.codigo_en_sistema}}</a></td>
-					<td>{{lista.producto|upper}}({{lista.variedad.nombre|upper}}-{{lista.tipo.nombre|upper}})  </td>
-					
-					<td>{{lista.ciclo_asociado|upper}}</td>
-					
-					<td>{{lista.cliente.nombre_o_razon_social|upper}}</td>
-
-					<td>{{lista.cantidad_en_Kg}} kg. </td>
-					<td>{{lista.fecha_salida|date:"d/m/y - h:m"}}</td>
-			</tr>
+<div id="content-main">
+	<div class="listado">
+		<h2 class="titulo" >Despachos</h2>
+		</nav>
+			
+			<nav>
+			<ul>
+				<li>
+					{%load my_tags%}
+					{%display_buscador_form%}
+				</li>
+				<li class="right"><a href="{%url 'add-despacho'%}">Añadir Despachos +</a></li>
+				<li class="right"><a href="{%url 'ver-cuentasx-cobrar'%}">Ver Cuentas Por Pagar</a></li>
+			</ul>
+		</nav>
+		
+		{%for i in date_list%}
+			<li><a href="{%url 'despachos_anuales' i.year%}">{{i.year}}</a></li> |
 		{%endfor%}
-		</tbody>
-	</table>
-{%endblock%}
-
-{%block delete%}
-<form action="." method="POST" id="select-despacho">  {%csrf_token%}
-	<select name="lista-pdf" id="lista-pdf" form="select-despacho">
-	<option value="selected"> ----------</option>
-		<option value="lista-selected">Guardar Lista</option>
-	</select>
-	<input type="submit" value="Guardar" form="select-despacho">
-</form>
+		<hr>
+		
+		<section>
+			<table >
+			
+				<thead>
+					<tr><td> <input type="checkbox" id="action-toggle" form="select-despacho"></td>
+						<td>NO CONTROL</td>
+						<td>Producto</td>
+						<td>Ciclo</td>
+						<td>Cliente</td>
+						<td>CANTIDAD</td>
+						<td>FECHA DE SALIDA</td>
+					</tr>
+				</thead>
+			
+				<tbody>
+					{% if form|length > 0 %}
+						{%for lista in form%}
+							<tr>
+							<td><input type="checkbox" class="action-select" name="seleccion" form="select-despacho" value="{{lista.pk}}">
+									<td><a href="{{lista.get_absolute_url}}">{{lista.codigo_en_sistema}}</a></td>
+									<td>{{lista.producto|upper}}({{lista.variedad.nombre|upper}}-{{lista.tipo.nombre|upper}})  </td>
+									
+									<td>{{lista.ciclo_asociado|upper}}</td>
+									
+									<td>{{lista.cliente.nombre_o_razon_social|upper}}</td>
+				
+									<td>{{lista.cantidad_en_Kg}} kg. </td>
+									<td>{{lista.fecha_salida|date:"d/m/y - h:m"}}</td>
+							</tr>
+						{%endfor%}
+					{% else %}
+						<tr>
+							<td style="text-align:center; padding:20px;" colspan="7"> No hay Registros</td>
+						</tr>
+					{% endif %}
+				</tbody>
+			</table>
+		</section>
+	</div>
+</div>
 {%endblock%}

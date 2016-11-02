@@ -9,27 +9,41 @@
 <h1>nuevos</h1>
 {# Additional CSS includes #}
 {% block extrastyle %}
-{#  <link rel="stylesheet" type="text/css" href="{% static 'css/my_project.css' %}" media="all">#}
-<style>
-	.errors{
-		color:red;
-		font-size: 15px;
-		margin: 0;
-		padding: 0;
-	}
-</style>
+	{#  <link rel="stylesheet" type="text/css" href="{% static 'css/my_project.css' %}" media="all">#}
+	
+	<link rel="stylesheet" type="text/css" href="{% static 'css/base_site.css' %}" media="all">
+	<link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
 {% endblock %}
 
 
 {# Additional JS files in footer, right before </body> #}
 {% block extrajs %}
+<script src="{% static 'smart-selects/admin/js/chainedfk.js' %}"></script>
 
-<script src="{% static 'smart-selects/admin/js/chainedfk.js' %}">
-		
-	</script>
 {% endblock %}
+
+{% block menu_system %}
+
+	<nav id="menu">
+	    <ul>
+	      <li id="recepcion"><a href="{% url 'ver-recepcion' %}"><span class="icono-truck"></span>Recepción</a><span></span></li>
+	      <li id="clientes"><a href="{% url 'ver-cliente' %}"><span class="icono-users"></span>Clientes</a><span></span></li>
+	      <li id="rubros"><a href="{% url 'ver-rubro' %}"><span class="icono-leaf"></span>Rubros</a><span></span></li id="">
+	      <li id="productores"><a href="{% url 'ver-productor' %}"><span class="icono-hammer"></span>Productores</a><span></span></li>
+	      <li id="ciclos"><a href="{% url 'ver-ciclos' %}"><span class="icono-spinner11"></span>Ciclos</a><span></span></li>
+	      <li id="despacho"><a href="{% url 'ver-despacho' %}"><span class="icono-checkmark"></span>Despacho </a><span></span></li>
+	      <li id="contabilidad"><a href="{% url 'contabilidad' %}"><span class="icono-coin-dollar"></span>Contabilidad</a><span></span></li>
+	      <li id="analisis"><a href=""><span class="icono-stats-dots"></span>Analisis </a><span></span></li>
+	      <li><a href=""><span class="icono-home"></span>Plantas</a><span></span></li>
+	    </ul>
+  	</nav>
+
+{% endblock %}
+
+<!-- agregado -->
+
 {% block delete %}
-<div class="delete">
+<!-- <div class="delete">
 <form action="." method="POST" id='nominal'>{%csrf_token%}
 <select name="eliminar" id="eliminar" form="nominal">
 	<option value="selected"> ----------</option>
@@ -38,8 +52,10 @@
 	<input type="submit" value="eliminar" form="nominal">
 </form>
 </div>
-
+ -->
 {% endblock %}
+
+
 {# Footer links (left side) #}
 {#{% block footer_links %}#}
 {#  <a href="/docs/" class="icon"><i class="icon-question-sign"></i>Documentation</a>#}

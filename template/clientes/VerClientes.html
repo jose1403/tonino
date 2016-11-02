@@ -1,82 +1,111 @@
 {%extends 'base_site.html'%}
- {% block breadcrumbs %}
-                <ul class="breadcrumb">
-                  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
-                  <li>Ver Clientes</li>
-                   
-                    </li>
-                </ul>
-   {% endblock %}
+{% load staticfiles %}
+{% block extrastyle %}
+  {{ block.super }}
+  
+  <link rel="stylesheet" href="{% static 'css/cliente/Clientes.css'%}">
+  <link rel="stylesheet" href="{% static 'css/cliente/VerClientes.css'%}">
+{% endblock %}
+
+{%block buscador%}{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="migas">
+    	<ul class="breadcrumb">
+    		<li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > </li>
+    		<li>Clientes</li>
+    	</ul>
+    </div>
+{% endblock %}
+
+
 {%block content%}
-{%load my_tags%}
-{%display_buscador_form%}
-<nav>
-	<ul>
-		<li><a href="{%url 'add-cliente'%}">Añadir Cliente</a></li>
-		<li></li>
-		<a href="{%url 'clientes-lista-cvs'%}" class="btn btn-default">Guardar CVS</a>
-		<a href="{%url 'clientes-lista-pdf'%}" class="btn btn-danger">Guardar PDF</a>
-	</ul>
-</nav>
 
-<h2>clientes</h2> <hr>
 
-<table class="table table-striped col-md-6">
-		<thead>
-			<tr>
-			<td><input type="checkbox" id="action-toggle" form="nominal">	</td>
-			<td>Codigo En sistema</td>
-				<td>Nombre o Razon Social</td>
+	<div id="content-main">
+		<div class="listado">
+			<h2 class="titulo">Clientes</h2>
+			<nav>
+				<ul>
+					<li>{%load my_tags%}
+						{%display_buscador_form%}
+					</li>
+					<li class="right"><a href="{%url 'add-cliente'%}">Añadir Cliente</a></li>
+					<li class="right"><a href="{%url 'clientes-lista-cvs'%}" class="btn btn-default">Guardar CVS</a></li>
+					<li class="right"><a href="{%url 'clientes-lista-pdf'%}" class="btn btn-danger">Guardar PDF</a></li>
+				</ul>
+			</nav>
+			<section>
+				<table>
+						<thead>
+							<tr>
+							<td><input type="checkbox" id="action-toggle" form="nominal">	</td>
+							<td>Codigo En sistema</td>
+								<td>Nombre o Razon Social</td>
+								
+								<td>CI/Rif</td>
+								<td>Domicilio Fiscal</td>
+								<td>Celular</td>
 				
-				<td>CI/Rif</td>
-				<td>Domicilio Fiscal</td>
-				<td>Celular</td>
+							</tr>
+				
+						</thead>
+						<tbody>
+						{% if form|length > 0%}
+							{%for lista in form%}
+								<tr><td><input type="checkbox" class="action-select" name="seleccion" form="nominal" value="{{lista.pk}}"></td>
+									<td>{{lista.codigo_en_sistema}}</td>
+									<td><a href="{{lista.get_absolute_url}}">
+									{{lista.nombre_o_razon_social|title}}</a></td>
+									<td>{{lista.documentoId|title}}</td>
+									<td>{{lista.domicilio_fiscal}}</td>
+									<td>{{lista.celular|title}}</td>
+								</tr>
+							{%endfor%}
+						{% else %}
+							<tr>
+								<td style="text-align:center; padding:20px;" colspan="6"> No hay Registros</td>
+							</tr>
+						{% endif %}
+				
+						</tbody>
+				</table>
+				<div class="tools">
 
-			</tr>
-
-		</thead>
-		<tbody>
-		{%for lista in form%}
-			<tr><td><input type="checkbox" class="action-select" name="seleccion" form="nominal" value="{{lista.pk}}"></td>
-				<td>{{lista.codigo_en_sistema}}</td>
-				<td><a href="{{lista.get_absolute_url}}">
-				{{lista.nombre_o_razon_social|title}}</a></td>
-				<td>{{lista.documentoId|title}}</td>
-				<td>{{lista.domicilio_fiscal}}</td>
-				<td>{{lista.celular|title}}</td>
-
+					<form class="form_accion" action="." method="POST" id='nominal'>	{%csrf_token%}
+						<select name="eliminar" id="eliminar" form="nominal">
+							<option value="selected"> ----------</option>
+							<option value="delete-selected">Eliminar</option>
+						</select>
+						<input type="submit" value="Eliminar" form="nominal">
+					</form>
 					
-				
-			</tr>
-		{%endfor%}
+					<div class="pagination">
+						<ul class="step-links">
+							{% if forms.has_previous %}
+								<li>
+									<a href="?page={{ forms.previous_page_number }}" class="anterior">Anterior</a>
+								</li>
+							{% endif %}
+						
+							{% for i in lista  %}
+								<a href="?page={{i}}" class="num btn btn-default">{{i}}</a></span>
+							{% endfor %}
+							<li>
+								<span class="current" >Pagina {{ forms.number }} de {{ forms.paginator.num_pages }}.</span>
+							</li>
+										
+							{% if forms.has_next %}
+								<li>
+									<a href="?page={{ forms.next_page_number }}" class="siguiente">siguiente</a>
+								</li>
+							{% endif %}
+						</ul>
+					</div>
+				</div>
 
-		</tbody>
-	</table>
-	<div class="pagination">
-		   	
-			<ul class="step-links">
-				{% if form.has_previous %}
-				          <li>
-				          	  <a href="?page={{ forms.previous_page_number }}" class="anterior">Anterior</a>
-				          </li>
-				{% endif %}
-
-				{% for i in lista  %}
-					<a href="?page={{i}}" class="num btn btn-default">{{i}}</a></span>
-					
-				{% endfor %}
-				<li>
-					<span class="current">
-					           Pagina {{ form.number }} de {{ form.paginator.num_pages }}.
-					</span>
-				</li>
-				
-				{% if form.has_next %}
-				      <li>
-				      	<a href="?page={{ forms.next_page_number }}" class="siguiente">siguiente</a>
-				      </li>
-				{% endif %}
-			</ul>
+			</section>
 		</div>
+	</div>
 
 {%endblock%}
