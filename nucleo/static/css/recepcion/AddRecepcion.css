@@ -1,0 +1,29 @@
+#content-main>form{
+	
+}
+
+#content-main>form>table{
+
+
+}
+
+
+#content-main>form>table input[type="text"],input[type="number"],input[type="date"],select{
+	
+}
+
+#content-main>form>table textarea{
+
+}
+
+#content-main>form>table td{
+	width: 33.33%;
+	padding: 5px 15px;
+}
+
+
+
+
+#content-main>form>table label{
+	
+}

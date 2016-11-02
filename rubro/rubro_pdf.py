@@ -50,6 +50,7 @@ def rubro_pdf(request):
     lista = []
     styles = getSampleStyleSheet()
     lista.append(logo_pdf())
+#<<<<<<< HEAD
     style= ParagraphStyle('Heading1')
     style.textColor= 'black'
     style.alignment= TA_CENTER
@@ -63,6 +64,11 @@ def rubro_pdf(request):
     style.bulletFontSize = 10
     style.fontName='Helvetica'
     fecha= Paragraph('<font><b><i>Fecha: %s/%s/%s</i><b></font>'%(tiempo.day,tiempo.month, tiempo.year), styles['Normal'])
+#=======
+    fecha= Paragraph('<b><i>Fecha: %s/%s/%s</i></b>'%(tiempo.day,tiempo.month, tiempo.year), styles['Normal'])
+    lista.append(Spacer(0,15))
+    lista.append(fecha)
+#>>>>>>> c39095c0cdc5175aaf93d43954826f4ba55db4a2
     lista.append(Spacer(0,40))
     lista.append(fecha)
     lista.append(Spacer(0,10))

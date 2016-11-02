@@ -1,58 +1,108 @@
 {%extends 'base_site.html'%}
-% load i18n admin_static %}
+{% load i18n admin_static %}
 {% load staticfiles widget_tweaks %}
+
+
 {% block extrastyle %}
-  {{ block.super }}
+ {{ block.super }}
+ 	<link rel="stylesheet" href="{% static 'css/rubros/Rubros.css' %}">
+  <link rel="stylesheet" href="{% static 'css/rubros/AgregarRubro.css' %}">
 {% endblock %}
+
+{% block extrajs %}
+	<script src="{% static 'js/rubros/AgregarRubro.js' %}"></script>
+{% endblock %}
+
+{% block buscador %}{% endblock %}
+
 {% block breadcrumbs %}
-                <ul class="breadcrumb">
-                  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
-                  <li><a href="{% url 'ver-rubro' %}">Rubros</a> >  
-                  <li>Agregar Rubros</li>
-                   
-                    </li>
-                </ul>
-   {% endblock %}
+   <div class="migas">
+   	 <ul class="breadcrumb">
+   	    <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > </li> 
+   	    <li><a href="{% url 'ver-rubro' %}">Rubros </a> > </li> 
+   	    <li>Agregar Rubro</li>
+   	</ul>
+   </div>
+{% endblock %}
+
 {%block content%}
-<h4>{{info}}</h4>
-<h2 style="color:red;">{{info}}</h2>
 
-<form action="." method="POST" enctype="multipart/form-data"> {%csrf_token%}
-		<div class="col-md-6">
-				<form method="POST">{% csrf_token %}
-					<div class="row">
-						{% for field in form %}
-						<div class="col-md-12">
-							<label for="">{{field.errors}}</label>
-							<div class="control-group">
-								<label>{{ field.label }}</label>
+<div id="content-main">
+	<h2 class="titulo">Agregar Rubro</h2>
+	<h2 style="color:red;">{{info}}</h2>
+	
+	<form action="." method="POST" enctype="multipart/form-data"> {%csrf_token%}</form>
 
-								{% render_field field  %}
-								
-							</div>
+		
+	<form method="POST">
+		{% csrf_token %}
+		<table>
+			<tr>
+				<td colspan="3">
+					<label for="">{{form.nombre.label}}</label>
+					{{form.nombre}}
+				</td>
+				<td rowspan="3" style="background-color: rgba(0,0,0,0.1)">
+					<div class="img_wrapper">
+						<img id="imagen_rubro" src="{%static 'imagenes/a.png'%}" alt="">
+						<div class="file_wrapper">
+							<span>
+								<img src="{%static 'imagenes/PNG/color_128/brush.png'%}" alt="">
+							</span>
+							{% render_field form.foto %}
 						</div>
-						{% endfor %}
 					</div>
-					<input type="submit" value="Guardar!" class="btn btn-success">
-			
-			</div>
+					<span>{{form.foto.errors}}</span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<label for="">{{form.nombre_cientifico.label}}</label>
+					{{form.nombre_cientifico}}
+				</td>
+			</tr>
+			<tr >
+				<td >
+					<label for="">{{form.tolerancia_humedad.label}}</label>
+					{{form.tolerancia_humedad}}
+				</td>
+				<td>
+					<label for="">{{form.diferencia_humedad.label}}</label>
+					{{form.diferencia_humedad}}
+				</td>
+				<td>
+					<label for="">{{form.tolerancia_impureza.label}}</label>
+					{{form.tolerancia_impureza}}
+				</td>
+			</tr>
+			<tr>
+				<td><input class="my-btn" type="submit" value='Guardar'></td>
+			</tr>
+		</table>
+	</form>
+	
+	{%endblock%}{%block delete%}
 
-
-<input type="submit" value='Guardar'>
-
-</form>
-
+</div>
 {%endblock%}
-{%block delete%}
-{%endblock%}
+	
+
 {%block sidebar%}
 
-	<div class="botones" id="content-related">
-	  <div class="module" id="recent-actions-module">
-		<button class="submit-row" name="guardar">Guardar</button>
-		<button class="guardar" name="guardar-edit">Guardar y continuar editando</button>
-		<button class="guardar" name="guardar-add">Guardar y añadir otro</button>
+	<div id="content-related">
+	  	<!--<ul class="otros">
+			<li><a href="#">Añadir tipo +</a></li>
+			<li><a href="#">Añadir Variedad +</a></li>
+			<li><a href="#">Añadir Clasificacion +</a></li> 
+			<li><a href="#">Añadir Relacion +</a></li>
+		</ul>-->
 
-		</div>
+		<ul class="botonera" id="recent-actions-module">
+			
+			<li><button class="submit-row" name="guardar">Guardar</button></li>
+			<li><button class="guardar" name="guardar-edit">Guardar y continuar editando</button></li>
+			<li><button class="guardar" name="guardar-add">Guardar y añadir otro</button></li>
+			
+		</ul>
 	</div>
 {%endblock%}

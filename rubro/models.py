@@ -27,16 +27,15 @@ class Rubro(models.Model):
 	nombre= models.CharField(max_length=50, unique=True)
 	nombre_cientifico= models.CharField(max_length=100, unique=True)
 	objects=  models.Manager()
-	#variedad = models.CrarField(max_length=4, choices=variedad
+	#variedad = models.CrarField(max_length=4, choices=variedad)
 	tolerancia_humedad= models.FloatField(default=0)
 	diferencia_humedad = models.FloatField(default=0)
 	tolerancia_impureza= models.FloatField(default=0)
 	null = models.BooleanField(default=False)
 	objects = models.Manager()
 	cuenta= ContarRubro()
-	
-	
 	foto= models.ImageField(upload_to='imagenes/rubro',blank=True, default='imagenes/icon_miau.gif')
+
 	def codigo_en_sistema(self):
 		nominal= 'MR'
 		subnominal= str(self.id)

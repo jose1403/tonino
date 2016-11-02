@@ -1,99 +1,114 @@
 {%extends 'base_site.html'%}
-
-
-
- 
+{% load staticfiles %}
 
 {% block extrastyle %}
   {{ block.super }}
+
 {% endblock %}
+
+{% block buscador %}{% endblock %}
+
 {% block breadcrumbs %}
-                <ul class="breadcrumb">
-                  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
-                  <li><a href="{%url 'ver-rubro'%}">Rubros</a></li> > 
-                  <li>Editar Rubros</li>
-                  
-                </ul>
-   {% endblock %}
+    <div class="migas">
+        <ul class="breadcrumb">
+        	<li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+            <li><a href="{%url 'ver-rubro'%}">Rubros</a></li> > 
+            <li>Editar Rubros</li>
+        </ul>
+    </div>
+{% endblock %}
+
+
+
 {%block content%}
-<h4>{{info}}</h4>
-<h1>Editar Rubro {{model.nombre|upper}}</h1>
-<h4><a href="{%url 'add-rubro'%}">Añadir Nuevo+</a> </h4>
 
-<h4><a href="{%url 'ver-rubro-variedades' model.pk %}">Ver Variedades+</a> </h4>
-<h4><a href="{%url 'ver-rubro-tipo' model.pk%}">Ver Tipos+</a></h4>
-
-<h1>Codigo En Sistema: {{model.codigo_en_sistema}}</h1>
-{{cuenta.pk}}
-
-<form action="." method="POST" enctype="multipart/form-data">
-	{%csrf_token%}
-	{%if perms.auth.acceso_empleado%}
-	<table>
-		<thead>
-			<tr>
-				<td>Nombre<label for="">{{formrubro.nombre.errors}}</label></td>
-				<td>Nombre Cientifico<label for="">{{formrubro.nombre_cientifico.errors}}</label> </td>
-				
-			</tr>
-		</thead>
-		<tbody>
-			
-			<tr>
-				<td>{{formrubro.nombre}}</td>
-				<td>{{formrubro.nombre_cientifico}}</td>
-				
-			</tr>
-		</tbody>
-
-	</table>
-	{%else%}
-	<table>
-		<thead>
-			<th>
-				<td>Nombre<label for="">{{formrubro.nombre.errors}}</label></td>
-				<td>Nombre Cientifico<label for="">{{formrubro.nombre_cientifico.errors}}</label> </td>
-				
-			</th>
-		</thead>
-		<tbody>
-			
-			<th>
-				<td><h4>{{model.nombre|upper}}</h4> </td>
-				<td><h4> {{model.nombre_cientifico|upper}}</h4> </td>
-				
-			</th>
-		</tbody>
-
-	</table>
-	{%endif%}
-
-	<table>
-		<tbody>
-		<tr>
-			<td>Tolerancia Humedad<label for="">{{formrubro.tolerancia_humedad.errors}}</label></td>
-				<td>Diferencia Humedad<label for="">{{formrubro.diferencia_humedad.errors}}</label></td>
-				<td>Tolerancia Impureza<label for="">{{formrubro.tolerancia_impureza.errors}}</label></td>
-			</tr>
-		</tbody>
-		<thead>
-		<tr>
-			<td>{{formrubro.tolerancia_humedad}}</td>
-			<td>{{formrubro.diferencia_humedad}}</td>
-			<td>{{formrubro.tolerancia_impureza}}</td>
-		</tr>
-		</thead>
-	</table>
+<div id="content-main">
 	
-	{%load staticfiles%}
-	<img src="/media/{{model.foto}}" alt="" width="40px">
-	{{formrubro.foto}}
 
-<input type="submit" value='Guardar'>
+	<h1 class="titulo">Editar Rubros</h1>
+	<h5>{{info}}</h5>
+	{{cuenta.pk}}
 
-</form>
-<a href="/agregado/rubro/generar-csv/{{model.pk}}" class="btn btn-default">Guardar CSV</a>
+	<nav>
+		<ul>
 
+			<li><h4 style="background-color:rgba(0,0,0,0.1); padding:1px 10px; border-radius:5px;">RUBRO: {{model.nombre|upper}} </h4></li>
+			<li><h4 style="background-color:rgba(0,0,0,0.1); padding:1px 10px; border-radius:5px;">CODIGO: {{model.codigo_en_sistema}}</h4></li>
+			<li class="right"><a href="{%url 'add-rubro'%}">Añadir Nuevo Rubro+</a> </li>
+			<li class="right"><a href="{%url 'ver-rubro-variedades' model.pk %}">Ver Variedades+</a></li>
+			<li class="right"><a href="{%url 'ver-rubro-tipo' model.pk%}">Ver Tipos+</a></li>
+		</ul>
+	</nav>
+	
+	<form action="." method="POST" enctype="multipart/form-data">
+		{%csrf_token%}
+		{%if perms.auth.acceso_empleado%}
+			<table>
+			
+				<tr>
+					<td>
+						<label for="">{{formrubro.nombre.label}}</label>
+						{{formrubro.nombre}}
+						<span>{{formrubro.nombre.errors}}</span>
+						
+					</td>
+					<td>
+						<label for="">{{formrubro.nombre_cientifico.label}}</label>
+						{{formrubro.nombre_cientifico}}
+						<span>{{formrubro.nombre_cientifico.errors}}</span>
+					</td>
+					
+				</tr>
+			</table>
+		{%else%}
+			<table>
+			
+				<tr>
+					<td>
+						<label for="">{{formrubro.nombre.label}}</label>
+						{{formrubro.nombre}}
+						<span>{{formrubro.nombre.errors}}</span>	
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h4><label for="">{{model.nombre|upper}}</label></h4>
+						<h4>{{model.nombre_cientifico|upper}}</h4>
+					</td>
+				</tr>
+			</table>
+		{%endif%}
+	
+		<table>
+		
+			<tr>
+				<td style="width:33%;">
+					<label for="">{{formrubro.tolerancia_humedad.label}}</label>
+					{{formrubro.tolerancia_humedad}}
+					<span>{{formrubro.tolerancia_humedad.errors}}</span>
+				</td>
+				<td style="width:33%;">
+					<label for="">{{formrubro.diferencia_humedad.label}}</label>
+					{{formrubro.diferencia_humedad}}
+					<span>{{formrubro.diferencia_humedad.errors}}</span>
+				</td>
+				<td style="width:33%;">
+					<label for="">{{formrubro.tolerancia_impureza.label}}</label>
+					{{formrubro.tolerancia_impureza}}
+					<span>{{formrubro.tolerancia_impureza.errors}}</span>
+				</td>
+			</tr>
+		</table>
+		
+		{%load staticfiles%}
+		<img src="/media/{{model.foto}}" alt="" width="40px">
+		{{formrubro.foto}}
+	
+	<input type="submit" value='Guardar'>
+	
+	</form>
+	<a href="/agregado/rubro/generar-csv/{{model.pk}}" class="btn btn-default">Guardar CSV</a>
+</div>
 {%endblock%}
 {%block sidebar%}
 
