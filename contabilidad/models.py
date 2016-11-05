@@ -57,6 +57,7 @@ class Ciclo(models.Model):
 		return '%s-%s'%(self.nombre, self.codigo_en_sistema())
 #==============================Precio de Ciclo===============
 class PrecioDeRubroPorCiclo(models.Model):
+	
 	producto= models.ForeignKey(Rubro)
 	#variedad
 	#Tipo
@@ -66,9 +67,10 @@ class PrecioDeRubroPorCiclo(models.Model):
 
 	precio_por_Kg=models.FloatField()
 	null = models.BooleanField(default=False)
-
+	
 	def get_absolute_url(self):
-		return reverse('contabilidad.views.Edit_PresioXCiclo', args=[str(self.ciclo.id),str(self.id)])
+		return reverse('contabilidad.views.Edit_PresioXCiclo', args=[str(self.ciclo.pk), str(self.pk)])
+
 	def __unicode__(self):
 		return '%s ciclo %s a %s'% (self.producto, self.ciclo, self.precio_por_Kg)
 

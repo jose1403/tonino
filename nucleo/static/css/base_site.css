@@ -31,6 +31,7 @@
 	/*padding-left: 10px;
 	padding-right: 10px;
 	padding-top: 10px;  */ 
+	box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
 	overflow: hidden;
 	margin-bottom: 5px;
 	margin-top: 5px;
@@ -246,7 +247,9 @@
 }
 
 
-
+#content-main>form>table{
+	background-color: rgba(0,0,0,0.1); 
+}
 
 
 #content-main>form>table input[type="text"],input[type="number"],input[type="date"],select{
@@ -269,6 +272,21 @@
 	padding: 0px 15px;
 }
 
+#content-main>form>table>tr>td:first-child{
+	padding-top: 10px;
+}
+
+#content-main>form>table>thead{
+	background-color: rgba(0,0,0,0.1);
+}
+
+#content-main>form>table>thead td{
+	padding: 5px 10px;
+	text-align: center;
+	font-size:15px;
+	color:#434343;
+}
+
 #content-main>form>table label{
 	font-size: 14px;
 	color:#2A688D;
@@ -277,6 +295,18 @@
 
 #content-main>form>table .subTitulo{
 	background-color: rgba(0,0,0,0.1);
+}
+
+#content-main>form>.botonera{
+	padding-top: 5px;
+}
+
+#content-main>form>.botonera>input[type="submit"]{
+	margin-top: 5px;
+	background-color: #1571A2;
+	border:0px;
+	padding: 7px 20px;
+	color:#fff;
 }
 
 /*Estilos Botones de Edicion*/
@@ -491,6 +521,147 @@
 }
 
 
+/*Estilos Factura*/
+#content-main>.factura{
+	border:4px solid rgba(0,0,0,0.1);
+	padding: 7px;
+}
+
+#content-main>.factura>.head{
+	width: 100%;
+	overflow: hidden;
+	padding: 10px;
+	border-bottom:1px solid #b3b3b3; 
+}
+
+#content-main>.factura>.head>.img_wrapper{
+	width: 33%;
+	height: 100px;
+	float: left;
+}
+
+#content-main>.factura>.head>.img_wrapper>img{
+	width: 100%;
+	height: 100%;
+}
+
+#content-main>.factura>.head>.info-empresa{
+	float: left;
+	width: 33%;
+	text-align: justify;
+	padding-top: 10px; 
+	padding-left: 50px;
+}
+
+#content-main>.factura>.head>.info-empresa>table{
+	border-left: 1px solid rgba(0,0,0,0.1);
+	width: 100%;
+
+}
+
+#content-main>.factura>.head>.info-empresa>table>thead td{
+	font-size: 15px;
+	padding-left: 70px;
+	padding-bottom: 5px;
+}
+#content-main>.factura>.head>.info-empresa>table>tbody td{
+	padding-left: 10px;
+}
+
+#content-main>.factura>.head>.detalle{
+	float: left;
+	width: 33%;
+}
+
+#content-main>.factura>.head>.detalle>table{
+	border: 1px solid #b3b3b3;
+	width: 70%;
+	margin-top: 10px;
+	margin-left: 40px;
+}
+
+#content-main>.factura>.head>.detalle>table thead{
+	background-color: rgba(0,0,0,0.1); 
+}
+#content-main>.factura>.head>.detalle>table thead>tr>td{
+	padding: 2px;
+	text-align:center;
+	font-size: 15px;
+
+}
+
+#content-main>.factura>.head>.detalle>table tbody>tr>td{
+	text-align: center;
+	padding: 6px;
+	font-size: 20px;
+}
+
+#content-main>.factura>.body{
+	padding: 10px;
+}
+
+#content-main>.factura>.body>.tabla-cliente{
+	border: 1px solid rgba(0,0,0,0.1);
+	width: 100%;
+	margin-bottom: 10px;
+	float: left;
+}
+
+#content-main>.factura>.body>.tabla-cliente>thead{
+	background: rgba(0,0,0,0.1);
+}
+
+#content-main>.factura>.body>.tabla-cliente>tbody td{
+	padding-left: 7px;
+	border: 1px solid rgba(0,0,0,0.1)	
+}
+
+#content-main>.factura>.foot{
+	overflow: hidden;
+}
+
+#content-main>.factura>.foot>.tabla-descuentos{
+	width: 49%;
+	float: right;
+}
+#content-main>.factura>.foot>.tabla-descuentos>thead {
+	background-color: rgba(0,0,0,0.1);
+	text-align: center;
+}
+#content-main>.factura>.foot>.tabla-descuentos>thead td{
+	padding: 5px;
+}
+
+#content-main>.factura>.foot>.tabla-descuentos>tbody td{
+	padding-left: 20px;
+	border: 1px solid rgba(0,0,0,0.1);
+}
+
+
+
+
+
+
+#content-main>.factura>.foot>.tabla-analisis{
+	float: left;
+	width: 50%;
+}
+#content-main>.factura>.foot>.tabla-analisis>thead {
+	background-color: rgba(0,0,0,0.1);
+	text-align: center;
+}
+#content-main>.factura>.foot>.tabla-analisis>thead td{
+	padding: 5px;
+}
+
+#content-main>.factura>.foot>.tabla-analisis>tbody td{
+	padding-left: 20px;
+	border: 1px solid rgba(0,0,0,0.1);
+}
+
+
+
+
 /*Estilos Globales*/
 
 .my-btn{
@@ -521,5 +692,39 @@
 	font-family: verdana;
 	font-weight: lighter;
 }
+
+.label-check-down{
+	background-color: rgba(0,0,0,0.2);
+	padding: 6px;
+	color:#FFFFFF;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.label-check-up{
+	margin-top: 10px;
+	background-color: rgba(0,0,0,0.2);
+	padding: 6px;
+	color:#fff;
+    text-align: center;
+}
+
+.label-check-up>input[type="checkbox"]{
+	margin-top: -1px;
+	width: 25px;
+	height: 13px;
+}
+
+.label-check-down>input[type="checkbox"]{
+	margin-top: -1px;
+	width: 25px;
+	height: 13px;
+}
+
+label[class^="label-check-"]:hover{
+	background-color:rgba(0,0,0,0.3);
+}
+
+
 
 

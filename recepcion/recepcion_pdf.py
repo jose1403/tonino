@@ -66,7 +66,7 @@ def lista_recepcion_pdf(request, lista_pk, queryset):
     lista= []
     styles = getSampleStyleSheet()
     lista.append(logo_pdf())
-    fecha= Paragraph('<b><i>Fecha: %s/%s/%s</i><b>'%(tiempo.day,tiempo.month, tiempo.year), styles['Normal'])
+    fecha= Paragraph('<b><i>Fecha: %s/%s/%s</i></b>'%(tiempo.day,tiempo.month, tiempo.year), styles['Normal'])
     lista.append(Spacer(0,40))
     lista.append(fecha)
 
@@ -178,7 +178,7 @@ def factura_recepcion_pdf(request, pk):
     #stylemenbrete.bulletAnchor = start
     stylefac.borderPadding = 0
     stylefac.endDots = None
-    lista.append(Paragraph('<font size=10 color=black><b>NO. Control<b></font>', stylefac))
+    lista.append(Paragraph('<font size=10 color=black><b>NO. Control</b></font>', stylefac))
     lista.append(Paragraph(recepcion.codigo_en_sistema(), stylefac))
     lista.append(logo_pdf())
 
@@ -212,14 +212,14 @@ def factura_recepcion_pdf(request, pk):
     lista.append(codigo_postal)
     lista.append(Spacer(0,30))
     #############################
-    fecha= Paragraph('<b><i>Fecha de Emision: %s/%s/%s - %s:%s</i><b>'%(recepcion.fecha_agregado.day,recepcion.fecha_agregado.month, recepcion.fecha_agregado.year,recepcion.fecha_agregado.hour, recepcion.fecha_agregado.minute ), styles['Normal'])
+    fecha= Paragraph('<b><i>Fecha de Emision: %s/%s/%s - %s:%s</i></b>'%(recepcion.fecha_agregado.day,recepcion.fecha_agregado.month, recepcion.fecha_agregado.year,recepcion.fecha_agregado.hour, recepcion.fecha_agregado.minute ), styles['Normal'])
     lista.append(fecha)
     lista.append(Spacer(0,10))
     lista.append(Paragraph('<para alignment=left><font><b>CICLO: %s </b></font>'%recepcion.ciclo_asociado, styles['Normal'])),
 
 
     lista.append(Paragraph('<font size=10 color=black ><b>-<b></font>'*156, styles['Normal']))
-    lista.append(Paragraph('<font color=red><b>DATOS DEL PROOVEDOR<b><font> ', styles['Normal']))
+    lista.append(Paragraph('<font color=red><b>DATOS DEL PROOVEDOR</b><font> ', styles['Normal']))
 
     #datos De Proovedor
     style_table= ParagraphStyle('Default')
@@ -237,10 +237,10 @@ def factura_recepcion_pdf(request, pk):
 
     style_table.bulletAnchor= 'start',
     array1=[]
-    array1.append([Paragraph('<font color=black><b>NOMBRE O RAZON SOCIAL: %s<b>  </font>'%recepcion.proovedor.nombre_o_razon_social.upper(), style_table),
-    Paragraph('<para alignment=left><font><b>CI/RIF: %s</b></font>'%recepcion.proovedor.documentoId.upper(), style_table)])
+    array1.append([Paragraph('<font color=black><b>NOMBRE O RAZON SOCIAL: %s</b>  </font>'%recepcion.proovedor.nombre_o_razon_social.upper(), style_table),
+    Paragraph('<para alignment=left><font></b>CI/RIF: %s</b></font>'%recepcion.proovedor.documentoId.upper(), style_table)])
     array2=[]
-    array2.append([Paragraph('<font><b>DOMICILIO: </b></font><font size=8><b>%s<b></font>'%recepcion.proovedor.domicilio_fiscal.upper(), style_table),
+    array2.append([Paragraph('<font><b>DOMICILIO: </b></font><font size=8></b>%s<b></font>'%recepcion.proovedor.domicilio_fiscal.upper(), style_table),
     Paragraph('<para alignment=left><font><b>TELE: %s/%s</b></font>'%(recepcion.proovedor.telefono, recepcion.proovedor.celular), style_table)])
     array3 =[]
     array3.append([Paragraph('<font><b>CODIGO: %s</b></font>'%recepcion.proovedor.codigo_en_sistema(), style_table),
@@ -248,12 +248,12 @@ def factura_recepcion_pdf(request, pk):
     t=Table(array1 +array2 + array3)
 
     lista.append(t)
-    lista.append(Paragraph('<font size=10 color=black ><b>-<b></font>'*156, styles['Normal']))
+    lista.append(Paragraph('<font size=10 color=black ><b>-</b></font>'*156, styles['Normal']))
 
     descripcion= []
     
     headingsDes=[]
-    headingsDes.append([Paragraph('<font color=black><b>RUBRO <b>  </font>', style_table),
+    headingsDes.append([Paragraph('<font color=black><b>RUBRO </b>  </font>', style_table),
 
         Paragraph('<para alignment=left><font><b>PRESIO </b></font>', style_table),
 
@@ -281,7 +281,7 @@ def factura_recepcion_pdf(request, pk):
     impuesto1=[]
     print total.impuestos()
     for i, k in total.impuestos().items():
-        impuesto1.append([Paragraph('<font color=black><b> <b>  </font>', style_table),
+        impuesto1.append([Paragraph('<font color=black><b> </b>  </font>', style_table),
         Paragraph('<para alignment=left><font><b> </b></font>', style_table),
         Paragraph('<para alignment=left><font><b> </b></font>', style_table),
         Paragraph('<para alignment=left><font><b> </b></font>', style_table),
@@ -292,7 +292,7 @@ def factura_recepcion_pdf(request, pk):
         Paragraph('<para alignment=left><font><b>%s Bs.</b></font>'%k, style_table),
         ])
     precio_total=[]
-    precio_total.append([Paragraph('<font color=black><b> <b>  </font>', style_table),
+    precio_total.append([Paragraph('<font color=black><b> </b>  </font>', style_table),
         Paragraph('<para alignment=left><font><b> </b></font>', style_table),
         Paragraph('<para alignment=left><font><b> </b></font>', style_table),
         Paragraph('<para alignment=left><font><b> </b></font>', style_table),

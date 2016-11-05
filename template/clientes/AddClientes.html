@@ -3,74 +3,170 @@
 {% block extrastyle %}
   {{ block.super }}
 {% endblock %}
- {% block breadcrumbs %}
-                <ul class="breadcrumb">
-                  <li><a href="{% url 'agregado-nuevo' %}" class="btn btn-default">Inicio</a> > 
-                  <li><a href="{%url 'ver-cliente'%}" class="btn btn-default">Clientes</a></li> > 
-                  <li>Añadir Clientesr</li>
-                   
-                    </li>
-                </ul>
-   {% endblock %}
+{% block buscador %}{% endblock %}
+{% block breadcrumbs %}
+    <div class="migas">
+    	<ul class="breadcrumb">
+    	  <li><a href="{% url 'agregado-nuevo' %}" >Inicio</a>></li>
+    	  <li><a href="{%url 'ver-cliente'%}">Clientes</a>></li>
+    	  <li>Añadir Clientes</li>
+    	</ul>
+    </div>
+{% endblock %}
 
 {%block content%}
-<label for="">{{info}}</label>
-<form action="." method="POST">
-	{%csrf_token%}
+<div id="content-main">
+	<label for="">{{info}}</label>
+	<form action="." method="POST">
+		{%csrf_token%}
+	
+	<!-- 	<div id="formulario">
+			<div class="campos" >
+			<label for="id_rubro">{{form.nombre_o_razon_social.errors}}</label>
+			<label for="id_rubro">{{form.nombre_o_razon_social.label|upper}}</label>{{form.nombre_o_razon_social}}
+			</div>
+			<div class="campos" >
+			<label for="id_rubro">{{form.documentoId.errors}}</label>
+			<label for="id_rubro">CI/RIF</label>{{form.documentoId}}
+			</div>
+			<div class="campos" >
+			<label for="id_rubro">{{form.domicilio_fiscal.errors}}</label>
+			<label for="id_rubro">{{form.domicilio_fiscal.label|upper}}</label>{{form.domicilio_fiscal}}
+			</div>
+			<div class="campos" >
+			<label for="id_rubro">{{form.telefono.errors}}</label>
+			<label for="id_rubro">{{form.telefono.label|upper}}</label>{{form.telefono}}
+			</div>
+			<div class="campos" >
+			<label for="id_rubro">{{form.celular.errors}}</label>
+			<label for="id_rubro">{{form.celular.label|upper}}</label>{{form.celular}}
+			</div>
+			<div class="campos" >
+			<label for="id_rubro">{{form.referencia_folder.errors}}</label>
+			<label for="id_rubro">{{form.referencia_folder.label|upper}}</label>{{form.referencia_folder}}
+			</div>
+			<div class="campos" >
+			<label for="id_rubro">{{form.cuenta_bancaria.errors}}</label>
+			<label for="id_rubro">{{form.cuenta_bancaria.label|upper}}</label>{{form.cuenta_bancaria}}
+			</div>
+			<div class="campos" >
+			<label for="id_rubro">{{form.banco.errors}}</label>
+			<label for="id_rubro">{{form.banco.label|upper}}</label>{{form.banco}}
+			</div>
+			<div class="campos" >
+			<label for="id_rubro">{{form.tipo_cuenta.errors}}</label>
+			<label for="id_rubro">{{form.tipo_cuenta.label|upper}}</label>{{form.tipo_cuenta}}
+			</div>
+			<div class="campos" >
+			<label for="id_rubro">{{form.habilitado.errors}}</label>
+			<label for="id_rubro">{{form.habilitado.label|upper}}</label>{{form.habilitado}}
+			</div>
+			<div class="campos" >
+			<label for="id_rubro">{{form.observacion.errors}}</label>
+			<label for="id_rubro">{{form.observacion.label|upper}}</label>{{form.observacion}}
+			</div>
+		</div>
+				 -->
 
-	<div id="formulario">
-		<div class="campos" >
-		<label for="id_rubro">{{form.nombre_o_razon_social.errors}}</label>
-		<label for="id_rubro">{{form.nombre_o_razon_social.label|upper}}</label>{{form.nombre_o_razon_social}}
-		</div>
-		<div class="campos" >
-		<label for="id_rubro">{{form.documentoId.errors}}</label>
-		<label for="id_rubro">CI/RIF</label>{{form.documentoId}}
-		</div>
-		<div class="campos" >
-		<label for="id_rubro">{{form.domicilio_fiscal.errors}}</label>
-		<label for="id_rubro">{{form.domicilio_fiscal.label|upper}}</label>{{form.domicilio_fiscal}}
-		</div>
-		<div class="campos" >
-		<label for="id_rubro">{{form.telefono.errors}}</label>
-		<label for="id_rubro">{{form.telefono.label|upper}}</label>{{form.telefono}}
-		</div>
-		<div class="campos" >
-		<label for="id_rubro">{{form.celular.errors}}</label>
-		<label for="id_rubro">{{form.celular.label|upper}}</label>{{form.celular}}
-		</div>
-		<div class="campos" >
-		<label for="id_rubro">{{form.referencia_folder.errors}}</label>
-		<label for="id_rubro">{{form.referencia_folder.label|upper}}</label>{{form.referencia_folder}}
-		</div>
-		<div class="campos" >
-		<label for="id_rubro">{{form.cuenta_bancaria.errors}}</label>
-		<label for="id_rubro">{{form.cuenta_bancaria.label|upper}}</label>{{form.cuenta_bancaria}}
-		</div>
-		<div class="campos" >
-		<label for="id_rubro">{{form.banco.errors}}</label>
-		<label for="id_rubro">{{form.banco.label|upper}}</label>{{form.banco}}
-		</div>
-		<div class="campos" >
-		<label for="id_rubro">{{form.tipo_cuenta.errors}}</label>
-		<label for="id_rubro">{{form.tipo_cuenta.label|upper}}</label>{{form.tipo_cuenta}}
-		</div>
-		<div class="campos" >
-		<label for="id_rubro">{{form.habilitado.errors}}</label>
-		<label for="id_rubro">{{form.habilitado.label|upper}}</label>{{form.habilitado}}
-		</div>
-		<div class="campos" >
-		<label for="id_rubro">{{form.observacion.errors}}</label>
-		<label for="id_rubro">{{form.observacion.label|upper}}</label>{{form.observacion}}
-		</div>
+		<table>
+			<thead>
+				<tr>
+					<td colspan="2" >Datos Personales</td>
+				</tr>
+			</thead>
+			<tr>
+				<td>
+					<label for="">{{form.nombre_o_razon_social.label}}</label>
+					{{form.nombre_o_razon_social}}
+					<span>{{form.nombre_o_razon_social.errors}}</span>
+				</td>
+				<td >
+					<label for="">{{form.documentoId.label}}</label>
+					{{form.documentoId}}
+					<span>{{form.documentoId.errors}}</span>
+				</td>
+			</tr>
+		</table>
+		<table style="margin-top: 15px;">
+			<thead>
+				<tr>
+					<td colspan="2" >Información de Contacto</td>
+				</tr>
+			</thead>
+			<tr>
+				<td >
+					<label for="">{{form.telefono.label}}</label>
+					{{form.telefono}}
+					<span>{{form.telefono.errors}}</span>
+				</td>
+				<td rowspan="3">
+					<label for="">{{form.domicilio_fiscal.label}}</label>
+					{{form.domicilio_fiscal}}
+					<span>{{form.domicilio_fiscal.errors}}</span>
+				</td>
+			</tr>
+			<tr>
+				<td >
+					<label for="">{{form.celular.label}}</label>
+					{{form.celular}}
+					<span>{{form.celular.errors}}</span>
+				</td>
+			</tr>
+			<tr>
+				<td >
+					<label for="">{{form.referencia_folder.label}}</label>
+					{{form.referencia_folder}}
+					<span>{{form.referencia_folder.errors}}</span>
+				</td>
+			</tr>
+		</table>
 
-
-	</div>
+		<table style="margin-top: 15px;">
+			<thead>
+				<tr>
+					<td colspan="3" >Datos Bancarios</td>
+				</tr>
+			</thead>
+			<tr>
+				<td style="width: 33%;">
+					<label for="">{{form.cuenta_bancaria.label}}</label>
+					{{form.cuenta_bancaria}}
+					<span>{{form.cuenta_bancaria.errors}}</span>
+				</td>
+				<td style="width: 33%;">
+					<label for="">{{form.banco.label}}</label>
+					{{form.banco}}
+					<span>{{form.banco.errors}}</span>
+				</td>
+				<td style="width: 33%;">
+					<label for="">{{form.tipo_cuenta.label}}</label>
+					{{form.tipo_cuenta}}
+					<span>{{form.tipo_cuenta.errors}}</span>
+				</td>
+			</tr>
 			
- <br>
- <input type="submit" value="Guardar">
-</form>
+		</table>
+		<table style="margin-top: 15px">
+			<tr>
+				<td style="text-align: center;">
+					<label for="">{{form.habilitado.label}} {{form.habilitado}}</label>
+					
+					<span>{{form.habilitado.errors}}</span>
+				</td>
+				<td>
+					<label for="">{{form.observacion.label}}</label>
+					{{form.observacion}}
+					<span>{{form.observacion.errors}}</span>
+				</td>
+			</tr>
+		</table>
 
+	 <br>
+	 <div class="botonera">
+	 	 <input type="submit" value="Guardar">
+	 </div>
+	</form>
+</div>
 {%endblock%}
 {%block sidebar%}
 

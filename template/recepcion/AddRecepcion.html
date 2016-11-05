@@ -1,50 +1,224 @@
 {%extends 'base_site.html'%}  
 {% load i18n admin_static %}
 {% load staticfiles widget_tweaks %}
+
 {% block extrastyle %}
   {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/recepcion/Recepciones.css'%}">
+  <link rel="stylesheet" href="{% static 'css/recepcion/AddRecepcion.css'%}">
 {% endblock %}
-{% block breadcrumbs %}
-				<ul class="breadcrumb">
-				  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
-				  <li><a href="{%url 'ver-recepcion'%}">Ver recepcion</a></li> > 
-				  <li>Agregar Recepcion</li>
-				   
-					</li>
-				</ul>
-   {% endblock %}
-{%block content%}
-<h2 style="color:red;">{{info}}</h2>
 
-<h2>Agregar Recepcion</h2> 
-			<div class="col-md-6">
-				<form method="POST">{% csrf_token %}
-					<div class="row">
-						{% for field in form %}
-						<div class="col-md-12">
-							<div class="control-group">
-								<label for="">{{field.errors}}</label>
-								<label>{{ field.label }}</label>
-								{% render_field field  %}
-								<a class="related-widget-wrapper-link change-related" id="change_id_producto"
-    data-href-template="/agregado/rubro/edit/__fk__/?_to_field=id&amp;_popup=1"
-            title="Cambiar rubro seleccionado"><img src="/static/admin/img/icon_changelink.gif" width="10" height="10"
-                alt="Modificar"/></a>
-								<a class="related-widget-wrapper-link add-related" id="add_id_producto" href="/agregado/rubro/agregar/?_to_field=id&amp;_popup=1" title="Añadir otro rubro"><img src="/static/admin/img/icon_addlink.gif" width="10" height="10" alt="Añadir"/></a>
-							</div>
-						</div>
-						{% endfor %}
-					</div>
-					<p><label for="">Pagado</label><input type="checkbox" name="pagado"></p>
+{% block buscador %}{% endblock %}
+
+{% block breadcrumbs %}
+<div class="migas">
+	<ul class="breadcrumb">
+	  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+	  <li><a href="{%url 'ver-recepcion'%}">Ver recepcion</a></li> > 
+	  <li>Agregar Recepcion</li>
+	</ul>
+</div>
+{% endblock %}
+
+{%block content%}
+	<div id="content-main"><h2 style="color:red;">{{info}}</h2>
+		
+		<h2 class="titulo">AGREGAR RECEPCIÓN</h2> 
 					
-					<input type="submit" value="Guardar!" class="btn btn-success">
-			</form>
+		<form method="POST">
+			{% csrf_token %}
+			
+			<table>	
+				<thead>
+					<tr>
+						<td colspan="3">DATOS DEL PRODUCTO</td>
+					</tr>
+				</thead>
+				<tr>
+
+					<td style="width: 33%;">
+						<label for="">{{form.producto.label}}</label>
+						{{form.producto}}
+						<span>{{form.producto.errors}}</span>
+					</td>
+					<td style="width: 33%;">
+						<label for="">{{form.variedad.label}}</label>
+						{{form.variedad}}
+						<span>{{form.variedad.errors}}</span>
+					</td>
+					<td style="width: 33%;">
+						<label for="">{{form.tipo.label}}</label>
+						{{form.tipo}}
+						<span>{{form.tipo.errors}}</span>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 33%;">
+						<label for="">{{form.ciclo_asociado.label}}</label>
+						{{form.ciclo_asociado}}
+						<span>{{form.ciclo_asociado.errors}}</span>
+					</td>
+					<td style="width: 33%;">
+						<label for="">{{form.planta.label}}</label>
+						{{form.planta}}
+						<span>{{form.planta.errors}}</span>
+					</td>
+					<td style="width: 33%;">
+						<label for="">{{form.silo.label}}</label>
+						{{form.silo}}
+						<span>{{form.silo.errors}}</span>
+					</td>
+				</tr>
+				
+			</table>
+			<table style=" margin-top:20px;">
+				<thead>
+					<tr>
+						<td colspan="3">DATOS DE ENTREGA</td>
+					</tr>
+				</thead>
+				<tr>
+					<td style="width: 33%;">
+						<label for="">{{form.fecha_llegada.label}}</label>
+						{{form.fecha_llegada}}
+						<span>{{form.fecha_llegada.errors}}</span>
+					</td>
+					<td style="width: 33%;">
+						<label for="">{{form.tipo_vehiculo.label}}</label>
+						{{form.tipo_vehiculo}}
+						<span>{{form.tipo_vehiculo.errors}}</span>
+					</td>
+					<td style="width: 33%;">
+						<label for="">{{form.placa.label}}</label>
+						{{form.placa}}
+						<span>{{form.placa.errors}}</span>
+					</td>
+				</tr>
+			</table>
+
+			<table style=" margin-top:20px;">
+				<thead>
+					<tr>
+						<td colspan="3">DATOS DEL PRODUCTOR</td>
+					</tr>
+				</thead>
+				<tr>
+					<td style="width: 50%;">
+						<label for="">{{form.proovedor.label}}</label>
+						{{form.proovedor}}
+						<span>{{form.proovedor.errors}}</span>
+					</td>
+					<td style="width: 50%;">
+						<label for="">{{form.zona_de_cosecha.label}}</label>
+						{{form.zona_de_cosecha}}
+						<span>{{form.zona_de_cosecha.errors}}</span>
+					</td>
+				</tr>
+				
+			</table>
+
+			<table style=" margin-top:20px;">
+				<thead>
+					<tr>
+						<td colspan="3">ORDEN TESA</td>
+					</tr>
+				</thead>
+				<tr>
+					<td style="width: 33%;">
+						<label for="">{{form.numero_romana.label}}</label>
+						{{form.numero_romana}}
+						<span>{{form.numero_romana.errors}}</span>
+					</td>
+					<td style="width: 33%;">
+						<label for="">{{form.referencia_folder.label}}</label>
+						{{form.referencia_folder}}
+						<span>{{form.referencia_folder.errors}}</span>
+					</td>
+					<td style="width: 33%;">
+						<label for="">{{form.cantidad_en_Kg.label}}</label>
+						{{form.cantidad_en_Kg}}
+						<span>{{form.cantidad_en_Kg.errors}}</span>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 33%;">
+						<label for="">{{form.humedad.label}}</label>
+						{{form.humedad}}
+						<span>{{form.humedad.errors}}</span>
+					</td>
+					<td style="width: 33%;">
+						<label for="">{{form.impureza.label}}</label>
+						{{form.impureza}}
+						<span>{{form.impureza.errors}}</span>
+					</td>
+					<td style="width: 33%;">
+						<label for="">{{form.granos_danados_totales.label}}</label>
+						{{form.granos_danados_totales}}
+						<span>{{form.granos_danados_totales.errors}}</span>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 33%;">
+						<label for="">{{form.granos_partidos.label}}</label>
+						{{form.granos_partidos}}
+						<span>{{form.granos_partidos.errors}}</span>
+					</td>
+					<td style="width: 33%;">
+						<label for="">{{form.temperatura_promedio.label}}</label>
+						{{form.temperatura_promedio}}
+						<span>{{form.temperatura_promedio.errors}}</span>
+					</td>
+					<td style="width: 33%;">
+						<label for="">{{form.otros.label}}</label>
+						{{form.otros}}
+						<span>{{form.otros.errors}}</span>
+					</td>
+				</tr>
+				
+			</table>
+
+			<table style=" margin-top:20px;">
+				<thead>
+					<tr>
+						<td colspan="2">OTROS</td>
+					</tr>
+				</thead>
+				<tr>
+					<td >
+						<label for="">{{form.recibido_por.label}}</label>
+						{{form.recibido_por}}
+						<span>{{form.recibido_por.errors}}</span>
+					</td>
+					<td rowspan="2">
+						<label for="">{{form.observacion.label}}</label>
+						{{form.observacion}}
+						<span>{{form.observacion.errors}}</span>
+					</td>
+				</tr>
+				<tr>
+					<td >
+						<label class="label-check-down" for="pagado">Pagado <input type="checkbox" id="pagado" name="pagado"></label>
+					</td>
+				</tr>
+			</table>
+
+
+			{#{% for field in form %}#}
+				<label for="">{{field.errors}}</label>
+				<label>{{ field.label }}</label>
+				{% render_field field  %}
+			{#{% endfor %}#}
+		
+			<div class="botonera">
+				<input type="submit" value="Guardar">
 			</div>
-	
-	
-	{%endblock%}
-{%block delete%}
+		</form>
+					
+	</div>
 {%endblock%}
+
+{%block delete%}{%endblock%}
+
 {%block sidebar%}
 
 	<div class="botones" id="content-related">

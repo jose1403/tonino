@@ -1,60 +1,102 @@
 {{%extends 'base_site.html'%}  
 {% load i18n admin_static %}
 {% load staticfiles widget_tweaks %}
+
 {% block extrastyle %}
   {{ block.super }}
 {% endblock %}
+
+{% block buscador %}{% endblock %}
+
 {% block breadcrumbs %}
-                <ul class="breadcrumb">
-                  <li><a href="{% url 'agregado-nuevo' %}" class="btn btn-default">Inicio</ > 
-                  <li><a href="{%url 'ver-ciclos'%}" class="btn btn-default">Ver Ciclos</a></li> 
-                  <li>Agregar Ciclos</li>
-                   
-                    </li>
-                </ul>
-   {% endblock %}
+   <div class="migas">
+   	 	<ul class="breadcrumb">
+   	 	 	<li><a href="{% url 'agregado-nuevo' %}"">Inicio</a>></li> 
+   	 	 	<li><a href="{%url 'ver-ciclos'%}">Ver Ciclos</a>></li> 
+   	  		<li>Agregar Ciclos</li>
+   		</ul>
+   </div>
+{% endblock %}
+
+
 {%block content%}
-<h2 style="color:red;">{{info}}</h2>
-<h2>Agregar Ciclos</h2> <hr>
+<div id="content-main">
 
-<script>
-	var x= $(document);
-	x.ready(inicio);
+	<h2 style="color:red;">{{info}}</h2>
+	<h2 class="titulo" >Agregar Ciclos</h2> <hr>
 	
-	function inicio(){
-	    alert('funciono');
-	    a= $('#id_fecha_de_inicio').attrs('type','date');
-	    a.click(function(){alert('como estas')})*/
-	  };
-</script>		
-<form action="." method="POST">
+	<script>
+		var x= $(document);
+		x.ready(inicio);
+		
+		function inicio(){
+		    alert('funciono');
+		    a= $('#id_fecha_de_inicio').attrs('type','date');
+		    a.click(function(){alert('como estas')})*/
+		  };
+	</script>
 
-{%csrf_token%}
-
-
-	<div id="" >
-		<div class="" >
-		<label for="">{{form.nombre.errors}}</label>
-		<label for="">{{form.nombre.label}}</label>{{form.nombre}}
-		</div>
-		<div class="" >
-			<label for="">{{form.fecha_de_inicio.errors}}</label>
-		<label for="">{{form.fecha_de_inicio.label}}</label>{{form.fecha_de_inicio}}
-		</div>
-		<div class="" >
-			<label for="">{{form.fecha_de_cierre.errors}}</label>
-		<label for="">{{form.fecha_de_cierre.label}}</label>{{form.fecha_de_cierre}}
-		</div>
-		<div class="" >
-			<label for="">{{form.habilitado.errors}}</label>
-		<label for="">{{form.habilitado.label}}</label>{{form.habilitado}}
-		</div>
-		</div>
+	<form action="." method="POST">
 	
-<input type="submit" value='Guardar'>
-</form>
+	{%csrf_token%}
+	
+	
+		<!-- <div id="" >
+			<div class="" >
+			<label for="">{{form.nombre.errors}}</label>
+			<label for="">{{form.nombre.label}}</label>{{form.nombre}}
+			</div>
+			<div class="" >
+				<label for="">{{form.fecha_de_inicio.errors}}</label>
+			<label for="">{{form.fecha_de_inicio.label}}</label>{{form.fecha_de_inicio}}
+			</div>
+			<div class="" >
+				<label for="">{{form.fecha_de_cierre.errors}}</label>
+			<label for="">{{form.fecha_de_cierre.label}}</label>{{form.fecha_de_cierre}}
+			</div>
+			<div class="" >
+				<label for="">{{form.habilitado.errors}}</label>
+			<label for="">{{form.habilitado.label}}</label>{{form.habilitado}}
+			</div>
+		</div> -->
 
-
+		<table>
+			<tr>
+				<thead>
+					<tr>
+						<td colspan="3">DATOS DE CICLO</td>
+					</tr>
+				</thead>
+				<td >
+					<label for="">{{form.nombre.label}}</label>
+					{{form.nombre}}
+					<span>{{form.nombre.errors}}</span>
+				</td>
+				<td >
+					<label style="padding: 6px; color:#fff; text-align: center; margin-top:20px; background-color: rgba(0,0,0,0.2);" for="">{{form.habilitado.label}} {{form.habilitado}}</label>
+					
+					<span>{{form.habilitado.errors}}</span>
+				</td>
+			</tr>
+			<tr>
+				<td >
+					<label for="">{{form.fecha_de_inicio.label}}</label>
+					{{form.fecha_de_inicio}}
+					<span>{{form.fecha_de_inicio.errors}}</span>
+				</td>
+				<td >
+					<label for="">{{form.fecha_de_cierre.label}}</label>
+					{{form.fecha_de_cierre}}
+					<span>{{form.fecha_de_cierre.errors}}</span>
+				</td>
+			</tr>
+		</table>
+		
+		<div class="botonera">
+			<input type="submit" value='Guardar'>
+		</div>
+	</form>
+</div>
 {%endblock%}
 {%block delete%}
 {%endblock%}
