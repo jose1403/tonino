@@ -1,0 +1,49 @@
+{% extends "base_site.html" %}
+{% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+                  <li><a href="{% url 'ver-nomina' %}">Nomina</a> > 
+
+                 
+                  <li>Ver Fechas</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{% block content %}
+	<nav>
+	<ul>
+		<li><a href="{%url 'add-fechas-asignadas'%}">Añadir Fecha</a></li>
+		
+</nav>
+
+
+<h2>{{name|upper}}</h2> <hr>
+<table class="table table-striped col-md-6">
+		<thead>
+			<tr>
+			<td><input type="checkbox" id="action-toggle" form="nominal">	</td>
+			<td>Semana</td>
+				<td>Fecha De inicio</td>
+				<td>Fecha De Cierre</td>
+			
+			</tr>
+
+		</thead>
+		<tbody>
+		{%for lista in form%}
+			<tr><td><input type="checkbox" class="action-select" name="seleccion" form="nominal" value="{{lista.pk}}"></td>
+				<td>{{lista.semana}}</td>
+				<td><a href="{{lista.get_absolute_url}}">
+				{{lista.fecha_inicio}}</a></td>
+				<td>{{lista.fecha_cierre}}</td>
+								
+				
+			</tr>
+		{%endfor%}
+
+		</tbody>
+	</table>
+
+
+{% endblock content %}

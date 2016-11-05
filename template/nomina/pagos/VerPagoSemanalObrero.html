@@ -1,0 +1,78 @@
+{% extends "base_site.html" %}
+{% block breadcrumbs %}
+                <ul class="breadcrumb">
+                  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
+                  <li><a href="{% url 'ver-nomina' %}">Nomina</a> > 
+
+                 
+                  <li>Ver Pagos Obreros</li>
+                   
+                    </li>
+                </ul>
+   {% endblock %}
+{% block content %}
+	<nav>
+	<ul>
+		<li><a href="{%url 'add-pagos-semanales-obreros'%}">Añadir Pagos </a></li>
+		
+
+	</ul>
+	<ul>
+	{% if valor %}
+		<a href="{%url 'ver-productor-des'%}" class="btn btn-default">Ver Desabilitados</a>
+		{% else %}
+		<a href="{%url 'ver-productor'%}" class="btn btn-default">Ver Habilitados</a>
+
+	{% endif %}
+
+		<a href="{%url 'productores-lista-cvs'%}" class="btn btn-default">Guardar CVS</a>
+		<a href="{%url 'productores-lista-pdf'%}" class="btn btn-danger">Guardar PDF</a>
+		
+
+	</ul>
+</nav>
+
+
+<h2>{{name|upper}}</h2> <hr>
+<table class="table table-striped col-md-6">
+		<thead>
+			<tr>
+			<td><input type="checkbox" id="action-toggle" form="nominal">	</td>
+			<td>Codigo En sistema</td>
+				<td>Fecha </td>
+				<td>Obrero</td>
+				<td>Sueldo Diario</td>
+				<td>Dias Trabajados</td>
+				<td>Bono Nocturno</td>
+				<td>Total Asignacion</td>
+				<td>Descuento IVSS</td>
+				<td>Total Dedicciones</td>
+
+			
+			</tr>
+
+		</thead>
+		<tbody>
+		{%for lista in form%}
+			<tr><td><input type="checkbox" class="action-select" name="seleccion" form="nominal" value="{{lista.pk}}"></td>
+				<td>{{lista.nombre|title}} {{lista.apellido|title}}</td>
+				<td><a href="{{lista.get_absolute_url}}">
+				{{lista.fecha}}</a></td>
+				<td>{{lista.obrero}}</td>
+				<td>{{lista.sueldo_diario}}</td>
+				<td>{{lista.dias_trabajados}}</td>
+
+				<td>{{lista.bono_nocturno}}</td>
+				<td>{{lista.total_asignacion}}</td>
+				<td>{{lista.descuento_ivss}}</td>
+				<td>{{lista.total_deducciones}}</td>
+				<td>{{total_a_cobrar}}</td>
+				
+			</tr>
+		{%endfor%}
+
+		</tbody>
+	</table>
+
+
+{% endblock content %}

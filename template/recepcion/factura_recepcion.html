@@ -164,6 +164,7 @@
 						<td></td>
 						<td></td>
 						<td></td>
+<<<<<<< HEAD
 						<td>TOTAL </td>
 						<td>{{total_pago.total_Bs|floatformat:2}}Bs.</td>
 		
@@ -283,6 +284,59 @@
 	<hr>
 	<span>Los calculos son mostrados tomando un calculo de dos decimales, por tal razon los niveles totales pueden variar</span>
 </div>
+=======
+						<td>{{i}}</td>
+						<td>{{k|floatformat:2}} Bs. </td>
+					<td>
+				</tr>
+				{%endfor%}
+			
+			<tr>
+				
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>TOTAL </td>
+				<td>{{total_pago.total_Bs|floatformat:2}}Bs.</td>
+
+				
+			</tr>
+		</tbody>
+	</table>
+
+<h1>{{dic|length}}</h1>
+<p style="font-size:16><span for="fllegada">FECHA DE RECEPCION: </span><i>{{recepcion.fecha_llegada|date:'d/y/m - h:m'}}</p></p></i> <br>
+<p class="texto" style="font-family:bold;"><label for=""><b>DESCUENTO POR IMPURESA: {{total_pago.descuentoI|floatformat:2}}%</b></label></p>
+<p class="texto" style="font-family:bold;"><label for=""><b>MERMA POR HUMEDAD: {{total_pago.descuentoH|floatformat:2}}%</b></label></p>
+<p class="texto" style="font-family:bold;"><label for=""><b>DESCUENTO POR MANIPULEO: {{total_pago.descuentoM|floatformat:2}}</b>%</label></p>
+
+
+<h2>DETALLES DE ANALISIS</h2>
+------------------------------------------------------------
+<p class="texto text-success" style="font-size:100; ">{{recepcion.producto.nombre|title}} {{recepcion.variedad.nombre|title}} </p>
+<p class="texto">Humedad: {{recepcion.humedad}}</p>
+<p class="texto" >Impuresa: {{recepcion.impureza}}</p>
+<p class="texto">Granos Danados: {{recepcion.granos_danados_totales}}</p>
+<p class="texto">TEMPERATURA PROMEDIO:
+{{recepcion.temperatura_promedio}}
+</p>
+<p class="texto">Otros: {{recepcion.otros}}</p>
+
+<hr>
+<a href="/generar_pdf/{{recepcion.pk}}">Ver en pdf</a>
+<style>
+	.texto{
+		font-size: 20px;
+		margin: 2px;
+		font-family: verdana;
+	}
+</style>
+<br>
+<hr>
+<span>Los calculos son mostrados tomando un calculo de dos decimales, por tal razon los niveles totales pueden variar</span>
+>>>>>>> 53d86729140211b775d9af9c858a7f7e72234251
 {%endblock%}
 {%block delete%}
 {%endblock%}

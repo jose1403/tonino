@@ -50,10 +50,28 @@ def rubro_pdf(request):
     lista = []
     styles = getSampleStyleSheet()
     lista.append(logo_pdf())
+#<<<<<<< HEAD
+    style= ParagraphStyle('Heading1')
+    style.textColor= 'black'
+    style.alignment= TA_CENTER
+    style.fontSize= 18
+    style.spaceAfter=15
+    style.spaceBefore= 30
+    style.spaceAfter=5
+    style.leading = 20
+    style.bulletIndent = 0
+    style.allowOrphans = 0
+    style.bulletFontSize = 10
+    style.fontName='Helvetica'
+    fecha= Paragraph('<font><b><i>Fecha: %s/%s/%s</i><b></font>'%(tiempo.day,tiempo.month, tiempo.year), styles['Normal'])
+#=======
     fecha= Paragraph('<b><i>Fecha: %s/%s/%s</i></b>'%(tiempo.day,tiempo.month, tiempo.year), styles['Normal'])
     lista.append(Spacer(0,15))
     lista.append(fecha)
+#>>>>>>> c39095c0cdc5175aaf93d43954826f4ba55db4a2
     lista.append(Spacer(0,40))
+    lista.append(fecha)
+    lista.append(Spacer(0,10))
     style_table= ParagraphStyle('Default')
     #style_table.textColor= 'black'
     #style_table.alignment= TA_CENTER
@@ -69,8 +87,9 @@ def rubro_pdf(request):
    
 
 
-    header = Paragraph("LISTADO DE RUBROS", styles['Heading1'])
+    header = Paragraph("<b>LISTADO DE RUBROS</b>", style)
     lista.append(header)
+    lista.append(Spacer(0,10))
     headings = ('Codigo En Sistema', 'Nombre', 'Nombre Cientifico', 'T/Humedad', 'T/Impureza')
     array= []
     for p in Rubro.objects.filter(null=False):

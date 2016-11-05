@@ -20,6 +20,7 @@ styles = getSampleStyleSheet()
 from nucleo.models import DATOS_DE_LA_EMPRESA
 from .models import Recepcion, PagoRecepcion, TotalRecepcion
 from contabilidad.models import IMPUESTOS
+from gestion.views import intcomma
 raiz ='/agregado/productor/ver'
 
 tiempo = datetime.datetime.now()
@@ -60,7 +61,7 @@ def lista_recepcion_pdf(request, lista_pk, queryset):
     cambio= False
     if type(lista_pk)== int:
         lista_pk= [lista_pk] 
-        cambio=True
+        cambio = True
     model = queryset.filter(id__in=lista_pk)
 
     lista= []
@@ -70,20 +71,20 @@ def lista_recepcion_pdf(request, lista_pk, queryset):
     lista.append(Spacer(0,40))
     lista.append(fecha)
 
-    lista.append(Spacer(0,20))
+    lista.append(Spacer(0,10))
     style= ParagraphStyle('Heading1')
     style.textColor= 'black'
     style.alignment= TA_CENTER
     style.fontSize= 18
     style.spaceAfter=15
-    style.spaceBefore= 50
+    style.spaceBefore= 30
     style.spaceAfter=5
     style.leading = 20
     style.bulletIndent = 0
     style.allowOrphans = 0
     style.bulletFontSize = 10
     style.fontName='Helvetica'
-    header = Paragraph("Listado de Recepciones".upper(), style)
+    header = Paragraph("<b>Listado de Recepciones</b>".upper(), style)
     lista.append(header)
     lista.append(Spacer(0,10))
 
@@ -104,6 +105,7 @@ def lista_recepcion_pdf(request, lista_pk, queryset):
     style_table.bulletAnchor= 'start',
     cont= 0
     array=[]
+    
     headings = ('CODIGO', 'PRODUCTO', 'CICLO', 'PROOVEDOR','CANTIDAD(H/I)', 'FECHA','TOTAL(Bs).')
     for p in model:
         pago = PagoRecepcion.objects.get(recepcion=p)
@@ -113,9 +115,9 @@ def lista_recepcion_pdf(request, lista_pk, queryset):
         Paragraph('%s (<font size=8>%s-%s</font>)'%(p.producto.nombre.upper(),p.variedad.nombre.upper(),p.tipo.nombre.upper()), style_table),
         Paragraph(p.ciclo_asociado.codigo_en_sistema(), style_table),
         Paragraph('%s'%p.proovedor.nombre_o_razon_social.upper(), style_table),
-        Paragraph('%s Kg.'%total.cantidad_real, style_table),
+        Paragraph('%s Kg.'%intcomma(total.cantidad_real), style_table),
         Paragraph('%s/%s/%s'%(p.fecha_agregado.day,p.fecha_agregado.month, p.fecha_agregado.year), style_table),
-        Paragraph('%s'%(total.total_Bs), style_table)])
+        Paragraph('%s'%(intcomma(total.total_Bs)), style_table)])
 
     t = Table([headings] + array)
     t.setStyle(TableStyle(
@@ -169,7 +171,7 @@ def factura_recepcion_pdf(request, pk):
     stylefac.fontSize= 20
     stylefac.spaceBefore= 5
     stylefac.spaceAfter=5
-    stylefac.leading = 10
+    stylefac.leading = -20
     stylefac.bulletIndent = 0
     stylefac.allowOrphans = 0
     stylefac.bulletFontSize = 10
@@ -178,14 +180,22 @@ def factura_recepcion_pdf(request, pk):
     #stylemenbrete.bulletAnchor = start
     stylefac.borderPadding = 0
     stylefac.endDots = None
+<<<<<<< HEAD
     lista.append(Paragraph('<font size=10 color=black><b>NO. Control</b></font>', stylefac))
     lista.append(Paragraph(recepcion.codigo_en_sistema(), stylefac))
+=======
+   
+    lista.append(Paragraph('%s'%recepcion.codigo_en_sistema(), stylefac))
+    lista.append(Paragraph('<font size=10 color=black><b>NO. Control<b></font>', stylefac))
+>>>>>>> 53d86729140211b775d9af9c858a7f7e72234251
     lista.append(logo_pdf())
-
+    lista.append(Spacer(0,10))
     stylemenbrete= ParagraphStyle('Heading1')
     stylemenbrete.textColor=('black')
     stylemenbrete.alignment= TA_CENTER
     stylemenbrete.fontSize= 8
+
+
     stylemenbrete.spaceBefore= 5
     stylemenbrete.spaceAfter=5
     stylemenbrete.leading = 10
@@ -199,12 +209,12 @@ def factura_recepcion_pdf(request, pk):
     stylemenbrete.endDots = None
     #stylemenbrete.textColor = Color(0,0,0,1)
     """MEMBRETE"""
-    nombre= Paragraph(datos.NOMBRE.upper(), stylemenbrete)
+    nombre= Paragraph('<b>%s</b>'% datos.NOMBRE.upper(), stylemenbrete)
     #fin **********************************
-    rif = Paragraph('RIF: %s'% (datos.RIF.upper()), stylemenbrete)
-    direccion=Paragraph('%s'% (datos.DIRECCION.upper()), stylemenbrete)
-    telefonos =Paragraph('%s / %s'% (datos.TELEFONO, datos.CELULAR), stylemenbrete)
-    codigo_postal=Paragraph('CODIGO POSTAL: %s'% (datos.CODIGO_POSTAL), stylemenbrete)
+    rif = Paragraph('<b> RIF: %s</b>'% (datos.RIF.upper()), stylemenbrete)
+    direccion=Paragraph('<b> %s</b>'% (datos.DIRECCION.upper()), stylemenbrete)
+    telefonos =Paragraph('<b> %s / %s</b>'% (datos.TELEFONO, datos.CELULAR), stylemenbrete)
+    codigo_postal=Paragraph('<b> CODIGO POSTAL: %s</b>'% (datos.CODIGO_POSTAL), stylemenbrete)
     lista.append(nombre)#+rif+direccion+telefonos+codigo_postal)
     lista.append(rif)#+rif+direccion+telefonos+codigo_postal)
     lista.append(direccion)
@@ -212,10 +222,14 @@ def factura_recepcion_pdf(request, pk):
     lista.append(codigo_postal)
     lista.append(Spacer(0,30))
     #############################
+<<<<<<< HEAD
     fecha= Paragraph('<b><i>Fecha de Emision: %s/%s/%s - %s:%s</i></b>'%(recepcion.fecha_agregado.day,recepcion.fecha_agregado.month, recepcion.fecha_agregado.year,recepcion.fecha_agregado.hour, recepcion.fecha_agregado.minute ), styles['Normal'])
+=======
+    fecha= Paragraph('<b>Fecha de Emision: %s/%s/%s - %s:%s<b>'%(recepcion.fecha_agregado.day,recepcion.fecha_agregado.month, recepcion.fecha_agregado.year,recepcion.fecha_agregado.hour, recepcion.fecha_agregado.minute ), styles['Normal'])
+>>>>>>> 53d86729140211b775d9af9c858a7f7e72234251
     lista.append(fecha)
     lista.append(Spacer(0,10))
-    lista.append(Paragraph('<para alignment=left><font><b>CICLO: %s </b></font>'%recepcion.ciclo_asociado, styles['Normal'])),
+    lista.append(Paragraph('<para alignment=left><font><b>CICLO: %s </b></font>'%str(recepcion.ciclo_asociado).upper(), styles['Normal'])),
 
 
     lista.append(Paragraph('<font size=10 color=black ><b>-<b></font>'*156, styles['Normal']))
@@ -224,7 +238,7 @@ def factura_recepcion_pdf(request, pk):
     #datos De Proovedor
     style_table= ParagraphStyle('Default')
     #style_table.textColor= 'black'
-    style_table.alignment= TA_CENTER
+    style_table.alignment= TA_LEFT
     style_table.fontSize= 10
     style_table.spaceAfter=15
     style_table.spaceBefore= 0
@@ -240,11 +254,16 @@ def factura_recepcion_pdf(request, pk):
     array1.append([Paragraph('<font color=black><b>NOMBRE O RAZON SOCIAL: %s</b>  </font>'%recepcion.proovedor.nombre_o_razon_social.upper(), style_table),
     Paragraph('<para alignment=left><font></b>CI/RIF: %s</b></font>'%recepcion.proovedor.documentoId.upper(), style_table)])
     array2=[]
+<<<<<<< HEAD
     array2.append([Paragraph('<font><b>DOMICILIO: </b></font><font size=8></b>%s<b></font>'%recepcion.proovedor.domicilio_fiscal.upper(), style_table),
     Paragraph('<para alignment=left><font><b>TELE: %s/%s</b></font>'%(recepcion.proovedor.telefono, recepcion.proovedor.celular), style_table)])
+=======
+    array2.append([Paragraph('<font><b>DOMICILIO: </b></font><font size=8><b>%s<b></font>'%recepcion.proovedor.domicilio_fiscal.upper(), style_table),
+    Paragraph('<para alignment=left><font><b>TELEF: %s/%s</b></font>'%(recepcion.proovedor.telefono, recepcion.proovedor.celular), style_table)])
+>>>>>>> 53d86729140211b775d9af9c858a7f7e72234251
     array3 =[]
     array3.append([Paragraph('<font><b>CODIGO: %s</b></font>'%recepcion.proovedor.codigo_en_sistema(), style_table),
-    Paragraph('<font ><b>ZONA: %s</b></font>'%recepcion.zona_de_cosecha, style_table)])
+    Paragraph('<font ><b>ZONA: %s</b></font>'%recepcion.zona_de_cosecha.zona.upper(), style_table)])
     t=Table(array1 +array2 + array3)
 
     lista.append(t)
@@ -265,18 +284,18 @@ def factura_recepcion_pdf(request, pk):
         ])
     descripcion.append([Paragraph('<font color=black><b>%s<b>  </font>'%(recepcion.producto_total()),style_table),
 
-    Paragraph('<para alignment=left><font><b> %s Bs.</b></font>'%pago.precio.precio_por_Kg, style_table),
+    Paragraph('<para alignment=left><font><b> %s Bs.</b></font>'%intcomma(pago.precio.precio_por_Kg), style_table),
 
-    Paragraph('<para alignment=left><font><b> %s Kg.</b></font>'%recepcion.cantidad_en_Kg, style_table),
-    Paragraph('<para alignment=left><font><b> %s %%</b></font>'%total.descuentoTotal, style_table),
+    Paragraph('<para alignment=left><font><b> %s Kg.</b></font>'%intcomma(recepcion.cantidad_en_Kg), style_table),
+    Paragraph('<para alignment=left><font><b> %s %%</b></font>'%intcomma(total.descuentoTotal), style_table),
 
-    Paragraph('<para alignment=left><font><b> %s Kg.</b></font>'%total.cantidad_real, style_table),
+    Paragraph('<para alignment=left><font><b> %s Kg.</b></font>'%intcomma(total.cantidad_real), style_table),
 
 
-    Paragraph('<para alignment=left><font><b> %s Bs.</b></font>'%total.total_neto, style_table),
+    Paragraph('<para alignment=left><font><b> %s Bs.</b></font>'%intcomma(total.total_neto), style_table),
     ])
     separator=('', '','', '')
-    #headingsDes=('Rubro', 'precio','Cantidad Recibida', 'Total Neto')
+      #headingsDes=('Rubro', 'precio','Cantidad Recibida', 'Total Neto')
     imptable=[]
     impuesto1=[]
     print total.impuestos()
@@ -289,7 +308,7 @@ def factura_recepcion_pdf(request, pk):
         
 
         Paragraph('<para alignment=left><font><b>%s </b></font>'%i, style_table),
-        Paragraph('<para alignment=left><font><b>%s Bs.</b></font>'%k, style_table),
+        Paragraph('<para alignment=left><font><b>%s Bs.</b></font>'%intcomma(k), style_table),
         ])
     precio_total=[]
     precio_total.append([Paragraph('<font color=black><b> </b>  </font>', style_table),
@@ -298,7 +317,7 @@ def factura_recepcion_pdf(request, pk):
         Paragraph('<para alignment=left><font><b> </b></font>', style_table),
         
         Paragraph('<para alignment=left><font><b>TOTAL </b></font>', style_table),
-        Paragraph('<para alignment=left><font><b>%s Bs. </b></font>'%total.total_Bs, style_table),
+        Paragraph('<para alignment=left><font><b>%s Bs. </b></font>'%intcomma(total.total_Bs), style_table),
         ])
     tdescripcion= Table(headingsDes+ descripcion+[separator]+impuesto1+precio_total)
     lista.append( tdescripcion)

@@ -1,7 +1,7 @@
 # -*- encodind: utf-8 -*-
 import datetime
 from django.shortcuts import render
-from django.template.loader import get_template 
+from django.template.loader import get_template
 from django.template import Context 
 
 from django.views.generic import CreateView, ListView

@@ -49,7 +49,7 @@ def Ver_Productor(request, valor):
 		if 'q' in request.GET and request.GET['q'].strip():
 			q= request.GET['q']
 			query = get_query(q,['nombre_o_razon_social','pk', 'documentoId', 'domicilio_fiscal',
-								'banco__nombre', 'tipo_cuenta__nombre'])
+								'banco__nombre', 'tipo_cuenta__nombre', 'e_mail'])
 			#return HttpResponse(query)
 			form = form.filter(query)
 		info =''
@@ -90,7 +90,7 @@ def lista_productores_csv(request):
     writer.writerow([''])
 
     ref =''
-    writer.writerow(['N','NOMBRE', 'C.I./R.I.F.','DOMICILIO FISCAL', 'TELEFONO', 'CELULAR', 'REF']) 
+    writer.writerow(['N','NOMBRE', 'C.I./R.I.F.','DOMICILIO FISCAL', 'TELEFONO', 'CELULAR', 'E-MAIL','REF']) 
     cont =0
     for p in model:
     	cont+=1
@@ -98,7 +98,7 @@ def lista_productores_csv(request):
     	if ref=='0':
     		ref='S/N'
 
-        writer.writerow([cont,p.nombre_o_razon_social.upper(),p.documentoId.upper(), p.domicilio_fiscal.upper(), p.telefono, p.celular, ref])
+        writer.writerow([cont,p.nombre_o_razon_social.upper(),p.documentoId.upper(), p.domicilio_fiscal.upper(), p.telefono, p.celular,p.e_mail, ref])
     return response
 
 
@@ -117,6 +117,8 @@ def Add_Productor(request):
 				telefono=  form.cleaned_data['telefono']
 				celular=  form.cleaned_data['celular']
 				referencia_folder= form.cleaned_data['referencia_folder']
+				e_mail=  form.cleaned_data['e_mail']
+
 				# Datos bancarios
 				cuenta_bancaria=  form.cleaned_data['cuenta_bancaria']
 				tipo_cuenta=  form.cleaned_data['tipo_cuenta']
@@ -129,6 +131,7 @@ def Add_Productor(request):
 					model.domicilio_fiscal =domicilio_fiscal
 					model.telefono =telefono
 					model.celular =celular
+					model.e_mail= e_mail
 					model.referencia_folder= referencia_folder
 					model.cuenta_bancaria =cuenta_bancaria
 					model.tipo_cuenta = tipo_cuenta
@@ -173,6 +176,7 @@ def Rubro_Productor_Edit(request, pk):
 			model.nombre_o_razon_social= nombre
 			model.documentoId= documentoId
 			model.domicilio_fiscal =domicilio_fiscal
+			model.e_mail= e_mail
 
 			model.telefono =telefono
 			model.celular =celular

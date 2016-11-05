@@ -89,6 +89,7 @@ def GananciasDelCicloTotal(request):
 		ingreso_total+= total.total_Bs
 
 def GananciasDelCiclo(request, pk):
+	print '*'*50
 	try:
 		int(pk)
 
@@ -143,6 +144,9 @@ def GananciasDelCiclo(request, pk):
 															'deuda':deuda, 'cobro':cobro,
 															'lista_rubror':lista_rubror})
 def GananciasDelCicloXRubro(request, pkciclo, pkrubro):
+	print '*'*50
+	print pkciclo
+	print pkrubro
 	try:
 		int(pkciclo)
 		int(pkrubro)
@@ -150,7 +154,6 @@ def GananciasDelCicloXRubro(request, pkciclo, pkrubro):
 	except ValueError:
 		raise Http404()
 	ciclo = Ciclo.objects.get(pk=pkciclo, null=False)
-	print ciclo
 	recepcion = ciclo.recepcion_set.filter(null=False, producto__pk=pkrubro)
 	despacho= ciclo.despacho_set.filter(null=False, producto__pk=pkrubro)
 	ingreso_total=0
@@ -158,7 +161,7 @@ def GananciasDelCicloXRubro(request, pkciclo, pkrubro):
 	deuda=0
 	cobro=0
 	lista_rubror=[]
-	rubro = Rubro.objects.get(pk=pk,null=False)
+	rubro = Rubro.objects.get(pk=pkrubro,null=False)
 
 
 	for i in recepcion:
@@ -181,7 +184,7 @@ def GananciasDelCicloXRubro(request, pkciclo, pkrubro):
 
 	ganancia_neta= ingreso_total - invercion_total
 
-	return render(request, 'procesos/cuentas/GananciasDelCiclo.html', {'form':ciclo,
+	return render(request, 'procesos/cuentas/GananciasDelCicloXRubro.html', {'form':ciclo,
 
 															'invercion_total':invercion_total,
 															'ingreso_total':ingreso_total,

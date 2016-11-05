@@ -9,21 +9,22 @@
                 </ul>
    {% endblock %}
 {% block content %}
+{% load humanize %}
 	<h1>{{form}}</h1>
 
-	<h3>Invercion Del Ciclo</h3>
-	<p>total invertido = {{invercion_total}} Bs.</p>
-	<p>Deuda: {{deuda}}</p>
+	<h3>Invercion Del Ciclo {{form.codigo_en_sistema|intcomma}} para {{rubro.nombre|title}}</h3>
+	<p>total invertido = {{invercion_total|intcomma}} Bs.</p>
+	<p>Deuda: {{deuda|intcomma}}</p>
 	<h4>Rubros: </h4>
 	{% for rubro in lista_rubror %}
 		<p><a href="#">{{rubro.nombre}}</a></p>
 		
 	{% endfor %}
 	<h3>Ingresos del Ciclo</h3>
-	<p>Total Ingresado= {{ingreso_total}} Bs.</p>
-	<p>Por cobrar = {{cobro}}</p>
+	<p>Total Ingresado= {{ingreso_total|intcomma}} Bs.</p>
+	<p>Por cobrar = {{cobro|intcomma}}</p>
 
 	<h3>Ganancias</h3>
-	Ganancia Neta= {{ganancia_neta}}
+	Ganancia Neta= {{ganancia_neta|intcomma}}
 
 {% endblock content %}

@@ -71,7 +71,7 @@ class Mostrar_Despacho(ArchiveIndexView):
 		if request.POST['lista-pdf'] == 'lista-selected' and request.user.has_perm('auth.empleado'):
 
 			a=request.POST.getlist('seleccion')
-			return lista_despacho_pdf(request, a, self.model.objects.all())
+			return lista_despacho_pdf(request, a, Despacho.objects.filter(null=False))
 	
 		else:
 			return HttpResponseRedirect('.')
