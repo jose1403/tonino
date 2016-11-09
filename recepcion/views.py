@@ -374,7 +374,7 @@ def Add_Recepcion(request):
 			If = model.producto.tolerancia_impureza
 			merma_total = mermas(cantidad_en_Kg, humedad,Hf, impureza, If)
 			
-			if silos.resto > merma_total['CMP']:return render(request, 'recepcion/AddRecepcion.html', {'form':form,'info':'la cantidad ingresada supera la capacidad del silo'.upper()})
+			if silos.resto < merma_total['CMP']:return render(request, 'recepcion/AddRecepcion.html', {'form':form,'info':'la cantidad ingresada supera la capacidad del silo'.upper()})
 			model.save()
 
 			model_pago= PagoRecepcion()

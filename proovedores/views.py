@@ -171,6 +171,8 @@ def Rubro_Productor_Edit(request, pk):
 			domicilio_fiscal=  form.cleaned_data['domicilio_fiscal']
 			telefono=  form.cleaned_data['telefono']
 			celular=  form.cleaned_data['celular']
+			e_mail=  form.cleaned_data['e_mail']
+
 			# Datos bancarios
 			observacion=  form.cleaned_data['observacion']
 			model.nombre_o_razon_social= nombre

@@ -67,7 +67,7 @@ def lista_recepcion_pdf(request, lista_pk, queryset):
     lista= []
     styles = getSampleStyleSheet()
     lista.append(logo_pdf())
-    fecha= Paragraph('<b><i>Fecha: %s/%s/%s</i><b>'%(tiempo.day,tiempo.month, tiempo.year), styles['Normal'])
+    fecha= Paragraph('<b><i>Fecha: %s/%s/%s</i></b>'%(tiempo.day,tiempo.month, tiempo.year), styles['Normal'])
     lista.append(Spacer(0,40))
     lista.append(fecha)
 
@@ -182,13 +182,13 @@ def factura_recepcion_pdf(request, pk):
     stylefac.endDots = None
    
     lista.append(Paragraph('%s'%recepcion.codigo_en_sistema(), stylefac))
-    lista.append(Paragraph('<font size=10 color=black><b>NO. Control<b></font>', stylefac))
+    lista.append(Paragraph('<font size=10 color=black><b>NO. Control</b></font>', stylefac))
     lista.append(logo_pdf())
     lista.append(Spacer(0,10))
     stylemenbrete= ParagraphStyle('Heading1')
     stylemenbrete.textColor=('black')
     stylemenbrete.alignment= TA_CENTER
-    stylemenbrete.fontSize= 8
+    stylemenbrete.fontSize= 12
 
 
     stylemenbrete.spaceBefore= 5
@@ -217,14 +217,14 @@ def factura_recepcion_pdf(request, pk):
     lista.append(codigo_postal)
     lista.append(Spacer(0,30))
     #############################
-    fecha= Paragraph('<b>Fecha de Emision: %s/%s/%s - %s:%s<b>'%(recepcion.fecha_agregado.day,recepcion.fecha_agregado.month, recepcion.fecha_agregado.year,recepcion.fecha_agregado.hour, recepcion.fecha_agregado.minute ), styles['Normal'])
+    fecha= Paragraph('<b>Fecha de Emision: %s/%s/%s - %s:%s</b>'%(recepcion.fecha_agregado.day,recepcion.fecha_agregado.month, recepcion.fecha_agregado.year,recepcion.fecha_agregado.hour, recepcion.fecha_agregado.minute ), styles['Normal'])
     lista.append(fecha)
     lista.append(Spacer(0,10))
-    lista.append(Paragraph('<para alignment=left><font><b>CICLO: %s </b></font>'%str(recepcion.ciclo_asociado).upper(), styles['Normal'])),
+    lista.append(Paragraph('<para alignment=left><b>CICLO: %s </b></font>'%str(recepcion.ciclo_asociado).upper(), styles['Normal'])),
 
 
-    lista.append(Paragraph('<font size=10 color=black ><b>-<b></font>'*156, styles['Normal']))
-    lista.append(Paragraph('<font color=red><b>DATOS DEL PROOVEDOR<b><font> ', styles['Normal']))
+    lista.append(Paragraph('<font size=10 color=black ><b>-</b></font>'*156, styles['Normal']))
+    lista.append(Paragraph('<font color=red><b>DATOS DEL PROOVEDOR</b><font> ', styles['Normal']))
 
     #datos De Proovedor
     style_table= ParagraphStyle('Default')
@@ -242,10 +242,10 @@ def factura_recepcion_pdf(request, pk):
 
     style_table.bulletAnchor= 'start',
     array1=[]
-    array1.append([Paragraph('<font color=black><b>NOMBRE O RAZON SOCIAL: %s<b>  </font>'%recepcion.proovedor.nombre_o_razon_social.upper(), style_table),
+    array1.append([Paragraph('<font color=black><b>NOMBRE O RAZON SOCIAL: %s</b>  </font>'%recepcion.proovedor.nombre_o_razon_social.upper(), style_table),
     Paragraph('<para alignment=left><font><b>CI/RIF: %s</b></font>'%recepcion.proovedor.documentoId.upper(), style_table)])
     array2=[]
-    array2.append([Paragraph('<font><b>DOMICILIO: </b></font><font size=8><b>%s<b></font>'%recepcion.proovedor.domicilio_fiscal.upper(), style_table),
+    array2.append([Paragraph('<font><b>DOMICILIO: </b></font><font size=8><b>%s</b></font>'%recepcion.proovedor.domicilio_fiscal.upper(), style_table),
     Paragraph('<para alignment=left><font><b>TELEF: %s/%s</b></font>'%(recepcion.proovedor.telefono, recepcion.proovedor.celular), style_table)])
     array3 =[]
     array3.append([Paragraph('<font><b>CODIGO: %s</b></font>'%recepcion.proovedor.codigo_en_sistema(), style_table),
@@ -326,10 +326,11 @@ def factura_recepcion_pdf(request, pk):
 
     lista.append(Paragraph('<para alignment=left><font size=12 color=grey><b>RESULTADOS DEL ANALISIS</b></font>', style_analisis))
     lista.append(Paragraph('<para alignment=left><font size=10><b> HUMEDAD:%s%%</b></font>'% recepcion.humedad, style_analisis))
-    lista.append(Paragraph('<para alignment=left><font size=10><b>GRANOS DAÑADOS: %s%%</b></font>'%recepcion.granos_danados_totales, style_analisis))
-    lista.append(Paragraph('<para alignment=left><font size=10><b>GRANOS PARTIDOS: %s%%</b> </font>'%recepcion.granos_partidos, style_analisis))
-    lista.append(Paragraph('<para alignment=left><font size=10><b>TEMPERATURA PROMEDIO: %s°C</b></font>'%recepcion.temperatura_promedio, style_analisis))
-    lista.append(Paragraph('<para alignment=left><font size=10><b>OTROS:</b> <i>%s%% </i> </font>'%recepcion.otros, style_analisis))
+    lista.append(Paragraph('<para alignment=left><font size=10><b> IMPUREZA:%s%%</b></font>'% recepcion.impureza, style_analisis))
+    #lista.append(Paragraph('<para alignment=left><font size=10><b>GRANOS DAÑADOS: %s%%</b></font>'%recepcion.granos_danados_totales, style_analisis))
+    #lista.append(Paragraph('<para alignment=left><font size=10><b>GRANOS PARTIDOS: %s%%</b> </font>'%recepcion.granos_partidos, style_analisis))
+    #lista.append(Paragraph('<para alignment=left><font size=10><b>TEMPERATURA PROMEDIO: %s°C</b></font>'%recepcion.temperatura_promedio, style_analisis))
+    #lista.append(Paragraph('<para alignment=left><font size=10><b>OTROS:</b> <i>%s%% </i> </font>'%recepcion.otros, style_analisis))
 
     doc.build(lista)
     response.write(buff.getvalue())

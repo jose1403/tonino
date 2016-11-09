@@ -2,7 +2,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 
 class Plantas(models.Model):
-	nombre= models.CharField(max_length=100)
+	nombre= models.CharField(max_length=100, unique=True)
 	cantidad_silos=models.IntegerField()
 	descripcion= models.TextField()
 	null = models.BooleanField(default=False)

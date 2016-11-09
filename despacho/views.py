@@ -12,6 +12,7 @@ import datetime
 from gestion.views import get_query, desabilite_model
 tiempo= datetime.datetime.now()
 fecha=datetime.date(tiempo.year,tiempo.month,tiempo.day)
+
 # Create your views here.
 def ValorTotal( cantidad, precio, impuestos):
 	total_neto = cantidad * precio

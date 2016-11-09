@@ -97,7 +97,6 @@ def Add_Cliente(request):
 				domicilio_fiscal=  form.cleaned_data['domicilio_fiscal']
 				telefono=  form.cleaned_data['telefono']
 				celular=  form.cleaned_data['celular']
-				print  'Guardado2 - '*100
 
 				referencia_folder= form.cleaned_data['referencia_folder']
 				# Datos bancarios

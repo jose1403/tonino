@@ -9,7 +9,6 @@ from recepcion import views as recepcion, recepcion_pdf, filtro_de_recepciones a
 from clientes import views as cliente, clientes_pdf
 from despacho import views as despacho,filtro_de_despachos as filtroD, despacho_pdf
 from plantas import views as plantas_app
-from nomina import views as nomina_app
 from ajax_select import urls as ajax_select_urls
 import settings
 urlpatterns = [
@@ -177,53 +176,6 @@ urlpatterns = [
 
     url(r'^agregado/cuentasxcobrar/ver/$', despacho.Mostrar_CuetasXcobrar.as_view(), name='ver-cuentasx-cobrar'),
     url(r'^agregado/cuentasxcobrar/edit/(?P<pk>.*)/$', despacho.Editar_CuentasXcobrar, name='edit-cuentasx-cobrar'),
-
-    url(r'^agregado/nomina/empleado/ver/$', nomina_app.VerEmpleado.as_view(), name='ver-empleado' ),
-     url(r'^agregado/nomina/empleado/add/$', nomina_app.AddEmpleado.as_view(), name='add-empleado' ),
-     url(r'^agregado/nomina/empleado/(?P<pk>.*)/$', nomina_app.ActualizarEmpleado.as_view(), name='edit-empleado' ), 
-     url(r'^agregado/nomina/empleado/(?P<pk>.*)/borrar/$', nomina_app.BorrarEmpleado.as_view(), name='delete-empleado' ),
-
-    url(r'^agregado/nomina/obrero/ver/$', nomina_app.VerObrero.as_view(), name='ver-obrero' ),
-     url(r'^agregado/nomina/obrero/add/$', nomina_app.AddObrero.as_view(), name='add-obrero' ),
-     url(r'^agregado/nomina/obrero/(?P<pk>.*)/$', nomina_app.ActualizarObrero.as_view(), name='edit-obrero' ), 
-     url(r'^agregado/nomina/obrero/(?P<pk>.*)/borrar/$', nomina_app.BorrarObrero.as_view(), name='delete-obrero' ),
-
-     url(r'^agregado/nomina/puestos/ver/$', nomina_app.VerPuestos.as_view(), name='ver-puestos' ),
-     url(r'^agregado/nomina/puestos/add/$', nomina_app.AddPuestos.as_view(), name='add-puestos' ),
-     url(r'^agregado/nomina/puestos/(?P<pk>.*)/$', nomina_app.ActualizarPuestos.as_view(), name='edit-puestos' ), 
-     url(r'^agregado/nomina/puestos/(?P<pk>.*)/borrar/$', nomina_app.BorrarPuestos.as_view(), name='delete-puestos' ),
-
-      url(r'^agregado/nomina/fechas-asignadas/ver/$', nomina_app.VerFechasAsignadas.as_view(), name='ver-fechas-asignadas' ),
-     url(r'^agregado/nomina/fechas-asignadas/add/$', nomina_app.AddFechasAsignadas.as_view(), name='add-fechas-asignadas' ),
-     url(r'^agregado/nomina/fechas-asignadas/(?P<pk>.*)/$', nomina_app.ActualizarFechasAsignadas.as_view(), name='edit-fechas-asignadas' ), 
-     url(r'^agregado/nomina/fechas-asignadas/(?P<pk>.*)/borrar/$', nomina_app.BorrarFechasAsignadas.as_view(), name='delete-fechas-asignadas' ),
-
-
-    url(r'^agregado/nomina/$', nomina_app.ver_nomina, name='ver-nomina' ),
-    url(r'^agregado/nomina/pagos/semanales/obrero/ver/$', nomina_app.VerPagosSemanalesObrero.as_view(), name='ver-pagos-semanales-obreros' ),
-    url(r'^agregado/nomina/pagos/semanales/obrero/add/$', nomina_app.AddPagosSemanalesObrero.as_view(), name='add-pagos-semanales-obreros' ),
-     
-     url(r'^agregado/nomina/pagos/semanales/obrero/(?P<pk>.*)/$', nomina_app.ActualizarPagosSemanalesObrero.as_view(), name='edit-pagos-semanales-obreros' ), 
-     url(r'^agregado/nomina/pagos/semanales/obrero/(?P<pk>.*)/borrar/$', nomina_app.BorrarPagosSemanalesObrero.as_view(), name='delete-pagos-semanales-obreros' ),
-
-      url(r'^agregado/nomina/pagos/semanales/empleado/ver/$', nomina_app.VerPagosSemanalesEmpleado.as_view(), name='ver-pagos-semanales-empleados' ),
-     url(r'^agregado/nomina/pagos/semanales/empleado/add/$', nomina_app.AddPagosSemanalesEmpleado, name='add-pagos-semanales-empleados' ),
-     url(r'^agregado/nomina/pagos/semanales/empleado/(?P<pk>.*)/$', nomina_app.ActualizarPagosSemanalesEmpleado.as_view(), name='edit-pagos-semanales-empleados' ), 
-     url(r'^agregado/nomina/pagos/semanales/empleado/(?P<pk>.*)/borrar/$', nomina_app.BorrarPagosSemanalesEmpleado.as_view(), name='delete-pagos-semanales-empleados' ), 
-
-     url(r'^agregado/nomina/pagos/semanales/bono/obrero/ver/$', nomina_app.VerBonoAlimentacionSemanalObrero.as_view(), name='ver-bono-alimentacion-obrero' ),
-     url(r'^agregado/nomina/pagos/semanales/bono/obrero/add/$', nomina_app.AddBonoAlimentacionSemanalObrero.as_view(), name='add-bono-alimentacion-obrero' ),
-     url(r'^agregado/nomina/pagos/semanales/bono/obrero/(?P<pk>.*)/$', nomina_app.ActualizarBonoAlimentacionSemanalObrero.as_view(), name='edit-bono-alimentacion-obrero' ), 
-     url(r'^agregado/nomina/pagos/semanales/bono/obrero/(?P<pk>.*)/borrar/$', nomina_app.BorrarBonoAlimentacionSemanalObrero.as_view(), name='delete-bono-alimentacion-obrero' ),
-
-      url(r'^agregado/nomina/pagos/semanales/bono/empleado/ver/$', nomina_app.VerBonoAlimentacionSemanalEmpleado.as_view(), name='ver-bono-alimentacion-empleado' ),
-     url(r'^agregado/nomina/pagos/semanales/bono/empleado/add/$', nomina_app.AddBonoAlimentacionSemanalEmpleado.as_view(), name='add-bono-alimentacion-empleado' ),
-     url(r'^agregado/nomina/pagos/semanales/bono/empleado/(?P<pk>.*)/$', nomina_app.ActualizarBonoAlimentacionSemanalEmpleado.as_view(), name='edit-bono-alimentacion-empleado' ), 
-     url(r'^agregado/nomina/pagos/semanales/bono/empleado/(?P<pk>.*)/borrar/$', nomina_app.BorrarBonoAlimentacionSemanalEmpleado.as_view(), name='delete-bono-alimentacion-empleado' ),
-
-      url(r'^agregado/nomina/total_nomina/obreros/ver/$', nomina_app.MostrarTotalNominaObreros.as_view(), name='ver-total-nomina-empleado' ),
-      url(r'^agregado/nomina/total_nomina/empleados/ver/$', nomina_app.MostrarTotalNominaEmpleados.as_view(), name='ver-total-nomina-obrero' ),
-
 
   
 ]

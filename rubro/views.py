@@ -13,7 +13,7 @@ from gestion.views import get_query,desabilite_model,delete_model, paginacion
 from rubro.models import Rubro, VariedadRubro,  TipoRubro
 from rubro.forms import FormRubro, FormEditarRubro, FormVariedadRubro, FormEditVariedadRubro,FormTipoRubro, FormEditTipoRubro#, FormProductor, FormZonaProductor
 from django.http import HttpResponseRedirect, HttpResponse, Http404
-
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 tiempo = datetime.datetime.now()
 raiz= '/agregado/rubro/ver'
 
@@ -93,30 +93,30 @@ def Agregar_Rubros(request):
 		form = FormRubro(request.POST,request.FILES)
 
 		if form.is_valid():
-			nombre= form.cleaned_data['nombre']
-			nombre_cientifico = form.cleaned_data['nombre_cientifico']
-			tolerancia_humedad = form.cleaned_data['tolerancia_humedad']
-			diferencia_humedad= form.cleaned_data['diferencia_humedad']
-			tolerancia_impureza= form.cleaned_data['tolerancia_impureza']
-
-			foto= form.cleaned_data['foto']
-			
 			try:
+
+				nombre= form.cleaned_data['nombre']
+				nombre_cientifico = form.cleaned_data['nombre_cientifico']
+				tolerancia_humedad = form.cleaned_data['tolerancia_humedad']
+				diferencia_humedad= form.cleaned_data['diferencia_humedad']
+				tolerancia_impureza= form.cleaned_data['tolerancia_impureza']
+
+				foto= form.cleaned_data['foto']
+		
+			
 				rubro= Rubro()
-				rubro.nombre= nombre.capitalize()
-				rubro.nombre_cientifico= nombre_cientifico.capitalize()
+				rubro.nombre= nombre
+				rubro.nombre_cientifico= nombre_cientifico
 				rubro.tolerancia_humedad= tolerancia_humedad
 				rubro.diferencia_humedad= diferencia_humedad
 				rubro.tolerancia_impureza= tolerancia_impureza
 				rubro.foto= foto
 
 				rubro.save()
-			#except IntegrityError:
-			#	raise formrubro.Error('El nombre de rubro ya esta registrado')
 			finally:
+
 				return HttpResponseRedirect('/agregado/rubro/editar/%s'%(rubro.id))
-		else:
-			info = 'Por favor corrija los sigientes campos'
+		
 	else:
 		form = FormRubro()
 		
@@ -145,14 +145,14 @@ def Editar_Rubro(request, pk):
 		if formrubro.is_valid():
 			nombre= formrubro.cleaned_data['nombre']
 			nombre_cientifico = formrubro.cleaned_data['nombre_cientifico']
-			tolerancia_humedad = form.cleaned_data['tolerancia_humedad']
-			diferencia_humedad= form.cleaned_data['diferencia_humedad']
-			tolerancia_impureza= form.cleaned_data['tolerancia_impureza']
+			tolerancia_humedad = formrubro.cleaned_data['tolerancia_humedad']
+			diferencia_humedad= formrubro.cleaned_data['diferencia_humedad']
+			tolerancia_impureza= formrubro.cleaned_data['tolerancia_impureza']
 			foto= formrubro.cleaned_data['foto']
 			
 			#try:
-			model.nombre= nombre.capitalize()
-			model.nombre_cientifico= nombre_cientifico.capitalize()
+			model.nombre= nombre
+			model.nombre_cientifico= nombre_cientifico
 			model.tolerancia_humedad= tolerancia_humedad
 			model.diferencia_humedad= diferencia_humedad
 			model.tolerancia_impureza= tolerancia_impureza
@@ -244,16 +244,12 @@ def Rubro_Variedades_Add(request, pk):
 		if form.is_valid():
 			nombre = form.cleaned_data['nombre']
 			descripcion = form.cleaned_data['descripcion']
-			modelo = VariedadRubro.objects.filter(rubro=rubro, nombre=nombre.capitalize(), null=False)
-			print modelo.count()
-			if modelo.count() >=1:
-				info= 'este nombre ya esta registrado'
-				return render(request, 'rubros/VariedadRubro.html', {'form':form,
-																  'info':info})
+			
+		
 			model= VariedadRubro()
 			model.rubro= rubro
-			model.nombre= nombre.capitalize()
-			model.descripcion= descripcion.capitalize()
+			model.nombre= nombre
+			model.descripcion= descripcion
 			model.save()
 			return HttpResponseRedirect('/agregado/rubro/%s/variedades/edit/%s'%(rubro.id, model.id))
 	else:
@@ -267,7 +263,7 @@ def Rubro_Variedades_Edit(request, pkrubro, pkvariedad):
 		int(pkvariedad)
 	except ValueError:
 		raise Http404()
-	info =""
+	info= ""
 	model = VariedadRubro.objects.get(rubro__pk=pkrubro, pk=pkvariedad, null=False)
 	rubro= Rubro.objects.get(pk=pkrubro)
 	if request.method=='POST':
@@ -286,8 +282,8 @@ def Rubro_Variedades_Edit(request, pkrubro, pkvariedad):
 				pass
 			else:
 				model.rubro= rubro
-			model.nombre= nombre.capitalize()
-			model.descripcion= descripcion.capitalize()
+			model.nombre= nombre
+			model.descripcion= descripcion
 			model.save()
 			return HttpResponseRedirect('.')
 	else:
@@ -316,7 +312,6 @@ def Rubro_Tipo_Ver(request, pk):
 
 @permission_required('auth.acceso_empleado',login_url="/accounts/login/")
 def Rubro_Tipo_Add(request, pk):
-
 	info=''
 	try:
 		int(pk)
@@ -324,25 +319,20 @@ def Rubro_Tipo_Add(request, pk):
 		raise Http404()
 	rubro = Rubro.objects.get(pk=pk, null=False)
 	if request.method=='POST':
-		form = FormEditVariedadRubro(request.POST)
+		form = FormEditTipoRubro(request.POST)
 		if form.is_valid():
 			nombre = form.cleaned_data['nombre']
 			descripcion = form.cleaned_data['descripcion']
-			modelo = TipoRubro.objects.filter(rubro=rubro, nombre=nombre.capitalize())
-
-			if modelo.count() >=1:
-				info= 'este nombre ya esta registrado'
-				return render(request, 'rubros/TipoRubro.html', {'form':form,
-																  'info':info})
+			
 			model= TipoRubro()
 			model.rubro= rubro
-			model.nombre= nombre.capitalize()
-			model.descripcion= descripcion.capitalize()
+			model.nombre= nombre
+			model.descripcion= descripcion
 			model.save()
 			return HttpResponseRedirect('/agregado/rubro/%s/tipo/edit/%s'%(rubro.id, model.id))
 
 	else:
-		form = FormEditVariedadRubro()
+		form = FormEditTipoRubro()
 
 	return render(request, 'rubros/TipoRubro.html', {'form':form, 'info':info, 'rubro':rubro})
 
@@ -371,8 +361,8 @@ def Rubro_Tipo_Edit(request, pkrubro, pktipo):
 				pass
 			else:
 				model.rubro= rubro
-			model.nombre= nombre.capitalize()
-			model.descripcion= descripcion.capitalize()
+			model.nombre= nombre
+			model.descripcion= descripcion
 			model.save()
 			return HttpResponseRedirect('.')
 	else:

@@ -27,6 +27,8 @@ class TipoCuenta(models.Model):
 #=== ======================ciclo de recepcion========
 
 class Ciclo(models.Model):
+	
+
 	nombre= models.CharField(max_length=50, unique=True)
 	fecha_de_inicio=models.DateField()
 	fecha_de_cierre=models.DateField(null=True,blank=True )
@@ -57,6 +59,7 @@ class Ciclo(models.Model):
 		return '%s-%s'%(self.nombre, self.codigo_en_sistema())
 #==============================Precio de Ciclo===============
 class PrecioDeRubroPorCiclo(models.Model):
+
 	producto= models.ForeignKey(Rubro)
 	#variedad
 	#Tipo

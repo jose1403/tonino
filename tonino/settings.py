@@ -58,7 +58,7 @@ INSTALLED_APPS = (
     'despacho',
     'administracion',
     'plantas',
-    'nomina'
+
 
 )    
 

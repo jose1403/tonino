@@ -3,10 +3,7 @@ from rubro.models import Rubro, VariedadRubro, TipoRubro
 
 
 class FormRubro(forms.ModelForm):
-	"""nombre= forms.CharField(widget=forms.TextInput())
-				nombre_cientifico= forms.CharField(widget=forms.TextInput())
-				foto= forms.ImageField(label='Imagen Opcional', required=False)"""
-
+	
 	class Meta:
 		model= Rubro
 		fields= '__all__'
@@ -27,8 +24,6 @@ class FormEditVariedadRubro(forms.ModelForm):
 		model= VariedadRubro
 		fields = '__all__'
 		exclude=['rubro']
-
-
 
 # Topo dentado o duro
 class FormTipoRubro(forms.Form):

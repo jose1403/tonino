@@ -61,7 +61,7 @@ def lista_clientes_pdf(request):
     styles = getSampleStyleSheet()
     lista = []
     lista.append(logo_pdf())
-    fecha= Paragraph('<b><i>Fecha: %s/%s/%s</i><b>'%(tiempo.day,tiempo.month, tiempo.year), styles['Normal'])
+    fecha= Paragraph('<b><i>Fecha: %s/%s/%s</i></b>'%(tiempo.day,tiempo.month, tiempo.year), styles['Normal'])
     
     lista.append(Spacer(0,40))
     lista.append(fecha)
@@ -156,14 +156,14 @@ def info_cliente_pdf(request, pk):
     styles = getSampleStyleSheet()
     #menbrete ************************
     lista.append(logo_pdf())
-    fecha= Paragraph('<b><i>Fecha: %s/%s/%s</i><b>'%(tiempo.day,tiempo.month, tiempo.year), styles['Normal'])
-    lista.append(Spacer(0,40))
+    fecha= Paragraph('<b><i>Fecha: %s/%s/%s</i></b>'%(tiempo.day,tiempo.month, tiempo.year), styles['Normal'])
+    lista.append(Spacer(0,25))
     
     lista.append(fecha)
     lista.append(Spacer(0,20))
     style= ParagraphStyle('Heading1')
-    style.textColor= 'grey'
-    style.alignment= TA_LEFT
+    style.textColor= 'black'
+    style.alignment= TA_CENTER
     style.fontSize= 16
     style.spaceAfter=15
     style.spaceBefore= 30
@@ -173,10 +173,25 @@ def info_cliente_pdf(request, pk):
     style.allowOrphans = 0
     style.bulletFontSize = 10
     fecha = Paragraph
-    header = Paragraph("<b>Informacion de Cliente<b>".upper(), style)
+
+    style_C= ParagraphStyle('Normal')
+    style_C.alignment= TA_RIGHT
+    style_C.fontSize= 14
+    style_C.textColor= 'black'
+
+
+    style_N= ParagraphStyle('Normal')
+    style_N.alignment= TA_LEFT
+    style_N.fontSize= 12
+    style_N.textColor= 'black'
+    header = Paragraph("<b>Informacion de Cliente</b>".upper(), style)
 
     #******Modelos********
     lista.append(header)
+    lista.append(Spacer(0,25))
+
+
+    #******Modelos********
     p=  Cliente.objects.get(pk=pk, habilitado=True)
 
     #******Modelos********
@@ -185,76 +200,250 @@ def info_cliente_pdf(request, pk):
     style_C= ParagraphStyle('Normal')
     style_C.alignment= TA_RIGHT
     style_C.fontSize= 14
-    style_C.textColor= 'gray'
+    style_C.textColor= 'black'
 
-    codigo_en_sistema = Paragraph('<font ><b>CODIGO EN SISTEMA:</b> %s</font>'%p.codigo_en_sistema(),style_C)
+    lista.append(Paragraph('<font ><b>CODIGO EN SISTEMA:</b> %s</font>'%p.codigo_en_sistema(),style_C))
 
     style_N= ParagraphStyle('Normal')
     style_N.alignment= TA_LEFT
     style_N.fontSize= 12
-    style_N.textColor= 'olive'
-    nombre= Paragraph('<b>NOMBRE O RAZON SOCIAL</b> ',style_N)
-    documentoId= Paragraph('<b>CI/RIF</b>', style_N)
-    domicilio_fiscal= Paragraph('<b>DOMICILIO FISCAL</b>', style_N)
-    telefono= Paragraph('<b>TELEFONO</b>',style_N)
-    celular= Paragraph('<b>CELULAR</b>', style_N)
-    #dATOS BANCARIOS
-    cuenta_bancaria= Paragraph('<b>CUENTA BANCARIA</b>', style_N)
-    banco= Paragraph('<b>BANCO:</b>', style_N)
-    tipo_cuenta= Paragraph('<b>TIPO DE CUENTA</b>', style_N)
-    
-    fecha_agregado= Paragraph('<b>FECHA DE AGREGADO: </b> %s/%s/%s'%(p.fecha_agregado.day, p.fecha_agregado.month,p.fecha_agregado.year), style_N)
+    style_N.textColor= 'black'
 
-    observacion= Paragraph('<b>OBSERVACION</b>', style_N)
+    style_table= ParagraphStyle('Default')
+    #style_table.textColor= 'black'
+    #style_table.alignment= TA_CENTER
+    style_table.fontSize= 10
+    style_table.spaceAfter=15
+    style_table.spaceBefore= 0
+    style_table.spaceAfter=0
+    style_table.leading = 20 # anchor de tabla
+    style_table.bulletIndent = 0
+    style_table.allowOrphans = 0
+    style_table.bulletFontSize = 5
+    style_table.fontName='Times-Roman'
+   
+    style_table.bulletAnchor= 'start',
+    lista.append(Paragraph('<font><b>INFORMACION BASICA</b></font>', style_N))
+    lista.append(Spacer(0, 20))
+    array_datos=[]
+    title_datos= ('Nombre o Razon Social', 'CI/RIF', 'Domicilio Fiscal')
+    array_datos.append([
+    Paragraph(p.nombre_o_razon_social.title(), style_table),
+    Paragraph(p.documentoId.title(), style_table),
+    Paragraph(p.domicilio_fiscal.title(), style_table)])
+    t_datos=Table([title_datos]+ array_datos)
+    tupla_tabla=  [
+            ('GRID', (0, 1), (len(title_datos), -1), 1, colors.black),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+
+            ('LINEBELOW', (1, 0), (-1, 0), 1, colors.black),
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('BACKGROUND', (0, 1), (len(title_datos), len(array_datos)), colors.white)#HexColor(0x979494)),
+            #('BACKGROUND', (0, 0), (-3, 0), colors.yellow),
+
+            #('BACKGROUND', (0, 0), (-1, 0), colors.palegreen)d1e82af7
+
+        ]
+    t_datos.setStyle(TableStyle(tupla_tabla))#414141
+    lista.append(t_datos)
+    array_referencia=[]
+    title_referencia= ('TELEFONO', 'CELULAR', 'E-MAIL')
+    array_referencia.append([
+    Paragraph(p.telefono, style_table),
+    Paragraph(p.celular, style_table),
+    Paragraph(p.e_mail, style_table)])
+    t_referencia=Table([title_referencia]+ array_referencia)
+    t_referencia.setStyle(TableStyle(tupla_tabla))
+    lista.append(t_referencia)
+
+    array_banco= []
+    encabesado_banco=('', 'CUENTA PRINCIPAL', '')
+    title_banco= ('CUENTA','BANCO', 'TIPO')
+    array_banco.append([ Paragraph(p.cuenta_bancaria, style_table),
+    Paragraph(p.banco.nombre.title(), style_table),
+    Paragraph(p.tipo_cuenta.nombre.title(), style_table),
+   ])
+    t_banco=Table([title_banco]+ array_banco)
+    t_banco.setStyle(TableStyle(tupla_tabla))
+    lista.append(t_banco)
+
+    array_afiliacion=[]
+    title_afiliacion= ('FECHA DE AGREGADO', 'REFENCIA', 'OBSERVACION')
+    array_afiliacion.append([
+    Paragraph('%s/%s/%s'%(p.fecha_agregado.day, p.fecha_agregado.month,p.fecha_agregado.year), style_table),
+    Paragraph(p.referencia_folder, style_table),
+    Paragraph(p.observacion, style_table)])
+    t_afiliacion=Table([title_afiliacion]+ array_afiliacion)
+    t_afiliacion.setStyle(TableStyle(tupla_tabla))
+    lista.append(t_afiliacion)
+ 
 
     
-    lista.append(Spacer(0, 10))
+   
+
+
+
+
+
+    doc.build(lista)#, onFirstPage = myFirstPage, onLaterPages = myLaterPages)#doc.build(story, onFirstPage = myFirstPage, onLaterPages = myLaterPages)
+
+    response.write(buff.getvalue())
+    buff.close()
+    return response
+
+def info_productor_pdf(request, pk):
+   
+    response = HttpResponse(content_type='application/pdf')
+    pdf_name = "info-de-Productor.pdf"  # llamado clientes
+    # la linea 26 es por si deseas descargar el pdf a tu computadora
+    print inch
+    #response['Content-Disposition'] = 'attachment; filename=%s-%s/%s/%s.pdf'%(pdf_name, tiempo.day,tiempo.month, tiempo.year)
+    #response['Content-Disposition'] = 'filename="archivo.pdf"' 
+
+    buff = BytesIO()
+
+
+    doc = SimpleDocTemplate(buff,
+                            pagesize=letter,
+                            rightMargin=40,
+                            leftMargin=40,
+                            topMargin=60,
+                            bottomMargin=18,
+                            showBoundary=0,
+                            title='Info-Productores',
+                            onPage='doNothing',
+                            onPageEnd='doNothing'
+                            )
+
+    lista = []
+    styles = getSampleStyleSheet()
+    #menbrete ************************
+    lista.append(logo_pdf())
+    fecha= Paragraph('<b><i>Fecha: %s/%s/%s</i></b>'%(tiempo.day,tiempo.month, tiempo.year), styles['Normal'])
+    lista.append(Spacer(0,25))
+    lista.append(fecha)
+    lista.append(Spacer(0,20))
+    style= ParagraphStyle('Heading1')
+    style.textColor= 'black'
+    style.alignment= TA_CENTER
+    style.fontSize= 16
+    style.spaceAfter=15
+    style.spaceBefore= 15
+    style.spaceAfter=5
+    style.leading = 20
+    style.bulletIndent = 0
+    style.allowOrphans = 0
+    style.bulletFontSize = 10
+    header = Paragraph("<b>Informacion del Proovedor</b>".upper(), style)
+
+    #******Modelos********
+    lista.append(header)
+    lista.append(Spacer(0,25))
+
+    p=  Productor.objects.get(pk=pk, habilitado=True, null=False)
+    zona = Productor.zona.contar_zonas(pk=pk, null=False)
+
+    #******Modelos********
+   
+    #
+    style_C= ParagraphStyle('Normal')
+    style_C.alignment= TA_RIGHT
+    style_C.fontSize= 14
+    style_C.textColor= 'black'
+
+
+    style_N= ParagraphStyle('Normal')
+    style_N.alignment= TA_LEFT
+    style_N.fontSize= 12
+    style_N.textColor= 'black'
+
+    style_table= ParagraphStyle('Default')
+    #style_table.textColor= 'black'
+    #style_table.alignment= TA_CENTER
+    style_table.fontSize= 10
+    style_table.spaceAfter=15
+    style_table.spaceBefore= 0
+    style_table.spaceAfter=0
+    style_table.leading = 20 # anchor de tabla
+    style_table.bulletIndent = 0
+    style_table.allowOrphans = 0
+    style_table.bulletFontSize = 5
+    style_table.fontName='Times-Roman'
+   
+    style_table.bulletAnchor= 'start',
+    codigo_en_sistema = Paragraph('<font ><b>CODIGO EN SISTEMA:</b> %s</font>'%p.codigo_en_sistema(),style_C)
     lista.append(codigo_en_sistema)
-    lista.append(Spacer(10, 20))
-    lista.append(nombre)
+    lista.append(Spacer(0, 5))
+    lista.append(Paragraph('<b>NUMERO DE ZONAS:</b>%s'%zona['CantZonas'], style_N))
     lista.append(Spacer(0, 10))
-    lista.append(Paragraph(p.nombre_o_razon_social.upper(), style_N))
-    lista.append(Spacer(0, 10))
-    lista.append(documentoId)
-    lista.append(Spacer(0, 10))
-    lista.append(Paragraph(p.documentoId.upper(), style_N))   
-    lista.append(Spacer(0, 10))
-    lista.append(domicilio_fiscal)
-    lista.append(Spacer(0, 10))
-    lista.append(Paragraph(p.domicilio_fiscal.upper(), style_N)) 
-    lista.append(Spacer(0, 10))
-    lista.append(telefono)
-    lista.append(Spacer(0, 10))
-    lista.append(Paragraph(p.telefono.upper(), style_N)) 
-    lista.append(Spacer(0, 10))
-    lista.append(celular)
-    lista.append(Spacer(0, 10))
-    lista.append(Paragraph(p.celular.upper(), style_N)) 
-    lista.append(Spacer(0, 10))
-    lista.append(cuenta_bancaria)
-    lista.append(Spacer(0, 10))
-    lista.append(Paragraph(p.cuenta_bancaria.upper(), style_N)) 
-    lista.append(Spacer(0, 10))
-    lista.append(banco)
-    lista.append(Spacer(0, 10))
-    lista.append(Paragraph(p.banco.nombre.upper(), style_N)) 
-    lista.append(Spacer(0, 10))
-    lista.append(tipo_cuenta)
-    lista.append(Spacer(0, 10))
-    lista.append(Paragraph(p.tipo_cuenta.nombre.upper(), style_N)) 
-    lista.append(Spacer(0, 10))
-    lista.append(fecha_agregado)
-    lista.append(Spacer(0, 10))
-    lista.append(observacion)
-    lista.append(Spacer(0, 10))
-    lista.append(Paragraph(p.observacion.upper(), style_N)) 
-    lista.append(Spacer(0, 10))
+
+    lista.append(Paragraph('<b> CANTIDAD DE HECTAREAS:</b> %s Hect.'%zona['CantHectareas'], style_N))
+    lista.append(Spacer(0, 20))
+    array_datos=[]
+
+    lista.append(Paragraph('<font><b>INFORMACION BASICA</b></font>', style_N))
+    lista.append(Spacer(0, 20))
+
+    title_datos= ('Nombre o Razon Social', 'CI/RIF', 'Domicilio Fiscal')
+    array_datos.append([
+    Paragraph(p.nombre_o_razon_social.title(), style_table),
+    Paragraph(p.documentoId.title(), style_table),
+    Paragraph(p.domicilio_fiscal.title(), style_table)])
+    t_datos=Table([title_datos]+ array_datos)
+    tupla_tabla=  [
+            ('GRID', (0, 1), (len(title_datos), -1), 1, colors.black),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+
+            ('LINEBELOW', (1, 0), (-1, 0), 1, colors.black),
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('BACKGROUND', (0, 1), (len(title_datos), len(array_datos)), colors.white)#HexColor(0x979494)),
+            #('BACKGROUND', (0, 0), (-3, 0), colors.yellow),
+
+            #('BACKGROUND', (0, 0), (-1, 0), colors.palegreen)d1e82af7
+
+        ]
+    t_datos.setStyle(TableStyle(tupla_tabla))#414141
+    lista.append(t_datos)
+    array_referencia=[]
+    title_referencia= ('TELEFONO', 'CELULAR', 'E-MAIL')
+    array_referencia.append([
+    Paragraph(p.telefono, style_table),
+    Paragraph(p.celular, style_table),
+    Paragraph(p.e_mail, style_table)])
+    t_referencia=Table([title_referencia]+ array_referencia)
+    t_referencia.setStyle(TableStyle(tupla_tabla))
+    lista.append(t_referencia)
+
+    array_banco= []
+    encabesado_banco=('', 'CUENTA PRINCIPAL', '')
+    title_banco= ('CUENTA','BANCO', 'TIPO')
+    array_banco.append([ Paragraph(p.cuenta_bancaria, style_table),
+    Paragraph(p.banco.nombre.title(), style_table),
+    Paragraph(p.tipo_cuenta.nombre.title(), style_table),
+   ])
+    t_banco=Table([title_banco]+ array_banco)
+    t_banco.setStyle(TableStyle(tupla_tabla))
+    lista.append(t_banco)
+
+    array_afiliacion=[]
+    title_afiliacion= ('FECHA DE AGREGADO', 'REFENCIA', 'OBSERVACION')
+    array_afiliacion.append([
+    Paragraph('%s/%s/%s'%(p.fecha_agregado.day, p.fecha_agregado.month,p.fecha_agregado.year), style_table),
+    Paragraph(p.referencia_folder, style_table),
+    Paragraph(p.observacion, style_table)])
+    t_afiliacion=Table([title_afiliacion]+ array_afiliacion)
+    t_afiliacion.setStyle(TableStyle(tupla_tabla))
+    lista.append(t_afiliacion)
+ 
+
+    
+   
 
 
 
 
 
-    doc.build(lista)
+    doc.build(lista)#, onFirstPage = myFirstPage, onLaterPages = myLaterPages)#doc.build(story, onFirstPage = myFirstPage, onLaterPages = myLaterPages)
 
     response.write(buff.getvalue())
     buff.close()

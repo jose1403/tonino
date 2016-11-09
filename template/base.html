@@ -3,7 +3,7 @@
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{% block title %}Silos Tonino{% endblock %}</title>
+    <title>{% block title %}Silos Moliven{% endblock %}</title>
     {% block before_suit_styles %}{% endblock %}
     <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% endblock %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'suit/bootstrap/css/bootstrap.min.css' %}" media="all"/>
@@ -41,7 +41,7 @@
             <!-- Header -->
             <div id="header" class="header">
               <div id="branding">
-                <a href="{% url 'admin:index' %}"><h1 id="site-name">{% block branding %}Silos Tonino{% endblock %}</h1></a>
+                <a href="{% url 'admin:index' %}"><h1 id="site-name">{% block branding %} <img src="/media/imagenes/empresa/logo.jpg" width="150px" style="" >{% endblock %}</h1></a>
               </div>
 
               {% block header_time %}

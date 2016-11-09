@@ -1,6 +1,6 @@
 from django import forms
 from .models import Ciclo, PrecioDeRubroPorCiclo, Bancos, TipoCuenta
-
+from rubro.models import Rubro
 saludos=('hola', 'mundo')
 tipo_de_cuenta= (('Aho', 'Ahorro'), ('Cor', 'Corriente'))
 
@@ -26,7 +26,9 @@ class FormCiclo(forms.ModelForm):
 
 #==============================Precio de Ciclo ===============
 class FormPrecioDeRubroPorCiclo(forms.ModelForm):
-
+	def __init__(self,  *args, **kwargs):
+	    super(FormPrecioDeRubroPorCiclo, self).__init__(*args, **kwargs)
+	    self.fields['producto'].queryset = Rubro.objects.filter( null=False)
 	class Meta:
 		model = PrecioDeRubroPorCiclo
 		fields= '__all__'

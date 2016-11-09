@@ -103,7 +103,7 @@ def Edit_Plantas(request, pk):
 	except ValueError:
 		raise Http404()
 	info =""
-	model = Plantas.objects.get(pk=pk)
+	model = Plantas.objects.get(pk=pk, null=False)
 	if request.method=='POST':
 		if 'eliminar' in request.POST.keys() and  request.POST['eliminar']== 'delete-selected':
 			

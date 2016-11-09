@@ -21,6 +21,7 @@ class FormProductor(forms.ModelForm):
 	class Meta:
 		model= Productor
 		fields= '__all__'
+		exclude= ['estado','municipio', 'null']
 
 
 class FormEditProductor(forms.ModelForm):
@@ -29,6 +30,9 @@ class FormEditProductor(forms.ModelForm):
 		model= Productor
 		fields= ['nombre_o_razon_social','documentoId','domicilio_fiscal', 'telefono', 'celular', 'observacion']
 class FormZonaProductor(forms.ModelForm):
+	def __init__(self,  *args, **kwargs):
+	    super(FormZonaProductor, self).__init__(*args, **kwargs)
+	    self.fields['producto'].queryset = Productor.objects.filter( null=False)
 	class Meta:
 		model = ZonaProductor
 		fields='__all__'
