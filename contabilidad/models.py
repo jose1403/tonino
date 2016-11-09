@@ -74,6 +74,3 @@ class PrecioDeRubroPorCiclo(models.Model):
 		return reverse('contabilidad.views.Edit_PresioXCiclo', args=[str(self.ciclo.id),str(self.id)])
 	def __unicode__(self):
 		return '%s ciclo %s a %s'% (self.producto, self.ciclo, self.precio_por_Kg)
-
-
-

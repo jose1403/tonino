@@ -2,68 +2,139 @@
 {%extends 'base_site.html'%}
 {% load staticfiles widget_tweaks %}
 {% load humanize %}
- {% block breadcrumbs %}
-                <ul class="breadcrumb">
-                  <li><a href="{% url 'agregado-nuevo' %}">inicio</a> >  
-                  <li><a href="{%url 'ver-recepcion' %}">recepcion</a></li>
-                   
-                    </li>
-                </ul>
-   {% endblock %}
+
+{% block buscador %}{% endblock %}
+
+{% block breadcrumbs %}
+   <div class="migas">
+   	 	<ul class="breadcrumb">
+   	  		<li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > </li>
+   	  		<li><a href="{%url 'ver-recepcion' %}">Recepción</a> > </li>
+   	  		<li>Factura</li>
+   		</ul>
+   </div>
+{% endblock %}
+
+
 {%block content%}
-<p><a href="{%url 'edit-recepcion' recepcion.pk%} ">Editar Recepcion</a></p>
-<nav>
-	<a href="{%url 'factura-recepcion-pdf' recepcion.pk%}" class="btn">Generar PDF</a>
-</nav>
-
-<!-- Encabesado -->
-<h1>Factura N°: {{recepcion.codigo_en_sistema}} --{{cuenta}} ---</h1>
-  <hr>
-  {{total}}
-  <hr>
-<img src="/media/{{get_DatosDeLaEmpresa.LOGO}}"" width="500" height="300" alt="">
-
-<h2>Pagado: {%if pago.p%}CANSELADO{%else%}SIN CANCELAR%}{%endif%}</h2>
-<h1 style="margin:0px;">		<center>SENIAT</center>	</h1>	<br>
-<h1 style="margin:0px;"">		<center>{{get_DatosDeLaEmpresa.NOMBRE|upper}}</center>	</h1>	<br>
-<h4><center>RIF:{{get_DatosDeLaEmpresa.RIF|upper}}</center> </h4>
-<h4><center>{{get_DatosDeLaEmpresa.DIRECCION|upper}}</center></h4>
-<h4><center>TELEFONOS:{{get_DatosDeLaEmpresa.TELEFONO|upper}} / {{get_DatosDeLaEmpresa.CELULAR|upper}}</center></h4>
-<h4><center> ZONA POSTAL: {{get_DatosDeLaEmpresa.CODIGO_POSTAL|upper}}</center> </h4>
-<br>
-FECHA DE EMICION: {{recepcion.fecha_agregado|date:'m/d/y - h:m'}}
-<hr>
-<p>DATOS DEL PROOVEDOR: </p>
-
-NOMBRE O RAZON SOCIAL: {{recepcion.proovedor.nombre_o_razon_social|upper}} 
-RIf : {{recepcion.proovedor.documentoId|upper}}
-<br>
-DOMICILIO : {{recepcion.proovedor.domiciloo_fiscal|upper}}
-TELEFONOS : {{recepcion.proovedor.telefono}}/{{recepcion.proovedor.celular}}
-<br>
-CODIGO: {{recepcion.proovedor.codigo_en_sistema}}
-ZONA: {{recepcion.zona_de_cosecha.zona|upper}}
-
-<hr>
-<br>
-RECEPCION:
-<table class="table table-striped col-md-6">
-<thead>
-			<tr>
-				<td>RUBRO</td>
-				<td>CICLO</td>
-				<td>CANTIDAD</td>
-				<td>DESCUENTO H/I</td>
-				<td>CANTIDAD REAL</td>
-				<td>PRECIO</td>
-				<td>PRECIO NETO</td>
-
-			</tr>
+<div id="content-main" style="width:100%;">
+	<nav>
+		<ul>
+			<li class="right" ><a href="{%url 'edit-recepcion' recepcion.pk%} ">EDITAR RECEPCIÓN</a></li>
+			<li class="right"><a href="{%url 'factura-recepcion-pdf' recepcion.pk%}"><span class="icono-file-pdf"></span>GENERAR PDF</a></li>
+		</ul>
+	</nav>
 	
-		</thead>
+	<div class="factura">
+		<div class="head">
+			<div class="img_wrapper">
+				<img src="/media/{{get_DatosDeLaEmpresa.LOGO}}" alt="">
+			</div>
+			<div class="info-empresa">
+				<table>
+					<thead>
+						<tr>
+							<td>SENIAT</td>
+						</tr>
+					</thead>
+					<tdbody>
+						<tr>
+							<td>{{get_DatosDeLaEmpresa.NOMBRE|upper}}</td>
+						</tr>
+						<tr>
+							<td>RIF:{{get_DatosDeLaEmpresa.RIF|upper}}</td>
+						</tr>
+						<tr>
+							<td>{{get_DatosDeLaEmpresa.DIRECCION|upper}}</td>
+						</tr>
+						<tr>
+							<td>
+								TELF:{{get_DatosDeLaEmpresa.TELEFONO|upper}} / {{get_DatosDeLaEmpresa.CELULAR|upper}}
+							</td>
+						</tr>
+						<tr>
+							<td>ZONA POSTAL: {{get_DatosDeLaEmpresa.CODIGO_POSTAL|upper}}</td>
+						</tr>
+					</tdbody>
+				</table>
+			</div>
+			<div class="detalle">
+				<table>
+					<thead>
+						<tr>
+							<td>FACTURA NRO:</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{recepcion.codigo_en_sistema}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<table>
+					<thead>
+						<tr>
+							<td>FECHA:</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{recepcion.fecha_agregado|date:'m/d/y - h:m'}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="body">
+			<table class="tabla-cliente">
+				<thead>
+					<tr>
+						<td style="text-align:center;" colspan="2">DATOS DEL CLIENTE:</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>NOMBRE O RAZÓN SOCIAL:</td>
+						<td>{{recepcion.proovedor.nombre_o_razon_social|upper}} </td>
+					</tr>
+					<tr>
+						<td>CI/RIF:</td>
+						<td>{{recepcion.proovedor.documentoId|upper}}</td>
+					</tr>
+					<tr>
+						<td>DOMICILIO:</td>
+						<td>{{recepcion.proovedor.domiciloo_fiscal|upper}}</td>
+					</tr>
+					<tr>
+						<td>TELEFONOS:</td>
+						<td>{{recepcion.proovedor.telefono}}/{{recepcion.proovedor.celular}}</td>
+					</tr>
+					<tr>
+						<td>CODIGO:</td>
+						<td>{{recepcion.proovedor.codigo_en_sistema}}</td>
+					</tr>
+					<tr>
+						<td>ZONA:</td>
+						<td> {{recepcion.zona_de_cosecha.zona|upper}}</td>
+					</tr>
+				</tbody>
+			</table>
 
-		<tbody>
-
+			<table class="table table-striped col-md-6">
+				<thead>
+					<tr>
+						<td>RUBRO</td>
+						<td>CICLO</td>
+						<td>CANTIDAD</td>
+						<td>DESCUENTO H/I</td>
+						<td>CANTIDAD REAL</td>
+						<td>PRECIO</td>
+						<td>PRECIO NETO</td>
+					</tr>
+				</thead>
+	
+				<tbody>
+		
 					<tr>
 						<td><a href="{{lista.get_absolute_url}}">{{recepcion.producto.nombre|upper}}({{recepcion.variedad.nombre|upper}}-{{recepcion.tipo.nombre|upper}}) </a> </td>
 						<td>{{recepcion.ciclo_asociado.nombre|title}}</td>
@@ -72,76 +143,146 @@ RECEPCION:
 						<td>{{total_pago.cantidad_real|floatformat:2}} Kg.</td>
 						<td>{{pago.precio.precio_por_Kg|floatformat:2}}Bs.</td>
 						<td>{{total_pago.total_neto|floatformat:2}} Bs. </td>
-					<td>
-				</tr>
-				<tr>
+					</tr>
+					
+					{%for i, k in total_pago.impuestos.items%}
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td>{{i}}</td>
+							<td>{{k|floatformat:2}} Bs. </td>
+						</tr>
+					{%endfor%}
+					
+					<tr>
+						
 						<td></td>
 						<td></td>
 						<td></td>
 						<td></td>
 						<td></td>
-						<td></td>
-						<td></td>
-					<td>
-				</tr>
-				{%for i, k in total_pago.impuestos.items%}
-				<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td>{{i}}</td>
-						<td>{{k|floatformat:2}} Bs. </td>
-					<td>
-				</tr>
-				{%endfor%}
-			
-			<tr>
-				
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td>TOTAL </td>
-				<td>{{total_pago.total_Bs|floatformat:2}}Bs.</td>
-
-				
-			</tr>
-		</tbody>
-	</table>
-
-<h1>{{dic|length}}</h1>
-<p style="font-size:16><span for="fllegada">FECHA DE RECEPCION: </span><i>{{recepcion.fecha_llegada|date:'d/y/m - h:m'}}</p></p></i> <br>
-<p class="texto" style="font-family:bold;"><label for=""><b>DESCUENTO POR IMPURESA: {{total_pago.descuentoI|floatformat:2}}%</b></label></p>
-<p class="texto" style="font-family:bold;"><label for=""><b>MERMA POR HUMEDAD: {{total_pago.descuentoH|floatformat:2}}%</b></label></p>
-<p class="texto" style="font-family:bold;"><label for=""><b>DESCUENTO POR MANIPULEO: {{total_pago.descuentoM|floatformat:2}}</b>%</label></p>
-
-
-<h2>DETALLES DE ANALISIS</h2>
-------------------------------------------------------------
-<p class="texto text-success" style="font-size:100; ">{{recepcion.producto.nombre|title}} {{recepcion.variedad.nombre|title}} </p>
-<p class="texto">Humedad: {{recepcion.humedad}}</p>
-<p class="texto" >Impuresa: {{recepcion.impureza}}</p>
-<p class="texto">Granos Danados: {{recepcion.granos_danados_totales}}</p>
-<p class="texto">TEMPERATURA PROMEDIO:
-{{recepcion.temperatura_promedio}}
-</p>
-<p class="texto">Otros: {{recepcion.otros}}</p>
-
-<hr>
-<a href="/generar_pdf/{{recepcion.pk}}">Ver en pdf</a>
-<style>
-	.texto{
-		font-size: 20px;
-		margin: 2px;
-		font-family: verdana;
-	}
-</style>
-<br>
-<hr>
-<span>Los calculos son mostrados tomando un calculo de dos decimales, por tal razon los niveles totales pueden variar</span>
+<<<<<<< HEAD
+						<td>TOTAL </td>
+						<td>{{total_pago.total_Bs|floatformat:2}}Bs.</td>
+		
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="foot">
+			<table class="tabla-descuentos">
+				<thead>
+					<tr>
+						<td colspan="2">DESCUENTOS</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>DESCUENTO POR IMPURESA:</td>
+						<td>{{total_pago.descuentoI|floatformat:2}}%</td>
+					</tr>
+					<tr>
+						<td>MERMA POR HUMEDAD:</td>
+						<td>{{total_pago.descuentoH|floatformat:2}}%</td>
+					</tr>
+					<tr>
+						<td>DESCUENTO POR MANIPULEO:</td>
+						<td>{{total_pago.descuentoM|floatformat:2}}</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="tabla-analisis">
+				<thead>
+					<td colspan="2">DETALLES ANÁLISIS</td>
+				</thead>
+				<tbody>
+					
+					<tr>
+						<td>HUMEDAD:</td>
+						<td>{{recepcion.humedad}}</td>
+					</tr>
+					<tr>
+						<td>IMPUREZA:</td>
+						<td>{{recepcion.impureza}}</td>
+					</tr>
+					<tr>
+						<td>GRANOS DAÑADOS:</td>
+						<td>{{recepcion.granos_danados_totales}}</td>
+					</tr>
+					<tr>
+						<td>TEMPERATURA PROMEDIO:</td>
+						<td>{{recepcion.temperatura_promedio}}</td>
+					</tr>
+					<tr>
+						<td>OTROS:</td>
+						<td>{{recepcion.otros}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- Encabesado
+	<h1>Factura N°: {{recepcion.codigo_en_sistema}} --{{cuenta}} ---</h1>
+	  <hr>
+	  {{total}}
+	  <hr>
+	
+	<h2>Pagado: {%if pago.p%}CANSELADO{%else%}SIN CANCELAR%}{%endif%}</h2>
+	<h1 style="margin:0px;">		<center>SENIAT</center>	</h1>	<br>
+	<h1 style="margin:0px;"">		<center>{{get_DatosDeLaEmpresa.NOMBRE|upper}}</center>	</h1>	<br>
+	<h4><center>RIF:{{get_DatosDeLaEmpresa.RIF|upper}}</center> </h4>
+	<h4><center>{{get_DatosDeLaEmpresa.DIRECCION|upper}}</center></h4>
+	<h4><center>TELEFONOS:{{get_DatosDeLaEmpresa.TELEFONO|upper}} / {{get_DatosDeLaEmpresa.CELULAR|upper}}</center></h4>
+	<h4><center> ZONA POSTAL: {{get_DatosDeLaEmpresa.CODIGO_POSTAL|upper}}</center> </h4>
+	<br>
+	FECHA DE EMICION: {{recepcion.fecha_agregado|date:'m/d/y - h:m'}}
+	<hr>
+	<p>DATOS DEL PROOVEDOR: </p>
+	
+	NOMBRE O RAZON SOCIAL: {{recepcion.proovedor.nombre_o_razon_social|upper}} 
+	RIf : {{recepcion.proovedor.documentoId|upper}}
+	<br>
+	DOMICILIO : {{recepcion.proovedor.domiciloo_fiscal|upper}}
+	TELEFONOS : {{recepcion.proovedor.telefono}}/{{recepcion.proovedor.celular}}
+	<br>
+	CODIGO: {{recepcion.proovedor.codigo_en_sistema}}
+	ZONA: {{recepcion.zona_de_cosecha.zona|upper}}
+	
+	<hr> -->
+	<!-- <br>
+	
+	<p style="font-size:16><span for="fllegada">FECHA DE RECEPCION: </span><i>{{recepcion.fecha_llegada|date:'d/y/m - h:m'}}</p></p></i> <br>
+	<p class="texto" style="font-family:bold;"><label for=""><b>DESCUENTO POR IMPURESA: {{total_pago.descuentoI|floatformat:2}}%</b></label></p>
+	<p class="texto" style="font-family:bold;"><label for=""><b>MERMA POR HUMEDAD: {{total_pago.descuentoH|floatformat:2}}%</b></label></p>
+	<p class="texto" style="font-family:bold;"><label for=""><b>DESCUENTO POR MANIPULEO: {{total_pago.descuentoM|floatformat:2}}</b>%</label></p>
+	
+	
+	<h2>DETALLES DE ANALISIS</h2>
+	<p class="texto text-success" style="font-size:100; ">{{recepcion.producto.nombre|title}} {{recepcion.variedad.nombre|title}} </p>
+	<p class="texto">Humedad: {{recepcion.humedad}}</p>
+	<p class="texto" >Impuresa: {{recepcion.impureza}}</p>
+	<p class="texto">Granos Danados: {{recepcion.granos_danados_totales}}</p>
+	<p class="texto">TEMPERATURA PROMEDIO:
+	{{recepcion.temperatura_promedio}}
+	</p>
+	<p class="texto">Otros: {{recepcion.otros}}</p>
+	
+	<hr>
+	<a href="/generar_pdf/{{recepcion.pk}}">Ver en pdf</a>
+	<style>
+		.texto{
+			font-size: 20px;
+			margin: 2px;
+			font-family: verdana;
+		}
+	</style>
+	<br> -->
+	<hr>
+	<span>Los calculos son mostrados tomando un calculo de dos decimales, por tal razon los niveles totales pueden variar</span>
+</div>
 {%endblock%}
 {%block delete%}
 {%endblock%}

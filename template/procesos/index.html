@@ -3,6 +3,7 @@
 
 {% block extrastyle %}
   {{ block.super }}
+   <link rel="stylesheet" href="{%static 'css/procesos/index.css'%}">
 {% endblock %}
 {%block title%}Silos Tonino{%endblock%}
 
@@ -13,12 +14,98 @@
 {% block breadcrumbs %}{% endblock %}
 {% block branding %}Silos Tonino{% endblock %}
 
+{% block buscador %}{% endblock %}
+{% block menu_system %}{% endblock %}
 
 {% block content %}
+  <script>
+    particlesJS.load('particles-js', '{% static "js/particles/particles-moliven.json" %}', function() {
+     console.log('callback - particles.js config loaded');
+  });
+  </script>
+  <div class="content-main">
+    <div class="logo" id="particles-js">
+       <div class="img_wrapper">
+          <img src="{% static 'media/imagenes/empresa/logo.jpg'%}" alt="">
+       </div>
+    </div>
+    <div id="modulos">
+      <div class="modulo">
+        <a href="{%url 'ver-rubro'%}">
+          <div class="img_wrapper">
+                 <img src="{% static 'imagenes/modulos/rubros.png' %}" alt="">
+                  <span class="icono-leaf"></span>
+                  <h4> Rubros </h4>
+          </div>
+        </a>
+      </div>
+      <div class="modulo">
+        <a href="{%url 'ver-productor'%}">
+          <div class="img_wrapper">
+                 <img src="{% static 'imagenes/modulos/productor2.jpeg' %}" alt="">
+                  <h4><span class="icono-hammer  "></span>Productores</h4>
+          </div>
+        </a>
+      </div>
+       <div class="modulo">
+        <a href="{%url 'ver-recepcion'%}">
+          <div class="img_wrapper">
+                 <img src="{% static 'imagenes/modulos/recepcion.jpg' %}" alt="">
+                  <h4><span class="icono-truck"></span>Recepción</h4>
+          </div>
+        </a>
+      </div>
+      <div class="modulo">
+        <a href="{%url 'ver-ciclos'%}">
+          <div class="img_wrapper">
+                 <img src="{% static 'imagenes/modulos/ciclos.jpg' %}" alt="">
+                  <h4><span class="icono-spinner11"></span>Ciclos</h4>
+          </div>
+        </a>
+      </div>
+      <div class="modulo">
+        <a href="{%url 'ver-despacho'%}">
+          <div class="img_wrapper">
+                 <img src="{% static 'imagenes/modulos/despacho.jpg' %}" alt="">
+                  <h4><span class="icono-checkmark"></span>Despacho </h4>
+          </div>
+        </a>
+      </div>
+       <div class="modulo">
+        <a href="{%url 'contabilidad'%}">
+          <div class="img_wrapper">
+                 <img src="{% static 'imagenes/modulos/contabilidad.jpg' %}" alt="">
+                  <h4><span class="icono-coin-dollar"></span>Contabilidad</h4>
+          </div>
+        </a>
+      </div>
+     
+      <div class="modulo">
+        <a href="{%url 'ver-cliente'%}">
+          <div class="img_wrapper">
+                 <img src="{% static 'imagenes/modulos/clientes.jpg' %}" alt="">
+                  <h4><span class="icono-users"></span>Clientes </h4>
+          </div>
+        </a>
+      </div>
+      <div class="modulo">
+        <a href="#">
+          <div class="img_wrapper">
+                 <img src="{% static 'imagenes/modulos/analisis.jpg' %}" alt="">
+                  <h4><span class="icono-stats-dots"></span>Analisis </h4>
+          </div>
+        </a>
+      </div>
+     </div>
 
-  <div id="content-main">
-  <h2>Pulse para modedificar</h2>
-    <ul>
+
+
+
+
+
+
+
+    <!-- <ul>
       <ol><a href="{%url 'ver-rubro'%}" class="btn btn-default">Rubros</a></ol>
       <ol><a href="{%url 'ver-productor'%}" class="btn btn-default">Productor</a></ol>
       <ol><a href="{%url 'ver-ciclos'%}" class="btn btn-default">Ciclo</a></ol>
@@ -28,17 +115,19 @@
       <ol><a href="{%url 'ver-despacho'%}" class="btn btn-default">Despacho</a></ol>
       <ol><a href="#" class="btn btn-default">Ver analisis</a></ol>
       <ol><a href="{%url 'ver-plantas'%}" class="btn btn-default">Ver Plantas</a></ol>
-      <ol><a href="{%url 'ver-nomina'%}" class="btn btn-default">Ver Nomina</a></ol>
 
 
 
-    </ul>
+    </ul> -->
   </div>
+
 {% endblock %}
 
 {%block delete%}
 {%endblock%}
+
 {% block sidebar %}
+
   <div id="content-related">
     <div class="module" id="recent-actions-module">
       <h4 class="italic-title">{% trans 'My Actions' %}</h4>

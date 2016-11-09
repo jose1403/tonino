@@ -1,205 +1,210 @@
 {%extends 'base_site.html'%}  
 {% load i18n admin_static %}
+
 {% block extrastyle %}
   {{ block.super }}
 {% endblock %}
+
+{% block buscador %}{% endblock %}
+
 {% block breadcrumbs %}
-				<ul class="breadcrumb">
-				  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > 
-				  <li><a href="{%url 'ver-despacho'%}">Ver Despacho</a></li> > 
-				  <li>Agregar Despacho</li>
-				   
-					</li>
-				</ul>
-   {% endblock %}
-{%block content%}
-<h2 style="color:red;">{{info}}</h2>
-<h2>Agregar Despacho</h2> <hr>
-<form action="." method="POST" enctype="multipart/form-data">
-
-{%csrf_token%}
-
-
-	 <div >
-	<form action="." method="POST" id="edit-recepcion">
-	{%csrf_token%}
-	<table class="table table-bordered table-hover table-striped">
-	<tfoot> Descripcion Del Producto </tfoot>
-	<thead >
-
-		<tr>
-
-				<td>{{form.producto.label}} <label for="">{{form.producto.errors}}</label></td>
-				<td>{{form.variedad.label}}<label for="">{{form.variedad.errors}}</label></td>
-				<td>{{form.tipo.label}}<label for="">{{form.tipo.errors}}</label></td>
-				<td>{{form.ciclo_asociado.label}}<label for="">{{form.ciclo_asociado.errors}}</label></td>
-			</tr>
-	</thead>
-		<tbody>
-			<tr>
-				<td>{{ form.producto}}</td>
-				<td>{{ form.variedad}}</td>
-				<td>{{ form.tipo}}</td>
-				<td>{{ form.ciclo_asociado}}</td>
-			</tr>
-		</tbody>
-
-	</table>
-	<table class="table table-bordered table-hover table-striped">
-	<tfoot> Datos del Cliente</tfoot>
-	<thead>
-
-		<tr>
-
-				<td>{{form.cliente.label}}<label for="">{{form.cliente.errors}}</label></td>
-				<td>{{form.dirigido_a.label}}<label for="">{{form.dirigido_a.errors}}</label></td>
-				
-			</tr>
-	</thead>
-		<tbody>
-			<tr>
-				<td>{{ form.cliente}}</td>
-				<td>{{form.dirigido_a}}}</td>
-			
-				
-			</tr>
-		</tbody>
-
-	</table>
-
-<table class="table table-bordered table-hover table-striped">
-	<tfoot> Datos de Entrega</tfoot>
-	<thead>
-
-		<tr>
-
-				<td>{{form.fecha_salida.label}}<label for="">{{form.fecha_salida.errors}}</label></td>
-				<td>{{form.tipo_vehiculo.label}}<label for="">{{form.tipo_vehiculo.errors}}</label></td>
-				<td>{{form.placa.label}}<label for="">{{form.placa.errors}}</label></td>
-				
-			</tr>
-	</thead>
-		<tbody>
-			<tr>
-				<td>{{ form.fecha_salida}}</td>
-				<td>{{ form.tipo_vehiculo}}</td>
-				<td>{{ form.placa}}</td>
-				
-			</tr>
-		</tbody>
-
-</table>
-<table class="table table-bordered table-hover table-striped">
-	<tfoot> Datos de  Referencia</tfoot>
-	<thead>
-
-		<tr>
-				<td>{{form.planta.label}}<label for="">{{form.planta.errors}}</label> </td>
-				<td>{{form.silo.label}}<label for="">{{form.silo.errors}}</label> </td>
-				
-				
-
-				<td>{{form.referencia_folder.label}}<label for="">{{form.referencia_folder.errors}}</label> </td>
-
-
-				
-				
-			</tr>
-	</thead>
-		<tbody>
-			<tr>
-				<td>{{form.planta}}</td>
-			
-				<td>{{form.silo}}</td>
-				
-				<td>{{form.referencia_folder}}</td>
-				
-			</tr>
-		</tbody>
-
-</table>
-<table class="table table-bordered table-hover table-striped">
-	<tfoot> Datos de Entrega</tfoot>
-	<thead>
-
-		<tr>
-
-				<td>Cantidad Despachado<label for="">{{form.cantidad_en_Kg.errors}}</label></td>
-				<td>Precio del Producto<label for="">{{form.precio.errors}}</label></td>
-				<td>Pagado</td>
-								
-			</tr>
-	</thead>
-		<tbody>
-			<tr>
-				<td>{{ form.cantidad_en_Kg}}</td>
-				<td>{{form.precio}}</td>
-				<td><input type="checkbox" name="pagado"> </td>
-
-				
-			</tr>
-		</tbody>
-
-</table>
-
-<style>
-	#tanalisis input{
-		width: 100px;
-	}
-</style>
-<table class="table table-bordered table-hover table-striped" style=""  id="tanalisis">
-<tfoot> Resultados Del Analisis </tfoot>
-	<thead>
-
-		<tr>
-
-				<td>{{form.humedad.label}}<label for="">{{form.humedad.errors}}</label></td>
-				<td>{{form.impureza.label}}<label for="">{{form.impureza.errors}}</label></td>
-				<td>{{form.granos_danados_totales.label}}<label for="">{{form.granos_danados_totales.errors}}</label></td>
-				<td>{{form.granos_partidos.label}}<label for="">{{form.granos_partidos.errors}}</label></td>
-				<td>{{form.temperatura_promedio.label}}<label for="">{{form.temperatura_promedio.errors}}</label></td>
-				<td>{{form.otros.label}}<label for="">{{form.otros.errors}}</label></td>
-			</tr>
-	</thead>
-		<tbody> 
-			<tr>
-				<td>{{ form.humedad}}</td>
-				<td>{{ form.impureza}}</td>
-				<td>{{ form.granos_danados_totales}}</td>
-				<td>{{ form.granos_partidos}}</td>
-				<td>{{form.temperatura_promedio}}</td>
-				<td>{{form.otros}}</td>
-			</tr>
-		</tbody>
-
-	</table>
-
-	<p><label for="">Despachado Por</label>{{form.despachado_por}}<label for="">{{form.despachado_por.errors}}</label></p>
-	<p><label for="">Observacion</label>{{form.observacion}}<label for="">{{form.observacion.errors}}</label></p>
-	
-	<input type="submit" class="btn btn-primary" value="guardar">
-		
-
-</form>
-	
+	<div class="migas">
+		<ul class="breadcrumb">
+		  <li><a href="{% url 'agregado-nuevo' %}">Inicio</a> > </li>
+		  <li><a href="{%url 'ver-despacho'%}">Ver Despacho</a> > </li> > 
+		  <li>Agregar Despacho</li>
+		</ul>
 	</div>
+{% endblock %}
+{%block content%}
+<div id="content-main">
+	<h2 style="color:red;">{{info}}</h2>
+	<h2 class="titulo ">AGREGAR DESPACHO</h2>
 	
+	<form action="." method="POST" enctype="multipart/form-data">
+		
+		{%csrf_token%}
+			<table>
+				<thead>
+					<tr>
+						<td colspan="3">DESCRIPCIÓN DEL PRODUCTO</td>
+					</tr>
+				</thead>
+				<tr>
+					<td style="width: 33%;">
+						<label for="">{{form.producto.label}}</label>
+						{{form.producto}}
+						<span>{{form.producto.errors}}</span>
+					</td>
+					<td style="width: 33%;">
+						<label for="">{{form.variedad.label}}</label>
+						{{form.variedad}}
+						<span>{{form.variedad.errors}}</span>
+					</td>
+					<td style="width: 33%;">
+						<label for="">{{form.tipo.label}}</label>
+						{{form.tipo}}
+						<span>{{form.tipo.errors}}</span>
+					</td>
+				</tr>
+				</table>
+				<table style="margin-top: 15px;">
+					<thead>
+						<tr>
+							<td colspan="2">DATOS CLIENTE</td>
+						</tr>
+					</thead>
+					<tr>
+						<td>
+							<label for="">{{form.cliente.label}}</label>
+							{{form.cliente}}
+							<span>{{form.cliente.errors}}</span>
+						</td>
+						<td>
+							<label for="">{{form.dirigido_a.label}}</label>
+							{{form.dirigido_a}}
+							<span>{{form.dirigido_a.errors}}</span>
+						</td>
+					</tr>
+				</table>
+				<table style="margin-top: 15px;">
+					<thead>
+						<tr>
+							<td colspan="3">DATOS DE ENTREGA</td>
+						</tr>
+					</thead>
+					<tr>
+						<td style="width: 33%;">
+							<label for="">{{form.cantidad_en_Kg.label}}</label>
+							{{form.cantidad_en_Kg}}
+							<span>{{form.cantidad_en_Kg.errors}}</span>
+						</td>
+						<td style="width: 33%;">
+							<label for="">{{form.precio.label}}</label>
+							{{form.precio}}
+							<span>{{form.precio.errors}}</span>
+						</td>
+						<td style="width: 33%;">
+							<label for="">{{form.fecha_salida.label}}</label>
+							{{form.fecha_salida}}
+							<span>{{form.fecha_salida.errors}}</span>
+						</td>
+					
+					</tr>
+					<tr>
+						
+						<td style="width: 33%;">
+							<label for="">{{form.tipo_vehiculo.label}}</label>
+							{{form.tipo_vehiculo}}
+							<span>{{form.tipo_vehiculo.errors}}</span>
+						</td>
+						<td style="width: 33%;">
+							<label for="">{{form.placa.label}}</label>
+							{{form.placa}}
+							<span>{{form.placa.errors}}</span>
+						</td>
+						<td style="width: 33%;">
+							<label for="pagado" class="label-check-down" style="color: #fff">
+								Pagado<input type="checkbox" id="pagado" name="pagado">
+							</label>
+						</td>
+					</tr>
+					
+				</table>
+				<table style="margin-top:15px;">
+					<thead>
+						<tr>
+							<td colspan="3">DATOS DE RFERENCIA </td>
+						</tr>
+					</thead>
+					<tr>
+						<td style="width:33%;">
+							<label for="">{{form.planta.label}}</label>
+							{{form.planta}}
+							<span>{{form.planta.errors}}</span>
+						</td>
+						<td style="width:33%;">
+							<label for="">{{form.silo.label}}</label>
+							{{form.silo}}
+							<span>{{form.silo.errors}}</span>
+						</td>
+						<td style="width:33%;">
+							<label for="">{{form.referencia_folder.label}}</label>
+							{{form.referencia_folder}}
+							<span>{{form.referencia_folder.errors}}</span>
+						</td>
+					</tr>
+				</table>
+				<table style="margin-top:15px;">
+					<thead>
+						<tr>
+							<td colspan="3">RESULTADO DE ANÁLISIS</td>
 
+						</tr>
+					</thead>
+					<tr>
+						<td style="width:33%;">
+							<label for="">{{form.humedad.label}}</label>
+							{{form.humedad}}
+							<span>{{form.humedad.errors}}</span>
+						</td>
+						<td style="width:33%;">
+							<label for="">{{form.impureza.label}}</label>
+							{{form.impureza}}
+							<span>{{form.impureza.errors}}</span>
+						</td>
+						<td style="width:33%;">
+							<label for="">{{form.granos_partidos.label}}</label>
+							{{form.granos_partidos}}
+							<span>{{form.granos_partidos.errors}}</span>
+						</td>
+					</tr>
+					<tr>
+						<td style="width:33%;">
+							<label for="">{{form.granos_danados_totales.label}}</label>
+							{{form.granos_danados_totales}}
+							<span>{{form.granos_danados_totales.errors}}</span>
+						</td>
+						<td style="width:33%;">
+							<label for="">{{form.temperatura_promedio.label}}</label>
+							{{form.temperatura_promedio}}
+							<span>{{form.temperatura_promedio.errors}}</span>
+						</td>
+						<td style="width:33%;">
+							<label for="">{{form.otros.label}}</label>
+							{{form.otros}}
+							<span>{{form.otros.errors}}</span>
+						</td>
+					</tr>
+					
+				</table>
+				<table style="margin-top:15px;">
+					<thead>
+						<tr>
+							<td colspan="2">OTROS</td>
+						</tr>
+					</thead>
+					<tr>
+						<td>
+							<label for="">{{form.despachado_por.label}}</label>
+							{{form.despachado_por}}
+							<span>{{form.despachado_por.errors}}</span>
+						</td>
+						<td>
+							<label for="">{{form.observacion.label}}</label>
+							{{form.observacion}}
+							<span>{{form.observacion.errors}}</span>
+						</td>
+
+					</tr>
+				</table>
+		
+		<div class="botonera">
+			<input type="submit" value='Guardar'>
 		</div>
-	
-	
-<input type="submit" value='Guardar'>
-<style>
-	input #cantidad_en_Kg{
-		border: 4px solid;
-	}
-	#cantidad_en_Kg{
-		border: 12px;
-	}
-</style>
-</form>
 
-
+	</form>
+	</div>
 {%endblock%}
 {%block delete%}
 {%endblock%}
